@@ -1,0 +1,226 @@
+/* --- Base + Theme --- */
+:root{
+  --bg:#0b0f14; --panel:#0f141b; --panel-2:#0c1117;
+  --gold:#c8aa6e; --gold-2:#9c7c4a; --text:#e5e9f0; --muted:#9aa4b2; --border:#1b2430;
+  --hard:#e53e3e; --soft:#f6e05e; --burst:#805ad5; --gap:#2f855a; --poke:#3182ce; --peel:#ed8936;
+  --qss:#63b3ed; --cleanse:#68d391; --ncleanse:#718096;
+  --radius:12px; --shadow:0 8px 20px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif}
+
+/* --- Header --- */
+.site-header.compact{
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(11,15,20,.95), rgba(11,15,20,.80));backdrop-filter: blur(5px)
+}
+.brand{display:flex;gap:12px;align-items:center}
+.brand-logo{width:28px;opacity:.9;filter:invert(100%) saturate(0%) brightness(200%)}
+h1{margin:0;font-size:20px;letter-spacing:.5px;color:var(--gold);text-transform:uppercase}
+.tagline{margin:2px 0 0;color:var(--muted);font-size:12px}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:11px;background:var(--panel)}
+.tag.hard{background:var(--hard);color:#fff}.tag.soft{background:var(--soft);color:#111}.tag.burst{background:var(--burst);color:#fff}
+.tag.gap{background:var(--gap);color:#fff}.tag.poke{background:var(--poke);color:#fff}.tag.peel{background:var(--peel);color:#fff}
+.tag.qss{background:var(--qss);color:#0b0f14}.tag.cleanse{background:var(--cleanse);color:#0b0f14}.tag.ncleanse{background:var(--ncleanse);color:#fff}
+
+/* --- Layout --- */
+.viewport-fit{
+  height:calc(100vh - 112px); /* header+footer */
+  display:grid;grid-template-rows:auto auto 1fr;gap:8px;padding:8px 12px
+}
+.team h2,.results h2{margin:0 0 6px 0;color:var(--gold);font-size:14px;text-transform:uppercase;letter-spacing:.4px}
+
+/* --- Search --- */
+.search-grid{display:grid;gap:8px}
+#enemyInputs{grid-template-columns:repeat(5,minmax(0,1fr))}
+#allyInputs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.search{
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);
+  border-radius:10px;box-shadow:var(--shadow);padding:6px;position:relative
+}
+.search input{
+  width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);
+  background:#0b1117;color:var(--text);font-size:12px
+}
+.suggestions{
+  position:absolute;left:6px;right:6px;top:44px;background:#0b1117;border:1px solid var(--border);
+  border-radius:10px;max-height:260px;overflow:auto;display:none;z-index:20
+}
+.suggestions.show{display:block}
+.suggestions button{
+  width:100%;text-align:left;background:transparent;color:var(--text);border:0;
+  padding:8px 10px;cursor:pointer;font-size:12px
+}
+.suggestions button:hover{background:#101825}
+
+/* --- Table --- */
+.results-table{min-height:0}
+.table-wrap{
+  height:100%;min-height:0;border:1px solid var(--border);border-radius:12px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);
+  padding:6px;display:flex;flex-direction:column;overflow:hidden
+}
+.threat-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:12px;table-layout:fixed}
+.threat-table thead th{
+  position:sticky;top:0;background:transparent;color:var(--muted);
+  font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:4px 6px
+}
+.threat-table tbody tr{background:#0b1117;border:1px solid var(--border)}
+.threat-table tbody tr td{padding:6px;vertical-align:top}
+
+.threat-table .group{width:74px;color:#cbd5e1}
+.threat-table .champ{width:180px}
+.threat-table .role{width:92px;color:#9aa4b2}
+.threat-table .abilities{width:auto}
+.threat-table .threats{width:140px}
+
+.threat-table .notes{width:260px;color:#dbe2ea}
+
+.row{border-radius:10px;overflow:hidden}
+.cell-champ{display:flex;gap:8px;align-items:center}
+.portrait-sm{width:28px;height:28px;border-radius:6px;border:1px solid #333;object-fit:cover;background:#0b0f14}
+.ability-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid #233044;background:#0a121d;border-radius:8px;padding:2px 6px;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
+.pill b{font-weight:700;color:var(--gold)}
+.pill .cds{font-family:ui-monospace,Consolas,monospace;color:#cbd5e1}
+.pill .cc{border-radius:6px;padding:0 6px;margin-left:4px}
+.tags-mini{display:flex;flex-wrap:wrap;gap:4px}
+.tags-mini .tag{padding:1px 6px;font-size:10px}
+
+.empty.small{font-size:12px;color:var(--muted);text-align:center;padding:10px;border:1px dashed var(--border);border-radius:10px;margin:6px}
+
+/* --- Footer --- */
+.site-footer.tight{
+  padding:8px 12px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:10px
+}
+.btn{padding:7px 10px;border-radius:9px;border:1px solid var(--gold-2);background:transparent;color:var(--gold);cursor:pointer;font-size:12px}
+.btn-ghost{border-color:var(--border);color:var(--muted)}
+.btn-outline{border-color:var(--gold);color:var(--gold)}
+
+/* =========================================================
+   RESPONSIVE BEHAVIOR
+   Desktop stays “fits one screen”. Smaller viewports adapt.
+   It’s OK if mobile requires scrolling (as you requested).
+   ========================================================= */
+
+/* Large laptop (≤1280px): tighten spacing & fonts slightly */
+@media (max-width: 1280px){
+  h1{font-size:18px}
+  .tagline{font-size:11px}
+  .threat-table{font-size:11.5px}
+  .threat-table thead th{font-size:10px}
+  .threat-table .notes{width:220px}
+  .pill{padding:2px 5px}
+}
+
+/* Standard laptop/tablet (≤1024px): reflow search inputs, allow horizontal scroll for table */
+@media (max-width: 1024px){
+  #enemyInputs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .viewport-fit{height:auto}            /* allow page to grow */
+  .table-wrap{overflow:auto}            /* horizontal scroll if needed */
+  .threat-table{min-width:980px}        /* don’t crush columns */
+}
+
+/* Small tablet (≤820px): hide non-critical column (notes), shrink role width */
+@media (max-width: 820px){
+  .threat-table .notes{display:none}
+  .threat-table .role{width:70px}
+  .tag{font-size:10px}
+  .pill .cds{font-size:11px}
+}
+
+/* Mobile landscape (≤700px): compress headers, stack search boxes */
+@media (max-width: 700px){
+  .legend{gap:4px}
+  .tag{padding:2px 6px}
+  .brand{gap:8px}
+  h1{font-size:16px}
+  .tagline{font-size:10px}
+  #enemyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Mobile (≤520px): single-column search, smaller portraits, narrow group col */
+@media (max-width: 520px){
+  #enemyInputs{grid-template-columns:1fr}
+  #allyInputs{grid-template-columns:1fr}
+  .portrait-sm{width:24px;height:24px}
+  .threat-table .group{width:60px}
+  .threat-table .champ{width:160px}
+  .threat-table .threats{width:120px}
+  .threat-table .cleanse{width:100px}
+}
+
+/* ---- Compact Mode Toggle ---- */
+.view-toggles{margin-top:6px; display:flex; align-items:center; gap:10px}
+.switch-compact{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
+.switch-compact input{accent-color:var(--gold)}
+
+/* ---- Compact Mode Styles ---- */
+body.compact-mode .legend .tag{padding:1px 6px; font-size:10px}
+body.compact-mode h1{font-size:18px}
+body.compact-mode .tagline{font-size:11px}
+body.compact-mode .search input{font-size:11px; padding:6px 8px}
+body.compact-mode .portrait-sm{width:24px; height:24px}
+
+body.compact-mode .threat-table{font-size:11px}
+body.compact-mode .threat-table thead th{font-size:10px}
+body.compact-mode .threat-table .notes{display:none}   /* hide Notes column in compact */
+body.compact-mode .pill{padding:1px 5px}
+body.compact-mode .pill .cds{font-size:11px}
+body.compact-mode .tags-mini .tag{padding:1px 5px; font-size:9.5px}
+
+/* Optional: keep it all on one screen a bit more aggressively */
+/* ===== Column anti-overlap tweaks ===== */
+
+/* Let the table reflow intelligently around mid sizes */
+@media (max-width: 1280px){
+  .threat-table{ table-layout:auto; }
+  .threat-table .champ{ width:180px; }
+  .threat-table .role{ width:80px; }
+  .threat-table .threats{ width:110px; }   /* narrower threats */
+  .threat-table .notes{ width:200px; }     /* slightly narrower notes */
+  .threat-table .abilities{ width:auto; }  /* give extra space to Abilities */
+  .ability-pills{ gap:4px; }               /* tighter pill spacing */
+  .tags-mini .tag{ font-size:9.5px; }      /* smaller threat tags */
+}
+
+/* Squeeze a bit more before Notes disappears at 820px */
+@media (max-width: 1040px){
+  .threat-table .champ{ width:160px; }
+  .threat-table .role{ width:70px; }
+  .threat-table .threats{ width:100px; }
+  .threat-table .notes{ width:160px; }     /* free more width for Abilities */
+  .threat-table .abilities{ width:auto; }
+}
+
+/* Ensure wrapping inside cells instead of label overlap */
+.threat-table td { word-break: break-word; }
+.ability-pills { flex-wrap: wrap; }
+.tags-mini { display:flex; flex-wrap:wrap; gap:4px; }
+
+/* Keep CC badges readable inside ability pills (colors unchanged) */
+.cc.cleanse { background: var(--cleanse); color:#0b0f14; }
+.cc.qss { background: var(--qss); color:#0b0f14; }
+.cc.ncleanse { background: var(--ncleanse); color:#fff; }
+
+/* CC Cleanse badges inside ability pills */
+.cc.cleanse {
+  background: var(--cleanse); /* light green */
+  color: #0b0f14;             /* dark text for contrast */
+}
+
+.cc.qss {
+  background: var(--qss);     /* light blue */
+  color: #0b0f14;
+}
+
+.cc.ncleanse {
+  background: var(--ncleanse); /* grey */
+  color: #fff;
+}
