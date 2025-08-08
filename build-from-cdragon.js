@@ -74,4 +74,77 @@
       sp.manaCostCooldown, sp.abilityCooldown, sp.abilityCooldowns
     ];
     for (const c of candidates){
-      if (Array.isArray(c) && c.length) return c.map(Number).filter(n=>!Nu
+      if (Array.isArray(c) && c.length) return c.map(Number).filter(n=>!Number.isNaN(n));
+      if (typeof c === "number") return [Number(c)];
+    }
+    return [];
+  }
+
+  async function build(){
+    const btn = $(`#${BTN_ID}`); if(!btn) return;
+    btn.disabled = true; const original = btn.textContent;
+    btn.textContent = "Building… (champion list)";
+
+    try{
+      const list = await jget(`${BASE}/champion-summary.json`);
+      // Only keep whitelist matches by alias or display name
+      const champs = list
+        .filter(c => c?.id>0 && c.alias)
+        .filter(c => WHITELIST.has(c.alias) || WHITELIST.has(c.name))
+        .sort((a,b)=>String(a.alias).localeCompare(String(b.alias)));
+
+      const out = [];
+
+      for(let i=0;i<champs.length;i++){
+        const c = champs[i];
+        btn.textContent = `Building… ${i+1}/${champs.length} (${c.alias})`;
+        const detail = await jget(`${BASE}/champions/${c.id}.json`);
+
+        const spells = Array.isArray(detail.spells) ? detail.spells : [];
+        const order = ["Q","W","E","R"];
+        const picked = order.map(L => spells.find(s => String(s.spellKey).toUpperCase() === L)).filter(Boolean);
+        const use = picked.length ? picked : spells.slice(0,4);
+
+        const abilities = use.map(sp=>{
+          const key = String(sp.spellKey||"").toUpperCase();
+          const name = sp.name || `Spell ${key}`;
+          const raw = stripHtml(sp.longDescription || sp.shortDescription || sp.gameplayDescription || "");
+          const cd  = normalizeCooldowns(sp);
+          const threat = classify(`${name} ${raw}`);
+          return { key, name, cd, threat, notes: raw };
+        });
+
+        const passive = {
+          name: detail.passive?.name || "",
+          desc: stripHtml(detail.passive?.shortDescription || detail.passive?.longDescription || detail.passive?.gameplayDescription || "")
+        };
+
+        out.push({
+          name: detail.name || c.name || c.alias,
+          slug: c.alias || detail.alias || detail.name,
+          tags: Array.isArray(detail.roles)?detail.roles.map(r=>String(r).toUpperCase()):(detail.tags||[]),
+          portrait: c.alias || detail.alias || detail.name,
+          passive,
+          abilities
+        });
+
+        await new Promise(r=>setTimeout(r, 40));
+      }
+
+      const fname = `champions_cdragon_${CDRAGON_PATCH}_whitelist.json`;
+      const blob = new Blob([JSON.stringify(out,null,2)],{type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = fname; a.click();
+      URL.revokeObjectURL(url);
+      btn.textContent = `Done! ${fname} (${out.length} champs)`;
+    }catch(e){
+      console.error(e);
+      alert("Build failed: " + e.message);
+      btn.textContent = original;
+    }finally{
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById(BTN_ID)?.addEventListener("click", build);
+})();
