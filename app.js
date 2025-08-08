@@ -922,7 +922,7 @@ function applyChampionFixes(list){
   // Rek'Sai
   fix("RekSai","Q",[THREAT.POKE_ZONE]);
   fix("RekSai","W",[THREAT.HARD_CC,THREAT.GAP_CLOSE]);    // unburrow knockup
-  fix("RekSai","E",[THREAT.GAP_CLOSE,BURST]);             // tunnel/execute; keep gap/burst
+  fix("RekSai","E",[THREAT.GAP_CLOSE,THREAT.BURST]);             // tunnel/execute; keep gap/burst
   fix("RekSai","R",[THREAT.GAP_CLOSE,THREAT.BURST]);      // targeted dive
 
   // Rell
@@ -1584,6 +1584,7 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
 
 
