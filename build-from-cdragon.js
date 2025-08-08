@@ -1,30 +1,45 @@
-// build-from-cdragon.js — GitHub Pages–safe CDragon builder
-// - Filters to your exact champion list (whitelist)
-// - Robust CDs, full passives
-// - CC tags are a light draft; your app.js will enforce CC-first + Cleanse properly
+// build-from-cdragon.js — GitHub Pages–safe CDragon builder + REPORT OVERLAY
+// - Filters to your provided list (whitelist + alias fixes)
+// - Extracts passives + robust cooldowns
+// - Light CC tags (your app.js enforces CC-first & Cleanse anyway)
+// - Shows a report overlay of resolved / missing champs (with suggestions)
 
 (function(){
   const BTN_ID = "buildCDragon";
-  const CDRAGON_PATCH = "latest"; // change to "25.15" if you want to pin
+  const CDRAGON_PATCH = "latest"; // set to "25.15" to pin
   const BASE = `https://raw.communitydragon.org/${CDRAGON_PATCH}/plugins/rcp-be-lol-game-data/global/default/v1`;
 
-  // ==== Your whitelist (as provided) ====
+  // ==== Your whitelist ====
   const CHAMP_WHITELIST_RAW = [
 "Aatrox","Ahri","Akali","Akshan","Alistar","Ambessa","Amumu","Anivia","Annie","Aphelios","Ashe","Aurelion Sol","Aurora","Azir","Bard","Bel'Veth","Blitzcrank","Brand","Braum","Briar","Caitlyn","Camille","Cassiopeia","Cho'Gath","Corki","Darius","Diana","Dr. Mundo","Draven","Ekko","Elise","Evelynn","Ezreal","Fiddlesticks","Fiora","Fizz","Galio","Gangplank","Garen","Gnar","Gragas","Graves","Gwen","Hecarim","Heimerdinger","Hwei","Illaoi","Irelia","Ivern","Janna","Jarvan IV","Jax","Jayce","Jhin","Jinx","K'Sante","Kai'Sa","Kalista","Karma","Karthus","Kassadin","Katarina","Kayle","Kayn","Kennen","Kha'Zix","Kindred","Kled","Kog'Maw","LeBlanc","Lee Sin","Leona","Lillia","Lissandra","Lucian","Lulu","Lux","Malphite","Malzahar","Maokai","Master Yi","Mel","Milio","Miss Fortune","Mordekaiser","Morgana","Naafiri","Nami","Nasus","Nautilus","Neeko","Nidalee","Nilah","Nocture","Nunu & Willump","Olaf","Orianna","Ornn","Pantheon","Poppy","Pyke","Qiyanna","Quinn","Rakan","Rammus","Rek'Sai","Rell","Renata Glasc","Renekton","Rengar","Riven","Rumble","Ryze","Samira","Sejuani","Senna","Seraphine","Sett","Shaco","Shen","Shyvana","Singed","Sion","Skarner","Smolder","Sona","Soraka","Swain","Sylas","Syndra","Tahm Kench","Taliyah","Talon","Taric","Teemo","Thresh","Tristana","Trundle","Tryndamere","Twisted Fate","Twitch","Udyr","Urgot","Varus","Vayne","Veigar","Vel'Koz","Vex","Vi","Viego","Viktor","Vladimir","Volibear","Warwick","Wukong","Xayah","Xerath","Xin Zhao","Yasuo","Yunara","Yone","Yorick","Yuumi","Zac","Zed","Zeri","Ziggs","Zilean","Zoe","Zyra"
   ];
 
-  // Normalize and alias mapping to match CDragon "alias" keys
-  const FIX_ALIAS = {
-    "Aurelion Sol":"AurelionSol","Cho'Gath":"Chogath","Kha'Zix":"Khazix","Kog'Maw":"KogMaw","Vel'Koz":"Velkoz",
-    "Kai'Sa":"Kaisa","K'Sante":"KSante","Jarvan IV":"JarvanIV","Lee Sin":"LeeSin","Master Yi":"MasterYi",
-    "Miss Fortune":"MissFortune","Nunu & Willump":"Nunu","Rek'Sai":"RekSai","Twisted Fate":"TwistedFate",
-    "Xin Zhao":"XinZhao","Wukong":"Wukong","Dr. Mundo":"DrMundo","Bel'Veth":"Belveth","Renata Glasc":"Renata",
-    "Nocture":"Nocturne","Qiyanna":"Qiyana"
-    // Ambessa, Mel, Yunara might not exist in live CDragon; skipped if not found.
+  // Normalize → CDragon alias (the `alias` field in champion-summary.json)
+  const ALIAS_FIX = {
+    "Aurelion Sol":"AurelionSol",
+    "Cho'Gath":"Chogath",
+    "Kha'Zix":"Khazix",
+    "Kog'Maw":"KogMaw",
+    "Vel'Koz":"Velkoz",
+    "Kai'Sa":"Kaisa",
+    "K'Sante":"KSante",
+    "Jarvan IV":"JarvanIV",
+    "Lee Sin":"LeeSin",
+    "Master Yi":"MasterYi",
+    "Miss Fortune":"MissFortune",
+    "Nunu & Willump":"Nunu",
+    "Rek'Sai":"RekSai",
+    "Twisted Fate":"TwistedFate",
+    "Xin Zhao":"XinZhao",
+    "Dr. Mundo":"DrMundo",
+    "Bel'Veth":"Belveth",
+    "Renata Glasc":"Renata",
+    // typos → correct alias
+    "Nocture":"Nocturne",
+    "Qiyanna":"Qiyana"
+    // Potential non-live: Ambessa, Mel, Yunara (will show as missing)
   };
-  const NAME_FIXES = new Map(Object.entries(FIX_ALIAS));
-
-  const WHITELIST = new Set(CHAMP_WHITELIST_RAW.map(n => NAME_FIXES.get(n) || n));
+  const WHITELIST = new Set(CHAMP_WHITELIST_RAW.map(n => ALIAS_FIX[n] || n));
 
   function $(s){ return document.querySelector(s); }
   async function jget(url, tries=3){
@@ -41,7 +56,7 @@
   }
   function stripHtml(s){ return (s||"").replace(/<\/?[^>]+>/g," ").replace(/\s+/g," ").trim(); }
 
-  // Light tags; app.js does strict CC-first later
+  // Light tagger; app.js redoes CC-first strictly
   const THREAT = { HARD_CC:"HARD_CC", SOFT_CC:"SOFT_CC", SHIELD_PEEL:"SHIELD_PEEL", GAP_CLOSE:"GAP_CLOSE", BURST:"BURST", POKE_ZONE:"Poke/Zone" };
   const RX = {
     air:/\b(knock(?:\s|-)?(?:up|back|aside)|airborne|launch|toss|push|pull|yank|drag|shove|displace|knockdown)\b/i,
@@ -80,21 +95,116 @@
     return [];
   }
 
+  // ----- Report UI -----
+  function showReport(report){
+    // Create once
+    let el = $("#cdragon-report");
+    if (!el){
+      el = document.createElement("div");
+      el.id = "cdragon-report";
+      el.innerHTML = `
+        <style>
+          #cdragon-report{position:fixed;right:16px;bottom:16px;width:360px;background:#0b1117;border:1px solid #223041;border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.45);z-index:9999}
+          #cdragon-report header{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #1c2733;color:#c8aa6e}
+          #cdragon-report .body{padding:10px 12px;max-height:55vh;overflow:auto;color:#dbe2ea;font-size:12px}
+          #cdragon-report .row{margin:6px 0}
+          #cdragon-report .miss{color:#f87171}
+          #cdragon-report .ok{color:#68d391}
+          #cdragon-report footer{display:flex;gap:8px;justify-content:flex-end;padding:10px 12px;border-top:1px solid #1c2733}
+          #cdragon-report button{padding:7px 10px;border-radius:8px;border:1px solid #2a3a4d;background:#0e1621;color:#c8d3df;cursor:pointer}
+          #cdragon-report button.primary{border-color:#9c7c4a;color:#c8aa6e}
+          #cdragon-report .mono{font-family:ui-monospace,Consolas,monospace}
+          #cdragon-report .tiny{opacity:.8}
+        </style>
+        <header>
+          <strong>CommunityDragon Build Report</strong>
+          <button id="cdragon-report-close">✕</button>
+        </header>
+        <div class="body"></div>
+        <footer>
+          <button id="cdragon-report-copy">Copy</button>
+          <button id="cdragon-report-download" class="primary">Download report</button>
+        </footer>
+      `;
+      document.body.appendChild(el);
+      $("#cdragon-report-close").addEventListener("click",()=>el.remove());
+      $("#cdragon-report-copy").addEventListener("click",()=>{
+        navigator.clipboard.writeText(JSON.stringify(report,null,2)).then(()=>alert("Report copied"));
+      });
+      $("#cdragon-report-download").addEventListener("click",()=>{
+        const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});
+        const url=URL.createObjectURL(blob); const a=document.createElement("a");
+        a.href=url; a.download="cdragon_build_report.json"; a.click(); URL.revokeObjectURL(url);
+      });
+    }
+    const b = el.querySelector(".body");
+    const {requested, resolved, missing, suggestions} = report;
+    b.innerHTML = `
+      <div class="row"><b>Requested:</b> ${requested.length} &nbsp; <b>Resolved:</b> <span class="ok">${resolved.length}</span> &nbsp; <b>Missing:</b> <span class="miss">${missing.length}</span></div>
+      <div class="row tiny">Patch: <span class="mono">${CDRAGON_PATCH}</span></div>
+      ${missing.length? `<div class="row"><b>Missing (with suggestions):</b><br>${missing.map(n=>{
+        const s = suggestions[n]; return `<div>• <span class="miss">${n}</span>${s?` → try <span class="mono">${s}</span>`:""}</div>`;
+      }).join("")}</div>` : `<div class="row">All champions resolved ✅</div>`}
+    `;
+    el.style.display = "block";
+  }
+
+  // crude suggestion map for known typos / non-live names
+  const SUGGEST = {
+    "Nocture": "Nocturne",
+    "Qiyanna": "Qiyana",
+    "Vel'Koz": "Velkoz",
+    "Cho'Gath": "Chogath",
+    "Kha'Zix": "Khazix",
+    "Kog'Maw": "KogMaw",
+    "Kai'Sa": "Kaisa",
+    "K'Sante": "KSante",
+    "Jarvan IV": "JarvanIV",
+    "Lee Sin": "LeeSin",
+    "Master Yi": "MasterYi",
+    "Miss Fortune": "MissFortune",
+    "Nunu & Willump": "Nunu",
+    "Rek'Sai": "RekSai",
+    "Twisted Fate": "TwistedFate",
+    "Xin Zhao": "XinZhao",
+    // Non-live? leave blank to signal "not available"
+    "Ambessa": "",
+    "Mel": "",
+    "Yunara": ""
+  };
+
   async function build(){
-    const btn = $(`#${BTN_ID}`); if(!btn) return;
+    const btn = document.getElementById(BTN_ID); if(!btn) return;
     btn.disabled = true; const original = btn.textContent;
     btn.textContent = "Building… (champion list)";
 
     try{
       const list = await jget(`${BASE}/champion-summary.json`);
-      // Only keep whitelist matches by alias or display name
+      // All aliases available from CDragon
+      const aliasSet = new Set(list.filter(c=>c?.id>0 && c.alias).map(c=>c.alias));
+      const nameToAlias = new Map(list.map(c=>[c.name, c.alias]));
+
+      // Determine resolvable entries
+      const requested = CHAMP_WHITELIST_RAW.slice();
+      const resolvedAliases = [];
+      const missing = [];
+      for (const want of requested){
+        const fixed = ALIAS_FIX[want] || want;
+        if (aliasSet.has(fixed)) {
+          resolvedAliases.push(fixed);
+        } else if (nameToAlias.has(fixed)) {
+          resolvedAliases.push(nameToAlias.get(fixed));
+        } else {
+          missing.push(want);
+        }
+      }
+
+      // Build only resolved
       const champs = list
-        .filter(c => c?.id>0 && c.alias)
-        .filter(c => WHITELIST.has(c.alias) || WHITELIST.has(c.name))
+        .filter(c => c?.id>0 && c.alias && resolvedAliases.includes(c.alias))
         .sort((a,b)=>String(a.alias).localeCompare(String(b.alias)));
 
       const out = [];
-
       for(let i=0;i<champs.length;i++){
         const c = champs[i];
         btn.textContent = `Building… ${i+1}/${champs.length} (${c.alias})`;
@@ -131,12 +241,19 @@
         await new Promise(r=>setTimeout(r, 40));
       }
 
+      // Download champions json
       const fname = `champions_cdragon_${CDRAGON_PATCH}_whitelist.json`;
       const blob = new Blob([JSON.stringify(out,null,2)],{type:"application/json"});
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a"); a.href = url; a.download = fname; a.click();
       URL.revokeObjectURL(url);
-      btn.textContent = `Done! ${fname} (${out.length} champs)`;
+      btn.textContent = `Done! ${fname} (${out.length}/${requested.length})`;
+
+      // Build & show report
+      const suggestions = {};
+      for (const m of missing){ suggestions[m] = SUGGEST[m] || ""; }
+      showReport({ requested, resolved: out.map(x=>x.slug), missing, suggestions });
+
     }catch(e){
       console.error(e);
       alert("Build failed: " + e.message);
