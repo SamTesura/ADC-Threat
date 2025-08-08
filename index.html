@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ADC Threat Lookup — CC First (25.15)</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css" />
   <link rel="preconnect" href="https://ddragon.leagueoflegends.com">
 </head>
 <body>
@@ -13,7 +13,7 @@
       <img class="brand-logo" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/riotgames.svg" alt="">
       <div>
         <h1>ADC Threat Lookup — CC First</h1>
-        <p class="tagline">Pick your ADC → type 5 enemy + 4 ally champs. We **only** care about CC first: <em>Hard CC</em> (non-cleanse) vs <em>Soft CC</em> (cleanseable). Abilities always show CC before anything else.</p>
+        <p class="tagline">Pick your ADC → type 5 enemy + 4 ally champs. We prioritize <b>CC</b> over everything: <em>Hard CC</em> (non-cleanse) vs <em>Soft CC</em> (cleanseable).</p>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
           <tbody id="resultsBody"></tbody>
         </table>
         <div id="emptyState" class="empty small">
-          Pick your ADC above, then type champion names. Ability pills are colored by **Hard/Soft CC** first; Soft CC shows a <span class="badge cleanse">Cleanse</span> badge.
+          Pick your ADC above, then type champion names. Ability pills are colored by <b>Hard/Soft CC</b> first; Soft CC shows a <span class="badge cleanse">Cleanse</span> badge.
         </div>
       </div>
     </section>
@@ -116,7 +116,7 @@
     </form>
   </dialog>
 
-  <script src="app.js"></script>
-  <script src="build-from-cdragon.js"></script>
+  <script src="./app.js"></script>
+  <script src="./build-from-cdragon.js"></script>
 </body>
 </html>
