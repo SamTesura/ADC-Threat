@@ -13,7 +13,6 @@
   --cleanse:#68d391; /* Badge for cleanseable (soft) CC */
   --radius:14px; --shadow:0 10px 26px rgba(0,0,0,.35);
 }
-
 *{box-sizing:border-box} html,body{height:100%}
 body{margin:0;background:radial-gradient(1200px 800px at 10% -10%, #101826 0%, #0b0f14 55%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,sans-serif}
 
@@ -24,6 +23,7 @@ body{margin:0;background:radial-gradient(1200px 800px at 10% -10%, #101826 0%, #
 h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:uppercase}
 .tagline{margin:2px 0 0;color:var(--muted);font-size:12px}
 
+/* Legend */
 .legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
 .legend .sep{opacity:.35;margin:0 6px}
 .tag{border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:11px;background:var(--panel)}
@@ -151,4 +151,3 @@ body.compact-mode .pill .cds{font-size:11px}
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
 }
-
