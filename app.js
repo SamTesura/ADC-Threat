@@ -102,10 +102,6 @@ function ensureThreatsForAllAbilities(list){
     }
   }
 
-// ======== PART 1: Aatrox → Garen ========
-// Paste this block anywhere in app.js (e.g., below ensureThreatsForAllAbilities),
-// then call: applyChampionFixes(CHAMPIONS);
-
 function applyChampionFixes(list){
   const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
   const fix  = (slug, key, forced) => {
@@ -1138,10 +1134,6 @@ function applyChampionFixes(list){
 }
 }
 
-ensureThreatsForAllAbilities(CHAMPIONS);
-applyChampionFixes(CHAMPIONS);
-
-
 // ===== Load main dataset
 async function loadChampions(){
   try{
@@ -1153,6 +1145,7 @@ async function loadChampions(){
     CHAMPIONS = window.CHAMPIONS || [];
   }
   ensureThreatsForAllAbilities(CHAMPIONS);
+  applyChampionFixes(CHAMPIONS);
   buildAdcGrid();
   buildSearchInputs();
   lockTeamUI(true);
@@ -1589,4 +1582,5 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
