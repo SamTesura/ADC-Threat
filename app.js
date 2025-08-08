@@ -102,6 +102,20 @@ function ensureThreatsForAllAbilities(list){
     }
   }
 
+// Short ADC-specific tips for each champion's passive.
+// Key = champion name exactly as used in CHAMPIONS list.
+const PASSIVE_OVERRIDES = {
+  // You can start with a few defaults if you want.
+  "Thresh": "Souls grant Armor/AP; lantern shields + ally dash — deny lantern.",
+  "Alistar": "Heals self + nearest ally on stacks — avoid trading before heal.",
+  "Nautilus": "Autos root briefly — avoid being in melee range after tag.",
+  "Leona": "Autos apply Sunlight — avoid getting chain-procced.",
+  "Braum": "Stacks stun on 4 — avoid repeated autos/Q.",
+  "KogMaw": "On death, explodes — don't stand near corpse.",
+  "MissFortune": "Bonus damage on first auto to new target — don't give free poke."
+};
+
+
 function applyChampionFixes(list){
   const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
   const fix  = (slug, key, forced) => {
@@ -1582,5 +1596,6 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
 
