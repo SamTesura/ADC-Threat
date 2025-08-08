@@ -101,6 +101,7 @@ function ensureThreatsForAllAbilities(list){
       ab.threat = Array.from(tags);
     }
   }
+}
 
 // Short ADC-specific tips for each champion's passive.
 // Key = champion name exactly as used in CHAMPIONS list.
@@ -277,7 +278,6 @@ const PASSIVE_OVERRIDES = {
   "Zoe":"Sleep picks from long range—hug minions, sidestep E bubbles.",
   "Zyra":"Roots into delayed knockup—don’t stand in plants/ult field."
 };
-
 
 function applyChampionFixes(list){
   const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
@@ -1308,6 +1308,7 @@ function applyChampionFixes(list){
   fix("Zyra","W",[THREAT.POKE_ZONE]);                         // plant setup
   fix("Zyra","E",[THREAT.SOFT_CC]);                           // root
   fix("Zyra","R",[THREAT.HARD_CC,THREAT.POKE_ZONE]);          // knockup after delay
+  }
 }
 
 // ===== Load main dataset
@@ -1584,6 +1585,7 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
 
 
