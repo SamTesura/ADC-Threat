@@ -1175,7 +1175,7 @@ function applyChampionFixes(list){
   fix("Vex","Q",[THREAT.POKE_ZONE]);
   fix("Vex","W",[THREAT.SHIELD_PEEL]);
   fix("Vex","E",[THREAT.SOFT_CC,THREAT.POKE_ZONE]);       // fear via passive procs
-  fix("Vex","R",[THREAT.GAP_CLOSE,BURST]);                // long engage + reset
+  fix("Vex","R",[THREAT.GAP_CLOSE,THREAT.BURST]);                // long engage + reset
 
   // Vi
   fix("Vi","Q",[THREAT.HARD_CC,THREAT.GAP_CLOSE]);        // knockup on charge
@@ -1187,7 +1187,7 @@ function applyChampionFixes(list){
   fix("Viego","Q",[THREAT.BURST]);
   fix("Viego","W",[THREAT.SOFT_CC]);                      // stun
   fix("Viego","E",[THREAT.SHIELD_PEEL]);                  // camo/zone
-  fix("Viego","R",[THREAT.BURST,GAP_CLOSE]);              // execute dash
+  fix("Viego","R",[THREAT.BURST,THREAT.GAP_CLOSE]);              // execute dash
 
   // Viktor
   fix("Viktor","Q",[THREAT.SHIELD_PEEL]);
@@ -1229,7 +1229,7 @@ function applyChampionFixes(list){
   fix("Xerath","Q",[THREAT.POKE_ZONE]);
   fix("Xerath","W",[THREAT.POKE_ZONE]);
   fix("Xerath","E",[THREAT.SOFT_CC]);                         // stun
-  fix("Xerath","R",[THREAT.POKE_ZONE,BURST]);
+  fix("Xerath","R",[THREAT.POKE_ZONE,THREAT.BURST]);
 
   // Xin Zhao
   fix("XinZhao","Q",[THREAT.HARD_CC]);                        // 3rd hit knockup
@@ -1584,6 +1584,7 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
 
 
