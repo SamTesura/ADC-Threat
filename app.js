@@ -1208,7 +1208,7 @@ function applyChampionFixes(list){
   fix("Volibear","R",[THREAT.HARD_CC,THREAT.GAP_CLOSE]);  // jump stun + tower disable
 
   // Warwick
-  fix("Warwick","Q",[THREAT.GAP_CLOSE,BURST]);                // bite follows dash
+  fix("Warwick","Q",[THREAT.GAP_CLOSE,THREAT.BURST]);                // bite follows dash
   fix("Warwick","W",[THREAT.SHIELD_PEEL]);                    // MS/track (utility peel)
   fix("Warwick","E",[THREAT.SOFT_CC,THREAT.SHIELD_PEEL]);     // fear + DR
   fix("Warwick","R",[THREAT.SOFT_CC,THREAT.GAP_CLOSE]);       // suppression (cleanseable) + long engage
@@ -1584,6 +1584,7 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
 
 
