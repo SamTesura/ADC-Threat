@@ -1309,7 +1309,6 @@ function applyChampionFixes(list){
   fix("Zyra","E",[THREAT.SOFT_CC]);                           // root
   fix("Zyra","R",[THREAT.HARD_CC,THREAT.POKE_ZONE]);          // knockup after delay
   }
-}
 
 // ===== Load main dataset
 async function loadChampions(){
@@ -1585,6 +1584,7 @@ if (compactToggle) {
 
 // Init
 loadChampions();
+
 
 
 
