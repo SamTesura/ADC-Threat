@@ -556,7 +556,6 @@ function render(){
 
   // (optional tiny reminders)
   // Ambessa/Mel/Yunara may not exist in DDragon yet — data arrives via builder fallback.
-}
 
 // ADD-ONLY: tiny supplemental pass (reinforces Wukong specifics & any late corrections)
 function applyPatchFixes(list){
@@ -617,6 +616,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
