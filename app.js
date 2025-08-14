@@ -343,7 +343,6 @@ function briefPassiveForADC(champ){
   }
   return PASSIVE_OVERRIDES[champ.slug||champ.name] || "—";
 }
-
 function applyChampionFixes(list){
   const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
   const fix  = (slug, key, forced) => {
@@ -556,3 +555,63 @@ function render(){
   if(enemies.length){ tbody.insertAdjacentHTML("beforeend", renderGroupRow("Enemy Team")); enemies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ENEMY", c))); }
   if(allies.length){ tbody.insertAdjacentHTML("beforeend", renderGroupRow("Allied Team")); allies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ALLY", c))); }
 }
+// ===== Per-ADC override packs (optional champion-specific tips)
+async function loadOverridesFor(adcName){
+  ADC_OVERRIDES = null;
+  if(!adcName) return;
+  const slug = adcName.replace(/\s+/g,"");
+  const url = `./adc_overrides_${slug}_25.15.json`; // relative path
+  try{
+    const r = await fetch(url, { cache: "no-store" });
+    if (r.ok) ADC_OVERRIDES = await r.json();
+  }catch(_e){ /* optional */ }
+}
+function getOverrideEntryForChampion(slugOrName){
+  if(!ADC_OVERRIDES || ADC_OVERRIDES.adc !== CURRENT_ADC) return null;
+  const key = (slugOrName||"").replace(/\s+/g,"");
+  return (ADC_OVERRIDES.champions||[]).find(c => (c.slug||"").replace(/\s+/g,"") === key);
+}
+
+// ===== Load main dataset
+async function loadChampions(){
+  try{
+    const r = await fetch(DATA_URL,{cache:"no-store"});
+    if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+    CHAMPIONS = await r.json();
+  }catch(e){
+    console.warn("Could not auto-load champions file; falling back to window.CHAMPIONS", e);
+    CHAMPIONS = window.CHAMPIONS || [];
+  }
+  ensureThreatsForAllAbilities(CHAMPIONS);
+  applyChampionFixes(CHAMPIONS);
+  buildAdcGrid();
+  buildSearchInputs();
+  lockTeamUI(true);
+  render();
+}
+
+// ===== Editor / Import / Export
+const editorModal = qs("#editorModal");
+const editorArea = qs("#editorArea");
+qs("#openEditor").addEventListener("click", ()=>{ editorArea.value = JSON.stringify(CHAMPIONS,null,2); editorModal.showModal(); });
+qs("#saveEditor").addEventListener("click", ()=>{ try{ const parsed=JSON.parse(editorArea.value); if(!Array.isArray(parsed)) throw new Error("Top-level must be an array"); CHAMPIONS=parsed; ensureThreatsForAllAbilities(CHAMPIONS); buildAdcGrid(); render(); editorModal.close(); }catch(err){ alert("Invalid JSON: "+err.message); }});
+qs("#exportData").addEventListener("click", ()=>{ const blob=new Blob([JSON.stringify(CHAMPIONS,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="adc-threat-data.json"; a.click(); URL.revokeObjectURL(url); });
+const importFile = qs("#importFile");
+qs("#importData").addEventListener("click", ()=> importFile.click());
+importFile.addEventListener("change",(e)=>{ const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); if(!Array.isArray(data)) throw new Error("Top-level must be an array"); CHAMPIONS=data; ensureThreatsForAllAbilities(CHAMPIONS); buildAdcGrid(); render(); alert("Imported champion data."); }catch(err){ alert("Import failed: "+err.message);} }; r.readAsText(f); });
+
+// ===== Compact toggle
+const compactToggle = document.getElementById("toggleCompact");
+if (compactToggle) {
+  const saved = localStorage.getItem("adc_compact_mode") === "1";
+  document.body.classList.toggle("compact-mode", saved);
+  compactToggle.checked = saved;
+  compactToggle.addEventListener("change", (e)=>{
+    const on = e.target.checked;
+    document.body.classList.toggle("compact-mode", on);
+    localStorage.setItem("adc_compact_mode", on ? "1" : "0");
+  });
+}
+
+// Init
+loadChampions();
