@@ -193,10 +193,13 @@ const ADC_TEMPLATES = {
   "Zeri":       { [T.HARD_CC]:"Hard CC ends you—keep E/Flash.", [T.SOFT_CC]:"E terrain after slows.", [T.SHIELD_PEEL]:"Disengage then re-enter.", [T.GAP_CLOSE]:"Punish post-dash.", [T.BURST]:"Short trades; scale MS.", [T.POKE_ZONE]:"Zap poke; don’t overstay." },
   "Aphelios":   { [T.HARD_CC]:"Immobile—perfect position; keep sums.", [T.SOFT_CC]:"Gravitum peel vs slows.", [T.SHIELD_PEEL]:"Swap target when shield pops.", [T.GAP_CLOSE]:"Respect dives; Gravitum ready.", [T.BURST]:"Short trades.", [T.POKE_ZONE]:"Infernum safe poke." }
 };
+
 // ensure alternate-name keys also exist
 ADC_TEMPLATES["MissFortune"] = ADC_TEMPLATES["Miss Fortune"];
 ADC_TEMPLATES["KogMaw"]      = ADC_TEMPLATES["Kog'Maw"];
-ADC_TEMPLATES["KaiSa"]       = ADC_TEMPLATES["Kai'Sa"] || {
+ADC_TEMPLATES["KaiSa"]       = ADC_TEMPLATES["Kai'Sa"];
+ADC_TEMPLATES["Sivir"]       = ADC_TEMPLATES["Sivir"];
+ADC_TEMPLATES["Yunara"]      = ADC_TEMPLATES["Yunara"] || {
   [T.HARD_CC]:"Respect hard engages until kit clarified.",
   [T.SOFT_CC]:"Don’t burn sums on slows.",
   [T.SHIELD_PEEL]:"Bait peel then commit.",
@@ -492,4 +495,5 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
