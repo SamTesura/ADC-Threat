@@ -195,20 +195,6 @@ const ADC_TEMPLATES = {
   "Aphelios":   { [THREAT.HARD_CC]:"Immobile—perfect position; keep sums.", [THREAT.SOFT_CC]:"Gravitum peel vs slows.", [THREAT.SHIELD_PEEL]:"Swap target when shield pops.", [THREAT.GAP_CLOSE]:"Respect dives; Gravitum ready.", [THREAT.BURST]:"Short trades.", [THREAT.POKE_ZONE]:"Infernum safe poke." }
 };
 
-// ensure alternate-name keys also exist
-ADC_TEMPLATES["MissFortune"] = ADC_TEMPLATES["Miss Fortune"];
-ADC_TEMPLATES["KogMaw"]      = ADC_TEMPLATES["Kog'Maw"];
-ADC_TEMPLATES["KaiSa"]       = ADC_TEMPLATES["Kai'Sa"];
-ADC_TEMPLATES["Sivir"]       = ADC_TEMPLATES["Sivir"];
-ADC_TEMPLATES["Yunara"]      = ADC_TEMPLATES["Yunara"] || {
-  [THREAT.HARD_CC]:"Respect hard engages until kit clarified.",
-  [THREAT.SOFT_CC]:"Don’t burn sums on slows.",
-  [THREAT.SHIELD_PEEL]:"Bait peel then commit.",
-  [THREAT.GAP_CLOSE]:"Keep spacing—unknown engage.",
-  [THREAT.BURST]:"Short trades.",
-  [THREAT.POKE_ZONE]:"Avoid unknown zones."
-};
-
 // ---------- Ability-level tips ----------
 function abilityTipFromTemplates(adcName, threats){
   const k = normalizeADCKey(adcName);
@@ -496,3 +482,4 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
