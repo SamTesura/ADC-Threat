@@ -11,7 +11,7 @@
 const DDRAGON_VERSION = "14.14.1";
 const DATA_URL = "./champions-summary.json"; // unchanged
 
-const THREAT = {
+const T = {
   HARD_CC:"HARD_CC",
   SOFT_CC:"SOFT_CC",
   SHIELD_PEEL:"SHIELD_PEEL",
@@ -21,30 +21,30 @@ const THREAT = {
 };
 
 const PRIORITY = [
-  THREAT.HARD_CC,
-  THREAT.SOFT_CC,
-  THREAT.SHIELD_PEEL,
-  THREAT.GAP_CLOSE,
-  THREAT.BURST,
-  THREAT.POKE_ZONE
+  T.HARD_CC,
+  T.SOFT_CC,
+  T.SHIELD_PEEL,
+  T.GAP_CLOSE,
+  T.BURST,
+  T.POKE_ZONE
 ];
 
-const THREAT_CLASS = {
-  [THREAT.HARD_CC]:"hard",
-  [THREAT.SOFT_CC]:"soft",
-  [THREAT.SHIELD_PEEL]:"peel",
-  [THREAT.GAP_CLOSE]:"gap",
-  [THREAT.BURST]:"burst",
-  [THREAT.POKE_ZONE]:"poke"
+const T_CLASS = {
+  [T.HARD_CC]:"hard",
+  [T.SOFT_CC]:"soft",
+  [T.SHIELD_PEEL]:"peel",
+  [T.GAP_CLOSE]:"gap",
+  [T.BURST]:"burst",
+  [T.POKE_ZONE]:"poke"
 };
 
-const THREAT_LABEL = {
-  [THREAT.HARD_CC]:"Hard CC",
-  [THREAT.SOFT_CC]:"Soft CC",
-  [THREAT.SHIELD_PEEL]:"Shield/Peel",
-  [THREAT.GAP_CLOSE]:"Gap Close",
-  [THREAT.BURST]:"Burst",
-  [THREAT.POKE_ZONE]:"Poke/Zone"
+const T_LABEL = {
+  [T.HARD_CC]:"Hard CC",
+  [T.SOFT_CC]:"Soft CC",
+  [T.SHIELD_PEEL]:"Shield/Peel",
+  [T.GAP_CLOSE]:"Gap Close",
+  [T.BURST]:"Burst",
+  [T.POKE_ZONE]:"Poke/Zone"
 };
 
 
@@ -65,8 +65,8 @@ function portraitUrl(slug){
   return `https://ddragon.leagueoflegends.com/cdn/${DDRAGON_VERSION}/img/champion/${slug}.png`;
 }
 function primaryThreat(threats=[]){ for(const t of PRIORITY){ if(threats.includes(t)) return t; } return null; }
-function primaryThreatClass(threats=[]){ const t = primaryThreat(threats); return t ? THREAT_CLASS[t] : ""; }
-function tagToClass(t){ return THREAT_CLASS[t] || ""; }
+function primaryThreatClass(threats=[]){ const t = primaryThreat(threats); return t ? T_CLASS[t] : ""; }
+function tagToClass(t){ return T_CLASS[t] || ""; }
 
 // === (ADD) build a portrait <img> HTML with fallback to CommunityDragon square if DDragon 404s ===
 function portraitImgHTML(slugOrName, alt=""){
@@ -138,15 +138,15 @@ function ensureThreatsForAllAbilities(list){
     for(const ab of (ch.abilities||[])){
       const txt = `${ab.name||""} ${ab.key||""} ${ab.notes||""}`.toLowerCase();
       const tags = new Set();
-      if (RX.air.test(txt)) tags.add(THREAT.HARD_CC);
+      if (RX.air.test(txt)) tags.add(T.HARD_CC);
       if (RX.stun.test(txt)||RX.root.test(txt)||RX.charm.test(txt)||RX.taunt.test(txt)||
           RX.fear.test(txt)||RX.sleep.test(txt)||RX.silence.test(txt)||RX.polymorph.test(txt)||
-          RX.slow.test(txt)||RX.blind.test(txt)||RX.grounded.test(txt)) tags.add(THREAT.SOFT_CC);
-      if (RX.shield.test(txt)) tags.add(THREAT.SHIELD_PEEL);
-      if (RX.gap.test(txt))    tags.add(THREAT.GAP_CLOSE);
-      if (RX.burst.test(txt))  tags.add(THREAT.BURST);
-      if (RX.zone.test(txt))   tags.add(THREAT.POKE_ZONE);
-      if (tags.size===0) tags.add(ab.key==="R" ? THREAT.BURST : THREAT.POKE_ZONE);
+          RX.slow.test(txt)||RX.blind.test(txt)||RX.grounded.test(txt)) tags.add(T.SOFT_CC);
+      if (RX.shield.test(txt)) tags.add(T.SHIELD_PEEL);
+      if (RX.gap.test(txt))    tags.add(T.GAP_CLOSE);
+      if (RX.burst.test(txt))  tags.add(T.BURST);
+      if (RX.zone.test(txt))   tags.add(T.POKE_ZONE);
+      if (tags.size===0) tags.add(ab.key==="R" ? T.BURST : T.POKE_ZONE);
       ab.threat = Array.from(tags);
     }
   }
@@ -166,7 +166,7 @@ const PASSIVE_OVERRIDES = {
 };
 
 // ---------- ADC tips (ensure human-name aliases so MF/Kog’Maw show) ----------
-const T = THREAT;
+const T = T;
 const ADC_TEMPLATES = {
   "Ashe":       { [T.HARD_CC]:"Play wide; save Flash for arrow/point-click chains.", [T.SOFT_CC]:"Step out early; don’t burn Flash for slows.", [T.SHIELD_PEEL]:"Swap targets—peel beats your slow.", [T.GAP_CLOSE]:"Kite back; W to slow re-engage.", [T.BURST]:"Short trades; keep distance.", [T.POKE_ZONE]:"Farm with W; avoid zones." },
   "Caitlyn":    { [T.HARD_CC]:"Trap defensively; hold net for engage CC.", [T.SOFT_CC]:"Respect slows—net out.", [T.SHIELD_PEEL]:"Bait shields with Q then trap.", [T.GAP_CLOSE]:"Net instantly; don’t net in.", [T.BURST]:"Max range; avoid long trades.", [T.POKE_ZONE]:"Trade around headshots." },
@@ -323,7 +323,7 @@ const emptyState = qs("#emptyState");
 
 function cleanseBadgeForAbility(ability){
   const t = ability.threat || [];
-  return (t.includes(THREAT.SOFT_CC) && !t.includes(THREAT.HARD_CC))
+  return (t.includes(T.SOFT_CC) && !t.includes(T.HARD_CC))
     ? `<span class="mini-badge cleanse">Cleanse</span>` : "";
 }
 
@@ -332,7 +332,7 @@ function abilityPills(abilities, champ){
     const cds = (a.cd||[]).join("/");
     const cls = primaryThreatClass(a.threat||[]);
     const prim = primaryThreat(a.threat||[]);
-    const label = prim ? THREAT_LABEL[prim] : "";
+    const label = prim ? T_LABEL[prim] : "";
     const cleanse = cleanseBadgeForAbility(a);
     const tip = abilityTipForADC(champ, a.key);
     return `<span class="pill ${cls}" title="${tip ? tip.replace(/"/g,'&quot;') : ''}">
@@ -344,7 +344,7 @@ function abilityPills(abilities, champ){
 }
 function threatTagsUnion(abilities){
   const union = Array.from(new Set((abilities||[]).flatMap(a=>a.threat||[])));
-  return union.map(t => `<span class="tag ${tagToClass(t)}">${THREAT_LABEL[t]||t}</span>`).join("");
+  return union.map(t => `<span class="tag ${tagToClass(t)}">${T_LABEL[t]||t}</span>`).join("");
 }
 
 function renderGroupRow(label, cols=7){
@@ -427,10 +427,10 @@ function applyChampionFixes(list){
   // (… keep all your existing fixes here …)
 
   // === (CONFIRM) Wukong ability categorization ===
-  fix("Wukong","Q",[THREAT.BURST]);               // Crushing Blow (armor shred/AA reset)
-  fix("Wukong","W",[THREAT.SHIELD_PEEL]);         // stealth/decoy → peel/reposition
-  fix("Wukong","E",[THREAT.GAP_CLOSE]);           // Nimbus Strike dash
-  fix("Wukong","R",[THREAT.HARD_CC]);             // Cyclone knockup
+  fix("Wukong","Q",[T.BURST]);               // Crushing Blow (armor shred/AA reset)
+  fix("Wukong","W",[T.SHIELD_PEEL]);         // stealth/decoy → peel/reposition
+  fix("Wukong","E",[T.GAP_CLOSE]);           // Nimbus Strike dash
+  fix("Wukong","R",[T.HARD_CC]);             // Cyclone knockup
 
   // (optional tiny reminders)
   // Ambessa/Mel/Yunara may not exist in DDragon yet — data arrives via builder fallback.
@@ -445,10 +445,10 @@ function applyPatchFixes(list){
     a.threat = forced;
   };
   // Wukong — confirmed: Q=Burst, W=Peel, E=Gap, R=Hard CC (knockup). :contentReference[oaicite:5]{index=5}
-  fix("Wukong","Q",[THREAT.BURST]);
-  fix("Wukong","W",[THREAT.SHIELD_PEEL]);
-  fix("Wukong","E",[THREAT.GAP_CLOSE]);
-  fix("Wukong","R",[THREAT.HARD_CC]);
+  fix("Wukong","Q",[T.BURST]);
+  fix("Wukong","W",[T.SHIELD_PEEL]);
+  fix("Wukong","E",[T.GAP_CLOSE]);
+  fix("Wukong","R",[T.HARD_CC]);
 }
 
 // ---------- Data load, editor, compact toggle ----------
@@ -495,6 +495,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
