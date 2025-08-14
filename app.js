@@ -170,14 +170,14 @@ const PASSIVE_OVERRIDES = {
   "Akali":"Obscured in W; burst mobility—don’t waste sums before R2.",
   "Akshan":"Camo & resets—don’t give free revives; break line of sight.",
   "Alistar":"Roar heal + big DR on R—never get headbutt–pulverized without Flash.",
-  "Ambessa": "New champion — expect armor/tenacity spikes; avoid extended trades until kit known.",
+  "Ambessa": "After abilities she dashes short + buffs next hit—expect surprise gap close.",
   "Amumu":"Bandage + AoE stun—don’t stack; track flash+R.",
   "Anivia":"Egg revive—don’t dive without CC; wall can trap you.",
   "Annie":"Passive stuns—watch stacks; Tibbers zone controls fights.",
   "Aphelios":"Guns change tools—respect Gravitum roots & Infernum AOEs.",
   "Ashe":"Autos/abilities slow—avoid chain slows before R.",
   "AurelionSol":"Zones & pulls—don’t group tight for black hole/impact.",
-  "Aurora":"(New) — expect mobility + soft CC; respect engage windows.",
+  "Aurora":"Abilities stack spirits; at 3 stacks she 'Severs' for bonus damage + heal pickup—don’t give free 3rd stack.",
   "Azir":"Soldier poke; R wall displaces—don’t stand behind him.",
   "Bard":"Chimes roam; portal flanks—don’t get Q pinched or R stasised.",
   "Belveth":"DR channel + dashes—kite off W knockup threat.",
@@ -246,7 +246,7 @@ const PASSIVE_OVERRIDES = {
   "Malzahar":"Spell shield + suppress—poke shield first.",
   "Maokai":"Sapling zone + roots—don’t face check brush.",
   "MasterYi":"Untargetable Q—peel him when he dives.",
-  "Mel": "New champion — kit not final; respect engage/DR windows.",
+  "Mel":"Abilities grant bonus projectiles; attacks stack Radiance—R executes at threshold. Don’t hover low HP.",
   "Milio":"Cleanse/shields—force cooldowns before committing.",
   "MissFortune":"Channel R—interrupt or break LOS.",
   "Mordekaiser":"Realm isolates—don’t split without sums.",
@@ -266,7 +266,7 @@ const PASSIVE_OVERRIDES = {
   "Pantheon":"Point-click stun—respect gank setup.",
   "Poppy":"Stops dashes—don’t engage into W; beware R eject.",
   "Pyke":"Hooks + resets—don’t get isolated at low HP.",
-   "Qiyana":"Terrain empowers—don’t fight near walls; respect R wall stun.",
+  "Qiyana":"Terrain empowers—don’t fight near walls; respect R wall stun.",
   "Quinn":"Roams fast—track MIA; don’t chase into E knockback.",
   "Rakan":"High engage/peel—bait W/R before committing.",
   "Rammus":"Thorns/taunt—don’t overauto; kite his Q engage.",
@@ -289,7 +289,7 @@ const PASSIVE_OVERRIDES = {
   "Singed":"Fling + glue—don’t chase past minions.",
   "Sion":"Multiple knockups—don’t line up for R.",
   "Sivir": "Hits give brief MS—kite back on proc.",
-  "Skarner":"New CC patterns—respect suppress; cleanse quickly.",
+  "Skarner": "Hits build Quake stacks; at 3 you take %HP bursts—don’t eat chained trades.",
   "Smolder":"Stacks for huge R—don’t clump; sidestep W slow.",
   "Sona":"Big team auras—watch for Flash R.",
   "Soraka":"Heals everywhere—cut healing or dive her first.",
@@ -325,7 +325,7 @@ const PASSIVE_OVERRIDES = {
   "Xerath":"Long range poke + single-line stun—don’t line up; juke E first.",
   "XinZhao":"3rd-hit knockup + anti-range ult—kite out R zone or disengage.",
   "Yasuo":"Wind Wall denies projectiles; Q3 + R chain knockups—don’t clump.",
-  "Yunara": "New champion — mobility + CC mix; wait for key cooldowns.",
+  "Yunara":"Crits deal bonus magic dmg; big spikes on crit buys—don’t take extended even trades at her item spikes.",
   "Yone":"Double dashes + Q3 knockup—punish E return; don’t clump for R.",
   "Yorick":"Wall traps and Maiden pressure—don’t get boxed in; kill Maiden fast.",
   "Yuumi":"Attach heals/shields and roots on R—force cooldowns, hit her host.",
@@ -365,7 +365,7 @@ const ADC_TEMPLATES = {
   "Xayah":      { [T.HARD_CC]:"Hold R for engage.", [T.SOFT_CC]:"Feather slow peel; space.", [T.SHIELD_PEEL]:"Bait peel then root.", [T.GAP_CLOSE]:"Save R if dived.", [T.BURST]:"Short trades; feather cashout.", [T.POKE_ZONE]:"Don’t sit in zones." },
   "Zeri":       { [T.HARD_CC]:"Hard CC ends you—keep E/Flash.", [T.SOFT_CC]:"E terrain after slows.", [T.SHIELD_PEEL]:"Disengage then re-enter.", [T.GAP_CLOSE]:"Punish post-dash.", [T.BURST]:"Short trades; scale MS.", [T.POKE_ZONE]:"Zap poke; don’t overstay." },
   "Aphelios":   { [T.HARD_CC]:"Immobile—perfect position; keep sums.", [T.SOFT_CC]:"Gravitum peel vs slows.", [T.SHIELD_PEEL]:"Swap target when shield pops.", [T.GAP_CLOSE]:"Respect dives; Gravitum ready.", [T.BURST]:"Short trades.", [T.POKE_ZONE]:"Infernum safe poke." },
-  "Yunara":     { [T.HARD_CC]:"New champ, still in process.", [T.SOFT_CC]:"New champ, still in process.",[T.SHIELD_PEEL]:"New champ, still in process.",[T.GAP_CLOSE]:"New champ, still in process.",[T.BURST]:"New champ, still in process.",[T.POKE_ZONE]:"New champ, still in process."}
+  "Yunara":     { [T.HARD_CC]:"Don’t burn dash/Flash for poke.", [T.SOFT_CC]:"Pre-move; avoid slow chains before you commit to DPS.",[T.SHIELD_PEEL]:"Bait peel first—kite out then re-enter with uptime.",[T.GAP_CLOSE]:"Kite back early; keep escape held for second engage.",[T.BURST]:"Short trades only.",[T.POKE_ZONE]:"Farm safely; don’t sit in zones to stack trades."}
 };
 
 // ---------- Ability-level tips ----------
@@ -667,5 +667,6 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
