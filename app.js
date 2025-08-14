@@ -1,3 +1,4 @@
+
 /* ADC Threat Lookup — 25.16
    (ADD-ONLY patch)
    - Fix portraits/passives for Ambessa, Fiddle, LeBlanc, Mel, Yunara
@@ -11,7 +12,7 @@
 const DDRAGON_VERSION = "14.14.1";
 const DATA_URL = "./champions-summary.json"; // unchanged
 
-const T = {
+const THREAT = {
   HARD_CC:"HARD_CC",
   SOFT_CC:"SOFT_CC",
   SHIELD_PEEL:"SHIELD_PEEL",
@@ -21,30 +22,30 @@ const T = {
 };
 
 const PRIORITY = [
-  T.HARD_CC,
-  T.SOFT_CC,
-  T.SHIELD_PEEL,
-  T.GAP_CLOSE,
-  T.BURST,
-  T.POKE_ZONE
+  THREAT.HARD_CC,
+  THREAT.SOFT_CC,
+  THREAT.SHIELD_PEEL,
+  THREAT.GAP_CLOSE,
+  THREAT.BURST,
+  THREAT.POKE_ZONE
 ];
 
-const T_CLASS = {
-  [T.HARD_CC]:"hard",
-  [T.SOFT_CC]:"soft",
-  [T.SHIELD_PEEL]:"peel",
-  [T.GAP_CLOSE]:"gap",
-  [T.BURST]:"burst",
-  [T.POKE_ZONE]:"poke"
+const THREAT_CLASS = {
+  [THREAT.HARD_CC]:"hard",
+  [THREAT.SOFT_CC]:"soft",
+  [THREAT.SHIELD_PEEL]:"peel",
+  [THREAT.GAP_CLOSE]:"gap",
+  [THREAT.BURST]:"burst",
+  [THREAT.POKE_ZONE]:"poke"
 };
 
-const T_LABEL = {
-  [T.HARD_CC]:"Hard CC",
-  [T.SOFT_CC]:"Soft CC",
-  [T.SHIELD_PEEL]:"Shield/Peel",
-  [T.GAP_CLOSE]:"Gap Close",
-  [T.BURST]:"Burst",
-  [T.POKE_ZONE]:"Poke/Zone"
+const THREAT_LABEL = {
+  [THREAT.HARD_CC]:"Hard CC",
+  [THREAT.SOFT_CC]:"Soft CC",
+  [THREAT.SHIELD_PEEL]:"Shield/Peel",
+  [THREAT.GAP_CLOSE]:"Gap Close",
+  [THREAT.BURST]:"Burst",
+  [THREAT.POKE_ZONE]:"Poke/Zone"
 };
 
 
@@ -65,8 +66,8 @@ function portraitUrl(slug){
   return `https://ddragon.leagueoflegends.com/cdn/${DDRAGON_VERSION}/img/champion/${slug}.png`;
 }
 function primaryThreat(threats=[]){ for(const t of PRIORITY){ if(threats.includes(t)) return t; } return null; }
-function primaryThreatClass(threats=[]){ const t = primaryThreat(threats); return t ? T_CLASS[t] : ""; }
-function tagToClass(t){ return T_CLASS[t] || ""; }
+function primaryThreatClass(threats=[]){ const t = primaryThreat(threats); return t ? THREAT_CLASS[t] : ""; }
+function tagToClass(t){ return THREAT_CLASS[t] || ""; }
 
 // === (ADD) build a portrait <img> HTML with fallback to CommunityDragon square if DDragon 404s ===
 function portraitImgHTML(slugOrName, alt=""){
@@ -138,15 +139,15 @@ function ensureThreatsForAllAbilities(list){
     for(const ab of (ch.abilities||[])){
       const txt = `${ab.name||""} ${ab.key||""} ${ab.notes||""}`.toLowerCase();
       const tags = new Set();
-      if (RX.air.test(txt)) tags.add(T.HARD_CC);
+      if (RX.air.test(txt)) tags.add(THREAT.HARD_CC);
       if (RX.stun.test(txt)||RX.root.test(txt)||RX.charm.test(txt)||RX.taunt.test(txt)||
           RX.fear.test(txt)||RX.sleep.test(txt)||RX.silence.test(txt)||RX.polymorph.test(txt)||
-          RX.slow.test(txt)||RX.blind.test(txt)||RX.grounded.test(txt)) tags.add(T.SOFT_CC);
-      if (RX.shield.test(txt)) tags.add(T.SHIELD_PEEL);
-      if (RX.gap.test(txt))    tags.add(T.GAP_CLOSE);
-      if (RX.burst.test(txt))  tags.add(T.BURST);
-      if (RX.zone.test(txt))   tags.add(T.POKE_ZONE);
-      if (tags.size===0) tags.add(ab.key==="R" ? T.BURST : T.POKE_ZONE);
+          RX.slow.test(txt)||RX.blind.test(txt)||RX.grounded.test(txt)) tags.add(THREAT.SOFT_CC);
+      if (RX.shield.test(txt)) tags.add(THREAT.SHIELD_PEEL);
+      if (RX.gap.test(txt))    tags.add(THREAT.GAP_CLOSE);
+      if (RX.burst.test(txt))  tags.add(THREAT.BURST);
+      if (RX.zone.test(txt))   tags.add(THREAT.POKE_ZONE);
+      if (tags.size===0) tags.add(ab.key==="R" ? THREAT.BURST : THREAT.POKE_ZONE);
       ab.threat = Array.from(tags);
     }
   }
@@ -166,32 +167,32 @@ const PASSIVE_OVERRIDES = {
 };
 
 // ---------- ADC tips (ensure human-name aliases so MF/Kog’Maw show) ----------
-const T = T;
+const T = THREAT;
 const ADC_TEMPLATES = {
-  "Ashe":       { [T.HARD_CC]:"Play wide; save Flash for arrow/point-click chains.", [T.SOFT_CC]:"Step out early; don’t burn Flash for slows.", [T.SHIELD_PEEL]:"Swap targets—peel beats your slow.", [T.GAP_CLOSE]:"Kite back; W to slow re-engage.", [T.BURST]:"Short trades; keep distance.", [T.POKE_ZONE]:"Farm with W; avoid zones." },
-  "Caitlyn":    { [T.HARD_CC]:"Trap defensively; hold net for engage CC.", [T.SOFT_CC]:"Respect slows—net out.", [T.SHIELD_PEEL]:"Bait shields with Q then trap.", [T.GAP_CLOSE]:"Net instantly; don’t net in.", [T.BURST]:"Max range; avoid long trades.", [T.POKE_ZONE]:"Trade around headshots." },
-  "Corki":      { [T.HARD_CC]:"Hold package/Flash for big CC.", [T.SOFT_CC]:"Rocket peel + kite back.", [T.SHIELD_PEEL]:"Poke shields down.", [T.GAP_CLOSE]:"Valkyrie back, not in.", [T.BURST]:"Short trades; respect assassins.", [T.POKE_ZONE]:"Abuse rockets; avoid zones." },
-  "Draven":     { [T.HARD_CC]:"Don’t catch into CC threat.", [T.SOFT_CC]:"Step off slows; don’t tunnel axes.", [T.SHIELD_PEEL]:"Force shield first; then all-in.", [T.GAP_CLOSE]:"Kite back; E to stop dives.", [T.BURST]:"Trade on your CDs.", [T.POKE_ZONE]:"Farm safe; no bleed." },
-  "Ezreal":     { [T.HARD_CC]:"Hold E strictly for CC.", [T.SOFT_CC]:"E sideways to break slows.", [T.SHIELD_PEEL]:"Poke shields off with Q.", [T.GAP_CLOSE]:"E after they commit.", [T.BURST]:"Short trades till items.", [T.POKE_ZONE]:"Don’t stand still to Q." },
-  "Jhin":       { [T.HARD_CC]:"Immobile—space wide; save Flash.", [T.SOFT_CC]:"Pre-move; avoid chip pre-4th.", [T.SHIELD_PEEL]:"Bait peel then root.", [T.GAP_CLOSE]:"Trap retreat paths.", [T.BURST]:"Cancel R if threatened.", [T.POKE_ZONE]:"Don’t channel in zones." },
-  "Jinx":       { [T.HARD_CC]:"If CC’d you die—hug minions.", [T.SOFT_CC]:"Chompers defensively.", [T.SHIELD_PEEL]:"Kite out peel then re-enter.", [T.GAP_CLOSE]:"Rockets + chompers on self.", [T.BURST]:"Don’t greed DPS in fog.", [T.POKE_ZONE]:"Fish W; farm safe." },
-  "Kai'Sa":     { [T.HARD_CC]:"Hold R to dodge CC.", [T.SOFT_CC]:"Use E to disengage slows.", [T.SHIELD_PEEL]:"Bait peel then R.", [T.GAP_CLOSE]:"Backstep; R after CC down.", [T.BURST]:"Trade around passive.", [T.POKE_ZONE]:"Poke W; avoid traps." },
-  "Kalista":    { [T.HARD_CC]:"Never hop forward into CC.", [T.SOFT_CC]:"Hop wider; Rend peel.", [T.SHIELD_PEEL]:"Force peel, then Fates Call.", [T.GAP_CLOSE]:"Save Fates Call to reset.", [T.BURST]:"Short skirmishes.", [T.POKE_ZONE]:"Don’t hop into zones." },
-  "KogMaw":     { [T.HARD_CC]:"Immobile—play far back; need peel.", [T.SOFT_CC]:"Kite wider; avoid slows.", [T.SHIELD_PEEL]:"Wait shields drop; then DPS.", [T.GAP_CLOSE]:"Ping peel; kite to team.", [T.BURST]:"Front-to-back only.", [T.POKE_ZONE]:"Use R to poke; no face-checks." },
-  "Lucian":     { [T.HARD_CC]:"Buffer E/Flash; never E in if CC up.", [T.SOFT_CC]:"Dash wide; short trades.", [T.SHIELD_PEEL]:"Bait shields with Q/W.", [T.GAP_CLOSE]:"Punish post-dash.", [T.BURST]:"Short burst trades.", [T.POKE_ZONE]:"Step out then re-enter." },
-  "MissFortune":{ [T.HARD_CC]:"Keep Flash; cancel R if threatened.", [T.SOFT_CC]:"Trade with Q bounce; avoid chip.", [T.SHIELD_PEEL]:"Bait shield then R.", [T.GAP_CLOSE]:"E slow to peel.", [T.BURST]:"Only full-channel with cover.", [T.POKE_ZONE]:"Q/E poke; safe angles." },
-  "Nilah":      { [T.HARD_CC]:"Save W/E; don’t E into CC.", [T.SOFT_CC]:"W vs auto poke; time it.", [T.SHIELD_PEEL]:"Bait peel then R pull.", [T.GAP_CLOSE]:"Engage with support only.", [T.BURST]:"Short skirmishes.", [T.POKE_ZONE]:"Avoid chip; look all-ins." },
-  "Quinn":      { [T.HARD_CC]:"Respect point-click CC.", [T.SOFT_CC]:"Vault out of slows.", [T.SHIELD_PEEL]:"Swap target on shields.", [T.GAP_CLOSE]:"Keep E for peel.", [T.BURST]:"Short trades; disengage.", [T.POKE_ZONE]:"Poke then roam." },
-  "Samira":     { [T.HARD_CC]:"Any hard CC ends you—space wide.", [T.SOFT_CC]:"Use W vs projectiles.", [T.SHIELD_PEEL]:"Bait peel; then R.", [T.GAP_CLOSE]:"Don’t dash first.", [T.BURST]:"Save E for reset.", [T.POKE_ZONE]:"Avoid chip; all-in only." },
-  "Senna":      { [T.HARD_CC]:"Keep spacing; roots kill you.", [T.SOFT_CC]:"Pre-move after autos.", [T.SHIELD_PEEL]:"Poke shields off first.", [T.GAP_CLOSE]:"Don’t get flanked; peel W.", [T.BURST]:"Short trades; R shield.", [T.POKE_ZONE]:"Farm souls safely." },
-  "Sivir":      { [T.HARD_CC]:"Hold E for key CC.", [T.SOFT_CC]:"Pre-move; E if chained.", [T.SHIELD_PEEL]:"Spell Shield mirrors trades.", [T.GAP_CLOSE]:"Use R to disengage.", [T.BURST]:"Short trades; Q first.", [T.POKE_ZONE]:"Push + poke safely." },
-  "Tristana":   { [T.HARD_CC]:"Don’t W early; jump post-CC.", [T.SOFT_CC]:"W out of slows.", [T.SHIELD_PEEL]:"Bait peel; R eject.", [T.GAP_CLOSE]:"Jump when jungler known.", [T.BURST]:"Use R to peel.", [T.POKE_ZONE]:"Don’t W into zones." },
-  "Twitch":     { [T.HARD_CC]:"If caught you die—ambush smart.", [T.SOFT_CC]:"Don’t commit into slows.", [T.SHIELD_PEEL]:"Wait out peel; then R.", [T.GAP_CLOSE]:"Keep stealth to reposition.", [T.BURST]:"Flank; avoid midline.", [T.POKE_ZONE]:"Stack safely; don’t DPS in zones." },
-  "Varus":      { [T.HARD_CC]:"Save Flash or R peel.", [T.SOFT_CC]:"Pre-move; Q from range.", [T.SHIELD_PEEL]:"Bait shield then poke.", [T.GAP_CLOSE]:"Root disengage.", [T.BURST]:"Don’t extend.", [T.POKE_ZONE]:"Siege; avoid zones." },
-  "Vayne":      { [T.HARD_CC]:"Any CC kills—hold Flash/Tumble.", [T.SOFT_CC]:"Tumble wider; avoid chip.", [T.SHIELD_PEEL]:"Bait peel then condemn.", [T.GAP_CLOSE]:"Backstep; wall condemn.", [T.BURST]:"Short trades; stealth reset.", [T.POKE_ZONE]:"Farm to items." },
-  "Xayah":      { [T.HARD_CC]:"Hold R for engage.", [T.SOFT_CC]:"Feather slow peel; space.", [T.SHIELD_PEEL]:"Bait peel then root.", [T.GAP_CLOSE]:"Save R if dived.", [T.BURST]:"Short trades; feather cashout.", [T.POKE_ZONE]:"Don’t sit in zones." },
-  "Zeri":       { [T.HARD_CC]:"Hard CC ends you—keep E/Flash.", [T.SOFT_CC]:"E terrain after slows.", [T.SHIELD_PEEL]:"Disengage then re-enter.", [T.GAP_CLOSE]:"Punish post-dash.", [T.BURST]:"Short trades; scale MS.", [T.POKE_ZONE]:"Zap poke; don’t overstay." },
-  "Aphelios":   { [T.HARD_CC]:"Immobile—perfect position; keep sums.", [T.SOFT_CC]:"Gravitum peel vs slows.", [T.SHIELD_PEEL]:"Swap target when shield pops.", [T.GAP_CLOSE]:"Respect dives; Gravitum ready.", [T.BURST]:"Short trades.", [T.POKE_ZONE]:"Infernum safe poke." }
+  "Ashe":       { [THREAT.HARD_CC]:"Play wide; save Flash for arrow/point-click chains.", [THREAT.SOFT_CC]:"Step out early; don’t burn Flash for slows.", [THREAT.SHIELD_PEEL]:"Swap targets—peel beats your slow.", [THREAT.GAP_CLOSE]:"Kite back; W to slow re-engage.", [THREAT.BURST]:"Short trades; keep distance.", [THREAT.POKE_ZONE]:"Farm with W; avoid zones." },
+  "Caitlyn":    { [THREAT.HARD_CC]:"Trap defensively; hold net for engage CC.", [THREAT.SOFT_CC]:"Respect slows—net out.", [THREAT.SHIELD_PEEL]:"Bait shields with Q then trap.", [THREAT.GAP_CLOSE]:"Net instantly; don’t net in.", [THREAT.BURST]:"Max range; avoid long trades.", [THREAT.POKE_ZONE]:"Trade around headshots." },
+  "Corki":      { [THREAT.HARD_CC]:"Hold package/Flash for big CC.", [THREAT.SOFT_CC]:"Rocket peel + kite back.", [THREAT.SHIELD_PEEL]:"Poke shields down.", [THREAT.GAP_CLOSE]:"Valkyrie back, not in.", [THREAT.BURST]:"Short trades; respect assassins.", [THREAT.POKE_ZONE]:"Abuse rockets; avoid zones." },
+  "Draven":     { [THREAT.HARD_CC]:"Don’t catch into CC threat.", [THREAT.SOFT_CC]:"Step off slows; don’t tunnel axes.", [THREAT.SHIELD_PEEL]:"Force shield first; then all-in.", [THREAT.GAP_CLOSE]:"Kite back; E to stop dives.", [THREAT.BURST]:"Trade on your CDs.", [THREAT.POKE_ZONE]:"Farm safe; no bleed." },
+  "Ezreal":     { [THREAT.HARD_CC]:"Hold E strictly for CC.", [THREAT.SOFT_CC]:"E sideways to break slows.", [THREAT.SHIELD_PEEL]:"Poke shields off with Q.", [THREAT.GAP_CLOSE]:"E after they commit.", [THREAT.BURST]:"Short trades till items.", [THREAT.POKE_ZONE]:"Don’t stand still to Q." },
+  "Jhin":       { [THREAT.HARD_CC]:"Immobile—space wide; save Flash.", [THREAT.SOFT_CC]:"Pre-move; avoid chip pre-4th.", [THREAT.SHIELD_PEEL]:"Bait peel then root.", [THREAT.GAP_CLOSE]:"Trap retreat paths.", [THREAT.BURST]:"Cancel R if threatened.", [THREAT.POKE_ZONE]:"Don’t channel in zones." },
+  "Jinx":       { [THREAT.HARD_CC]:"If CC’d you die—hug minions.", [THREAT.SOFT_CC]:"Chompers defensively.", [THREAT.SHIELD_PEEL]:"Kite out peel then re-enter.", [THREAT.GAP_CLOSE]:"Rockets + chompers on self.", [THREAT.BURST]:"Don’t greed DPS in fog.", [THREAT.POKE_ZONE]:"Fish W; farm safe." },
+  "Kai'Sa":     { [THREAT.HARD_CC]:"Hold R to dodge CC.", [THREAT.SOFT_CC]:"Use E to disengage slows.", [THREAT.SHIELD_PEEL]:"Bait peel then R.", [THREAT.GAP_CLOSE]:"Backstep; R after CC down.", [THREAT.BURST]:"Trade around passive.", [THREAT.POKE_ZONE]:"Poke W; avoid traps." },
+  "Kalista":    { [THREAT.HARD_CC]:"Never hop forward into CC.", [THREAT.SOFT_CC]:"Hop wider; Rend peel.", [THREAT.SHIELD_PEEL]:"Force peel, then Fates Call.", [THREAT.GAP_CLOSE]:"Save Fates Call to reset.", [THREAT.BURST]:"Short skirmishes.", [THREAT.POKE_ZONE]:"Don’t hop into zones." },
+  "KogMaw":     { [THREAT.HARD_CC]:"Immobile—play far back; need peel.", [THREAT.SOFT_CC]:"Kite wider; avoid slows.", [THREAT.SHIELD_PEEL]:"Wait shields drop; then DPS.", [THREAT.GAP_CLOSE]:"Ping peel; kite to team.", [THREAT.BURST]:"Front-to-back only.", [THREAT.POKE_ZONE]:"Use R to poke; no face-checks." },
+  "Lucian":     { [THREAT.HARD_CC]:"Buffer E/Flash; never E in if CC up.", [THREAT.SOFT_CC]:"Dash wide; short trades.", [THREAT.SHIELD_PEEL]:"Bait shields with Q/W.", [THREAT.GAP_CLOSE]:"Punish post-dash.", [THREAT.BURST]:"Short burst trades.", [THREAT.POKE_ZONE]:"Step out then re-enter." },
+  "MissFortune":{ [THREAT.HARD_CC]:"Keep Flash; cancel R if threatened.", [THREAT.SOFT_CC]:"Trade with Q bounce; avoid chip.", [THREAT.SHIELD_PEEL]:"Bait shield then R.", [THREAT.GAP_CLOSE]:"E slow to peel.", [THREAT.BURST]:"Only full-channel with cover.", [THREAT.POKE_ZONE]:"Q/E poke; safe angles." },
+  "Nilah":      { [THREAT.HARD_CC]:"Save W/E; don’t E into CC.", [THREAT.SOFT_CC]:"W vs auto poke; time it.", [THREAT.SHIELD_PEEL]:"Bait peel then R pull.", [THREAT.GAP_CLOSE]:"Engage with support only.", [THREAT.BURST]:"Short skirmishes.", [THREAT.POKE_ZONE]:"Avoid chip; look all-ins." },
+  "Quinn":      { [THREAT.HARD_CC]:"Respect point-click CC.", [THREAT.SOFT_CC]:"Vault out of slows.", [THREAT.SHIELD_PEEL]:"Swap target on shields.", [THREAT.GAP_CLOSE]:"Keep E for peel.", [THREAT.BURST]:"Short trades; disengage.", [THREAT.POKE_ZONE]:"Poke then roam." },
+  "Samira":     { [THREAT.HARD_CC]:"Any hard CC ends you—space wide.", [THREAT.SOFT_CC]:"Use W vs projectiles.", [THREAT.SHIELD_PEEL]:"Bait peel; then R.", [THREAT.GAP_CLOSE]:"Don’t dash first.", [THREAT.BURST]:"Save E for reset.", [THREAT.POKE_ZONE]:"Avoid chip; all-in only." },
+  "Senna":      { [THREAT.HARD_CC]:"Keep spacing; roots kill you.", [THREAT.SOFT_CC]:"Pre-move after autos.", [THREAT.SHIELD_PEEL]:"Poke shields off first.", [THREAT.GAP_CLOSE]:"Don’t get flanked; peel W.", [THREAT.BURST]:"Short trades; R shield.", [THREAT.POKE_ZONE]:"Farm souls safely." },
+  "Sivir":      { [THREAT.HARD_CC]:"Hold E for key CC.", [THREAT.SOFT_CC]:"Pre-move; E if chained.", [THREAT.SHIELD_PEEL]:"Spell Shield mirrors trades.", [THREAT.GAP_CLOSE]:"Use R to disengage.", [THREAT.BURST]:"Short trades; Q first.", [THREAT.POKE_ZONE]:"Push + poke safely." },
+  "Tristana":   { [THREAT.HARD_CC]:"Don’t W early; jump post-CC.", [THREAT.SOFT_CC]:"W out of slows.", [THREAT.SHIELD_PEEL]:"Bait peel; R eject.", [THREAT.GAP_CLOSE]:"Jump when jungler known.", [THREAT.BURST]:"Use R to peel.", [THREAT.POKE_ZONE]:"Don’t W into zones." },
+  "Twitch":     { [THREAT.HARD_CC]:"If caught you die—ambush smart.", [THREAT.SOFT_CC]:"Don’t commit into slows.", [THREAT.SHIELD_PEEL]:"Wait out peel; then R.", [THREAT.GAP_CLOSE]:"Keep stealth to reposition.", [THREAT.BURST]:"Flank; avoid midline.", [THREAT.POKE_ZONE]:"Stack safely; don’t DPS in zones." },
+  "Varus":      { [THREAT.HARD_CC]:"Save Flash or R peel.", [THREAT.SOFT_CC]:"Pre-move; Q from range.", [THREAT.SHIELD_PEEL]:"Bait shield then poke.", [THREAT.GAP_CLOSE]:"Root disengage.", [THREAT.BURST]:"Don’t extend.", [THREAT.POKE_ZONE]:"Siege; avoid zones." },
+  "Vayne":      { [THREAT.HARD_CC]:"Any CC kills—hold Flash/Tumble.", [THREAT.SOFT_CC]:"Tumble wider; avoid chip.", [THREAT.SHIELD_PEEL]:"Bait peel then condemn.", [THREAT.GAP_CLOSE]:"Backstep; wall condemn.", [THREAT.BURST]:"Short trades; stealth reset.", [THREAT.POKE_ZONE]:"Farm to items." },
+  "Xayah":      { [THREAT.HARD_CC]:"Hold R for engage.", [THREAT.SOFT_CC]:"Feather slow peel; space.", [THREAT.SHIELD_PEEL]:"Bait peel then root.", [THREAT.GAP_CLOSE]:"Save R if dived.", [THREAT.BURST]:"Short trades; feather cashout.", [THREAT.POKE_ZONE]:"Don’t sit in zones." },
+  "Zeri":       { [THREAT.HARD_CC]:"Hard CC ends you—keep E/Flash.", [THREAT.SOFT_CC]:"E terrain after slows.", [THREAT.SHIELD_PEEL]:"Disengage then re-enter.", [THREAT.GAP_CLOSE]:"Punish post-dash.", [THREAT.BURST]:"Short trades; scale MS.", [THREAT.POKE_ZONE]:"Zap poke; don’t overstay." },
+  "Aphelios":   { [THREAT.HARD_CC]:"Immobile—perfect position; keep sums.", [THREAT.SOFT_CC]:"Gravitum peel vs slows.", [THREAT.SHIELD_PEEL]:"Swap target when shield pops.", [THREAT.GAP_CLOSE]:"Respect dives; Gravitum ready.", [THREAT.BURST]:"Short trades.", [THREAT.POKE_ZONE]:"Infernum safe poke." }
 };
 
 // ensure alternate-name keys also exist
@@ -200,12 +201,12 @@ ADC_TEMPLATES["KogMaw"]      = ADC_TEMPLATES["Kog'Maw"];
 ADC_TEMPLATES["KaiSa"]       = ADC_TEMPLATES["Kai'Sa"];
 ADC_TEMPLATES["Sivir"]       = ADC_TEMPLATES["Sivir"];
 ADC_TEMPLATES["Yunara"]      = ADC_TEMPLATES["Yunara"] || {
-  [T.HARD_CC]:"Respect hard engages until kit clarified.",
-  [T.SOFT_CC]:"Don’t burn sums on slows.",
-  [T.SHIELD_PEEL]:"Bait peel then commit.",
-  [T.GAP_CLOSE]:"Keep spacing—unknown engage.",
-  [T.BURST]:"Short trades.",
-  [T.POKE_ZONE]:"Avoid unknown zones."
+  [THREAT.HARD_CC]:"Respect hard engages until kit clarified.",
+  [THREAT.SOFT_CC]:"Don’t burn sums on slows.",
+  [THREAT.SHIELD_PEEL]:"Bait peel then commit.",
+  [THREAT.GAP_CLOSE]:"Keep spacing—unknown engage.",
+  [THREAT.BURST]:"Short trades.",
+  [THREAT.POKE_ZONE]:"Avoid unknown zones."
 };
 
 // ---------- Ability-level tips ----------
@@ -323,7 +324,7 @@ const emptyState = qs("#emptyState");
 
 function cleanseBadgeForAbility(ability){
   const t = ability.threat || [];
-  return (t.includes(T.SOFT_CC) && !t.includes(T.HARD_CC))
+  return (t.includes(THREAT.SOFT_CC) && !t.includes(THREAT.HARD_CC))
     ? `<span class="mini-badge cleanse">Cleanse</span>` : "";
 }
 
@@ -332,7 +333,7 @@ function abilityPills(abilities, champ){
     const cds = (a.cd||[]).join("/");
     const cls = primaryThreatClass(a.threat||[]);
     const prim = primaryThreat(a.threat||[]);
-    const label = prim ? T_LABEL[prim] : "";
+    const label = prim ? THREAT_LABEL[prim] : "";
     const cleanse = cleanseBadgeForAbility(a);
     const tip = abilityTipForADC(champ, a.key);
     return `<span class="pill ${cls}" title="${tip ? tip.replace(/"/g,'&quot;') : ''}">
@@ -344,7 +345,7 @@ function abilityPills(abilities, champ){
 }
 function threatTagsUnion(abilities){
   const union = Array.from(new Set((abilities||[]).flatMap(a=>a.threat||[])));
-  return union.map(t => `<span class="tag ${tagToClass(t)}">${T_LABEL[t]||t}</span>`).join("");
+  return union.map(t => `<span class="tag ${tagToClass(t)}">${THREAT_LABEL[t]||t}</span>`).join("");
 }
 
 function renderGroupRow(label, cols=7){
@@ -427,10 +428,10 @@ function applyChampionFixes(list){
   // (… keep all your existing fixes here …)
 
   // === (CONFIRM) Wukong ability categorization ===
-  fix("Wukong","Q",[T.BURST]);               // Crushing Blow (armor shred/AA reset)
-  fix("Wukong","W",[T.SHIELD_PEEL]);         // stealth/decoy → peel/reposition
-  fix("Wukong","E",[T.GAP_CLOSE]);           // Nimbus Strike dash
-  fix("Wukong","R",[T.HARD_CC]);             // Cyclone knockup
+  fix("Wukong","Q",[THREAT.BURST]);               // Crushing Blow (armor shred/AA reset)
+  fix("Wukong","W",[THREAT.SHIELD_PEEL]);         // stealth/decoy → peel/reposition
+  fix("Wukong","E",[THREAT.GAP_CLOSE]);           // Nimbus Strike dash
+  fix("Wukong","R",[THREAT.HARD_CC]);             // Cyclone knockup
 
   // (optional tiny reminders)
   // Ambessa/Mel/Yunara may not exist in DDragon yet — data arrives via builder fallback.
@@ -445,10 +446,10 @@ function applyPatchFixes(list){
     a.threat = forced;
   };
   // Wukong — confirmed: Q=Burst, W=Peel, E=Gap, R=Hard CC (knockup). :contentReference[oaicite:5]{index=5}
-  fix("Wukong","Q",[T.BURST]);
-  fix("Wukong","W",[T.SHIELD_PEEL]);
-  fix("Wukong","E",[T.GAP_CLOSE]);
-  fix("Wukong","R",[T.HARD_CC]);
+  fix("Wukong","Q",[THREAT.BURST]);
+  fix("Wukong","W",[THREAT.SHIELD_PEEL]);
+  fix("Wukong","E",[THREAT.GAP_CLOSE]);
+  fix("Wukong","R",[THREAT.HARD_CC]);
 }
 
 // ---------- Data load, editor, compact toggle ----------
@@ -495,7 +496,3 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
-
-
-
-
