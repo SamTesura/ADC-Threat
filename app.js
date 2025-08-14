@@ -548,20 +548,14 @@ function render(){
   if(allies.length){ tbody.insertAdjacentHTML("beforeend", renderGroupRow("Allied Team")); allies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ALLY", c))); }
 }
 
-// ADD-ONLY: tiny supplemental pass (reinforces Wukong specifics & any late corrections)
-function applyPatchFixes(list){
+// ===== Champion-specific CC/threat fixes (keep yours; below only confirms Wukong) =====
+function applyChampionFixes(list){
   const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
   const fix  = (slug, key, forced) => {
     const c = find(slug); if(!c) return;
     const a = (c.abilities||[]).find(s=>s.key===key); if(!a) return;
     a.threat = forced;
   };
-  // Wukong — confirmed: Q=Burst, W=Peel, E=Gap, R=Hard CC (knockup). :contentReference[oaicite:5]{index=5}
-  fix("Wukong","Q",[THREAT.BURST]);
-  fix("Wukong","W",[THREAT.SHIELD_PEEL]);
-  fix("Wukong","E",[THREAT.GAP_CLOSE]);
-  fix("Wukong","R",[THREAT.HARD_CC]);
-}
 
 // ---------- Data load, editor, compact toggle ----------
 async function loadChampions(){
@@ -575,7 +569,6 @@ async function loadChampions(){
   }
   ensureThreatsForAllAbilities(CHAMPIONS);
   applyChampionFixes(CHAMPIONS);
-  applyPatchFixes(CHAMPIONS); // <- add-only reinforcing pass (Wukong, etc.)
   buildAdcGrid();
   buildSearchInputs();
   lockTeamUI(true);
@@ -607,6 +600,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
