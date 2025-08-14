@@ -192,7 +192,8 @@ const ADC_TEMPLATES = {
   "Vayne":      { [THREAT.HARD_CC]:"Any CC kills—hold Flash/Tumble.", [THREAT.SOFT_CC]:"Tumble wider; avoid chip.", [THREAT.SHIELD_PEEL]:"Bait peel then condemn.", [THREAT.GAP_CLOSE]:"Backstep; wall condemn.", [THREAT.BURST]:"Short trades; stealth reset.", [THREAT.POKE_ZONE]:"Farm to items." },
   "Xayah":      { [THREAT.HARD_CC]:"Hold R for engage.", [THREAT.SOFT_CC]:"Feather slow peel; space.", [THREAT.SHIELD_PEEL]:"Bait peel then root.", [THREAT.GAP_CLOSE]:"Save R if dived.", [THREAT.BURST]:"Short trades; feather cashout.", [THREAT.POKE_ZONE]:"Don’t sit in zones." },
   "Zeri":       { [THREAT.HARD_CC]:"Hard CC ends you—keep E/Flash.", [THREAT.SOFT_CC]:"E terrain after slows.", [THREAT.SHIELD_PEEL]:"Disengage then re-enter.", [THREAT.GAP_CLOSE]:"Punish post-dash.", [THREAT.BURST]:"Short trades; scale MS.", [THREAT.POKE_ZONE]:"Zap poke; don’t overstay." },
-  "Aphelios":   { [THREAT.HARD_CC]:"Immobile—perfect position; keep sums.", [THREAT.SOFT_CC]:"Gravitum peel vs slows.", [THREAT.SHIELD_PEEL]:"Swap target when shield pops.", [THREAT.GAP_CLOSE]:"Respect dives; Gravitum ready.", [THREAT.BURST]:"Short trades.", [THREAT.POKE_ZONE]:"Infernum safe poke." }
+  "Aphelios":   { [THREAT.HARD_CC]:"Immobile—perfect position; keep sums.", [THREAT.SOFT_CC]:"Gravitum peel vs slows.", [THREAT.SHIELD_PEEL]:"Swap target when shield pops.", [THREAT.GAP_CLOSE]:"Respect dives; Gravitum ready.", [THREAT.BURST]:"Short trades.", [THREAT.POKE_ZONE]:"Infernum safe poke." },
+  "Yunara":     { [THREAT.HARD_CC]:"New champ, still in process.", [THREAT.SOFT_CC]:"New champ, still in process.",[THREAT.SHIELD_PEEL]:"New champ, still in process.",[THREAT.GAP_CLOSE]:"New champ, still in process.",[THREAT.BURST]:"New champ, still in process.",[THREAT.POKE_ZONE]:"New champ, still in process."}
 };
 
 // ---------- Ability-level tips ----------
@@ -482,4 +483,5 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
