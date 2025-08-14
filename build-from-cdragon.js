@@ -6,7 +6,7 @@
 
 (function(){
   const BTN_ID = "buildCDragon";
-  const CDRAGON_PATCH = "latest"; // set to "25.15" to pin
+  const CDRAGON_PATCH = "latest"; // set to "25.16" to pin
   const BASE = `https://raw.communitydragon.org/${CDRAGON_PATCH}/plugins/rcp-be-lol-game-data/global/default/v1`;
 
   // ==== Your whitelist ====
