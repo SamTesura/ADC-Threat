@@ -403,7 +403,7 @@ async function loadOverridesFor(adcName){
   ADC_OVERRIDES = null;
   if(!adcName) return;
   const slug = adcName.replace(/\s+/g,"");
-  const url = `./adc_overrides_${slug}_25.15.json`;
+  const url = `./adc_overrides_${slug}_25.16.json`;
   try{
     const r = await fetch(url, { cache: "no-store" });
     if (r.ok) ADC_OVERRIDES = await r.json();
@@ -495,5 +495,6 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
