@@ -600,10 +600,3 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
-
-
-
-
-
-
-
