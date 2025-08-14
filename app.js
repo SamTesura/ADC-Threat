@@ -566,11 +566,60 @@ function applyChampionFixes(list){
     const a = (c.abilities||[]).find(s=>s.key===key); if(!a) return;
     a.threat = forced;
   };
-  // Wukong confirmations (gap close + knockup + defensive clone)
-  fix("Wukong","Q",[THREAT.BURST]);
-  fix("Wukong","W",[THREAT.SHIELD_PEEL]);   // stealth/decoy as peel/escape
-  fix("Wukong","E",[THREAT.GAP_CLOSE]);     // dash onto target
-  fix("Wukong","R",[THREAT.HARD_CC]);       // spinning knockup
+   
+// Thresh — Q=Soft (hook stun; cleanseable), W=Shield/Peel, E=Hard(displace)+Soft slow, R=Soft (slow walls)
+fix("Thresh","Q",[THREAT.SOFT_CC]);
+fix("Thresh","W",[THREAT.SHIELD_PEEL]);
+fix("Thresh","E",[THREAT.HARD_CC, THREAT.SOFT_CC]);
+fix("Thresh","R",[THREAT.SOFT_CC]);
+
+// Alistar — Q=Hard (knockup), W=Hard (knockback)+Gap, E=Soft (stun), R=Shield/Peel (DR)
+fix("Alistar","Q",[THREAT.HARD_CC]);
+fix("Alistar","W",[THREAT.HARD_CC, THREAT.GAP_CLOSE]);
+fix("Alistar","E",[THREAT.SOFT_CC]);
+fix("Alistar","R",[THREAT.SHIELD_PEEL]);
+
+// Fiddlesticks — Q=Soft (fear), W=Shield/Peel (drain sustain), E=Soft (silence/slow), R=Burst+Zone
+fix("FiddleSticks","Q",[THREAT.SOFT_CC]);
+fix("FiddleSticks","W",[THREAT.SHIELD_PEEL]);
+fix("FiddleSticks","E",[THREAT.SOFT_CC]);
+fix("Fiddlesticks","R",[THREAT.BURST, THREAT.POKE_ZONE]);
+
+// LeBlanc — Q=Burst, W=Gap, E=Soft (root), R=Burst/Poke
+fix("Leblanc","Q",[THREAT.BURST]);
+fix("Leblanc","W",[THREAT.GAP_CLOSE]);
+fix("Leblanc","E",[THREAT.SOFT_CC]);
+fix("LeBlanc","R",[THREAT.BURST, THREAT.POKE_ZONE]);
+
+// Mel — placeholder (not live / kit details fluid)
+fix("Mel","Q",[THREAT.POKE_ZONE]);
+fix("Mel","W",[THREAT.SHIELD_PEEL]);
+fix("Mel","E",[THREAT.GAP_CLOSE]);
+fix("Mel","R",[THREAT.BURST]);
+
+// Ambessa — placeholder (not live / kit details fluid)
+fix("Ambessa","Q",[THREAT.POKE_ZONE]);
+fix("Ambessa","W",[THREAT.POKE_ZONE]);
+fix("Ambessa","E",[THREAT.GAP_CLOSE]);
+fix("Ambessa","R",[THREAT.BURST]);
+
+// Sivir — Q=Poke, W=Burst, E=Shield/Peel, R=Shield/Peel (+Gap for team MS)
+fix("Sivir","Q",[THREAT.POKE_ZONE]);
+fix("Sivir","W",[THREAT.BURST]);
+fix("Sivir","E",[THREAT.SHIELD_PEEL]);
+fix("Sivir","R",[THREAT.SHIELD_PEEL, THREAT.GAP_CLOSE]);
+
+// Wukong — Q=Burst, W=Shield/Peel (stealth/clone), E=Gap, R=Hard (knockup)
+fix("MonkeyKing","Q",[THREAT.BURST]);
+fix("MonkeyKing","W",[THREAT.SHIELD_PEEL]);
+fix("MonkeyKing","E",[THREAT.GAP_CLOSE]);
+fix("MonkeyKing","R",[THREAT.HARD_CC]);
+
+// Yunara — placeholder (not live / kit details fluid)
+fix("Yunara","Q",[THREAT.POKE_ZONE]);
+fix("Yunara","W",[THREAT.SHIELD_PEEL]);
+fix("Yunara","E",[THREAT.GAP_CLOSE]);
+fix("Yunara","R",[THREAT.BURST]);
 
 }
 
@@ -618,4 +667,5 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
