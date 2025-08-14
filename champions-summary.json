@@ -8916,6 +8916,78 @@
     ]
   },
   {
+    "name": "Sivir",
+    "slug": "Sivir",
+    "tags": [
+      "MARKSMAN"
+    ],
+    "portrait": "Sivir",
+    "passive": {
+      "name": "Fleet of Foot",
+      "desc": ""
+    },
+    "abilities": [
+      {
+        "key": "Q",
+        "name": "Boomerang Blade",
+        "cd": [
+          10,
+          9.5,
+          9,
+          8.5,
+          8,
+          8
+        ],
+        "threat": [],
+        "notes": ""
+      },
+      {
+        "key": "W",
+        "name": "Ricochet",
+        "cd": [
+          12,
+          12,
+          12,
+          12,
+          12,
+          12
+        ],
+        "threat": [],
+        "notes": ""
+      },
+      {
+        "key": "E",
+        "name": "Spell Shield",
+        "cd": [
+          24,
+          22.5,
+          21,
+          19.5,
+          18,
+          10
+        ],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
+        "notes": ""
+      },
+      {
+        "key": "R",
+        "name": "On The Hunt",
+        "cd": [
+          120,
+          100,
+          80,
+          90,
+          90,
+          10
+        ],
+        "threat": [],
+        "notes": ""
+      }
+    ]
+  },
+  {
     "name": "Skarner",
     "slug": "Skarner",
     "tags": [
