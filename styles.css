@@ -24,9 +24,6 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 .tagline{margin:2px 0 0;color:var(--muted);font-size:12px}
 
 /* Legend */
-.em.hard{background:var(--hard);color:#fff}
-.em.soft{background:var(--hard);color:#fff}
-.em.cleanse{background:var(--cleanse);color:#0b0f14;
 .legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
 .legend .sep{opacity:.35;margin:0 6px}
 .tag{border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:11px;background:var(--panel)}
@@ -154,5 +151,6 @@ body.compact-mode .pill .cds{font-size:11px}
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
 }
+
 
 
