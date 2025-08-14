@@ -28,7 +28,7 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 .legend .sep{opacity:.35;margin:0 6px}
 .tag{border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:11px;background:var(--panel)}
 .tag.hard{background:var(--hard);color:#fff}
-.tag.soft{background:var(--hard);color:#fff}
+.tag.soft{background: var(--soft);color: #111}
 .tag.peel{background:var(--peel);color:#fff}
 .tag.gap{background:var(--gap);color:#fff}
 .tag.burst{background:var(--burst);color:#fff}
@@ -151,6 +151,7 @@ body.compact-mode .pill .cds{font-size:11px}
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
 }
+
 
 
 
