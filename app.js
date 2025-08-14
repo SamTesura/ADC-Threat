@@ -196,7 +196,7 @@ const ADC_TEMPLATES = {
 // ensure alternate-name keys also exist
 ADC_TEMPLATES["MissFortune"] = ADC_TEMPLATES["Miss Fortune"];
 ADC_TEMPLATES["KogMaw"]      = ADC_TEMPLATES["Kog'Maw"];
-ADC_TEMPLATES["KaiSa"]       = ADC_TEMPLATES["Kai'Sa"]; || {
+ADC_TEMPLATES["KaiSa"]       = ADC_TEMPLATES["Kai'Sa"] || {
   [T.HARD_CC]:"Respect hard engages until kit clarified.",
   [T.SOFT_CC]:"Don’t burn sums on slows.",
   [T.SHIELD_PEEL]:"Bait peel then commit.",
@@ -492,3 +492,4 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
