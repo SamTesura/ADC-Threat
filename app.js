@@ -167,14 +167,6 @@ const PASSIVE_OVERRIDES = {
   // e.g. "Nautilus":"Autos root briefly — avoid melee after tag.", etc.
 };
 
-// ===== ADC templates (keep your entire object); the key fix is normalization used below =====
-const T = THREAT;
-const ADC_TEMPLATES = {
-  // (keep everything you had)
-  // Ensure MissFortune and KogMaw entries exist (you already had them):
- 
-
-
 // ---------- ADC tips (ensure human-name aliases so MF/Kog’Maw show) ----------
 const T = THREAT;
 const ADC_TEMPLATES = {
@@ -504,5 +496,6 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
