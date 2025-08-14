@@ -21,7 +21,7 @@ body{margin:0;background:radial-gradient(1200px 800px at 10% -10%, #101826 0%, #
 .brand{display:flex;gap:12px;align-items:center}
 .brand-logo{width:28px;opacity:.9;filter:invert(100%) saturate(0%) brightness(200%)}
 h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:uppercase}
-.tagline{margin:2px 0 0;color:var(--muted);font-size:12px}
+.tagline{margin:2px 0 0;color:var(--muted);font-size:16px}
 
 /* Legend */
 .legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
@@ -151,6 +151,7 @@ body.compact-mode .pill .cds{font-size:11px}
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
 }
+
 
 
 
