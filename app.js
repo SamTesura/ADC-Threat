@@ -7,7 +7,7 @@
 */
 
 const DDRAGON_VERSION = "14.14.1";
-const DATA_URL = "./champions_adc_verified_2515.json"; // relative path for GitHub Pages
+const DATA_URL = "./champions-summary.json"; // relative path for GitHub Pages
 
 // ---------- Threat model ----------
 const THREAT = {
@@ -445,3 +445,4 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
