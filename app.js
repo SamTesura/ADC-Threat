@@ -386,34 +386,6 @@ function render(){
   if(allies.length){ tbody.insertAdjacentHTML("beforeend", renderGroupRow("Allied Team")); allies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ALLY", c))); }
 }
 
-// ---------- Optional per-ADC overrides loader ----------
-async function loadOverridesFor(adcName){
-  ADC_OVERRIDES = null;
-  if(!adcName) return;
-  const slug = adcName.replace(/\s+/g,"");
-  const url = `./adc_overrides_${slug}_25.16.json`;
-  try{
-    const r = await fetch(url, { cache: "no-store" });
-    if (r.ok) ADC_OVERRIDES = await r.json();
-  }catch(_e){}
-}
-function getOverrideEntryForChampion(slugOrName){
-  if(!ADC_OVERRIDES || ADC_OVERRIDES.adc !== CURRENT_ADC) return null;
-  const key = (slugOrName||"").replace(/\s+/g,"");
-  return (ADC_OVERRIDES.champions||[]).find(c => (c.slug||"").replace(/\s+/g,"") === key);
-}
-
-// ===== Champion-specific CC/threat fixes (keep yours; below only confirms Wukong) =====
-function applyChampionFixes(list){
-  const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
-  const fix  = (slug, key, forced) => {
-    const c = find(slug); if(!c) return;
-    const a = (c.abilities||[]).find(s=>s.key===key); if(!a) return;
-    a.threat = forced;
-  };
-
-  // (… keep all your existing fixes here …)
-
   // === (CONFIRM) Wukong ability categorization ===
   fix("Wukong","Q",[THREAT.BURST]);               // Crushing Blow (armor shred/AA reset)
   fix("Wukong","W",[THREAT.SHIELD_PEEL]);         // stealth/decoy → peel/reposition
@@ -483,5 +455,6 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
