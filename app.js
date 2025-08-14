@@ -9,7 +9,7 @@
 */
 
 const DDRAGON_VERSION = "14.14.1";
-const DATA_URL = "./champions_adc_verified_2515.json"; // unchanged
+const DATA_URL = "./champions-summary.json"; // unchanged
 
 const THREAT = {
   HARD_CC:"HARD_CC",
@@ -504,4 +504,5 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
