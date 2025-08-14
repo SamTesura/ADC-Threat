@@ -1,4 +1,4 @@
-/* ADC Threat Lookup — 25.15
+/* ADC Threat Lookup — 25.16
    - CC-first priority: HARD_CC > SOFT_CC > SHIELD_PEEL > GAP_CLOSE > BURST > POKE_ZONE
    - Pills show Q/W/E/R + CDs + small threat label; Soft CC shows "Cleanse" badge
    - Threats column chips are colored
@@ -445,4 +445,3 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
-
