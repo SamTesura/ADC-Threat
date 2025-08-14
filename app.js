@@ -548,15 +548,6 @@ function render(){
   if(allies.length){ tbody.insertAdjacentHTML("beforeend", renderGroupRow("Allied Team")); allies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ALLY", c))); }
 }
 
-  // === (CONFIRM) Wukong ability categorization ===
-  fix("Wukong","Q",[THREAT.BURST]);               // Crushing Blow (armor shred/AA reset)
-  fix("Wukong","W",[THREAT.SHIELD_PEEL]);         // stealth/decoy → peel/reposition
-  fix("Wukong","E",[THREAT.GAP_CLOSE]);           // Nimbus Strike dash
-  fix("Wukong","R",[THREAT.HARD_CC]);             // Cyclone knockup
-
-  // (optional tiny reminders)
-  // Ambessa/Mel/Yunara may not exist in DDragon yet — data arrives via builder fallback.
-
 // ADD-ONLY: tiny supplemental pass (reinforces Wukong specifics & any late corrections)
 function applyPatchFixes(list){
   const find = n => list.find(x => (x.slug||x.name).toLowerCase() === n.toLowerCase());
@@ -616,6 +607,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
