@@ -52,6 +52,15 @@ const THREAT_LABEL = {
 let CHAMPIONS = [];
 let CURRENT_ADC = null;
 let ADC_OVERRIDES = null;
+// Optional per-ADC overrides are disabled by default to avoid 404s.
+// If you later add files like adc_overrides_Ashe_25.16.json, you can re-enable fetch.
+async function loadOverridesFor(_adcName){
+  ADC_OVERRIDES = null; // no fetch = no 404 noise
+}
+
+function getOverrideEntryForChampion(_slugOrName){
+  return null; // no per-champ override by default
+}
 
 // === (ADD) normalize ADC name → template key (removes spaces, apostrophes, punctuation) ===
 function normalizeADCKey(name=""){
@@ -556,8 +565,16 @@ function applyChampionFixes(list){
     const a = (c.abilities||[]).find(s=>s.key===key); if(!a) return;
     a.threat = forced;
   };
+  // Wukong confirmations (gap close + knockup + defensive clone)
+  fix("Wukong","Q",[THREAT.BURST]);
+  fix("Wukong","W",[THREAT.SHIELD_PEEL]);   // stealth/decoy as peel/escape
+  fix("Wukong","E",[THREAT.GAP_CLOSE]);     // dash onto target
+  fix("Wukong","R",[THREAT.HARD_CC]);       // spinning knockup
+
+}
 
 // ---------- Data load, editor, compact toggle ----------
+   
 async function loadChampions(){
   try{
     const r = await fetch(DATA_URL,{cache:"no-store"});
