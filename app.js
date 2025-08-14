@@ -11,6 +11,16 @@
 const DDRAGON_VERSION = "14.14.1";
 const DATA_URL = "./champions-summary.json"; // unchanged
 
+// Fallback image if both DDragon and CDragon fail
+const PLACEHOLDER_ICON_URL =
+  'data:image/svg+xml;utf8,' +
+  '<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">' +
+  '<rect width="100%" height="100%" fill="%23121a24"/>' +
+  '<text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" ' +
+  'font-family="system-ui,Segoe UI,Roboto,sans-serif" font-size="12" fill="%23c8aa6e">No Art</text>' +
+  '</svg>';
+
+
 const THREAT = {
   HARD_CC:"HARD_CC",
   SOFT_CC:"SOFT_CC",
@@ -496,6 +506,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
