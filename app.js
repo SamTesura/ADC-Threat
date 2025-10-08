@@ -7,6 +7,7 @@
    - Kai'Sa icon fix, add Yunara to ADC picker
    - Miss Fortune / Kog'Maw ADC tips: normalize names so tips show
    - Portrait fallback to CDragon CDN for champs not on DDragon
+   - Smolder ADC tips (templates) so ability pills + notes populate
 */
 
 const DDRAGON_VERSION = "14.14.1";
@@ -126,7 +127,7 @@ const ADC_IDS = [
   "Kalista","KogMaw","Lucian","MissFortune","Nilah","Quinn",
   "Samira","Senna","Sivir", /* ensure present */
   "Tristana","Twitch","Varus","Vayne","Xayah","Zeri","Aphelios",
-  "Yunara" /* added as requested */
+  "Yunara", "Smolder" /* added as requested */
 ];
 
 // ===== Regex tagger & ensureThreatsForAllAbilities (unchanged from your working file) =====
@@ -366,6 +367,7 @@ const ADC_TEMPLATES = {
   "Zeri":       { [T.HARD_CC]:"Hard CC ends you—keep E/Flash.", [T.SOFT_CC]:"E terrain after slows.", [T.SHIELD_PEEL]:"Disengage then re-enter.", [T.GAP_CLOSE]:"Punish post-dash.", [T.BURST]:"Short trades; scale MS.", [T.POKE_ZONE]:"Zap poke; don’t overstay." },
   "Aphelios":   { [T.HARD_CC]:"Immobile—perfect position; keep sums.", [T.SOFT_CC]:"Gravitum peel vs slows.", [T.SHIELD_PEEL]:"Swap target when shield pops.", [T.GAP_CLOSE]:"Respect dives; Gravitum ready.", [T.BURST]:"Short trades.", [T.POKE_ZONE]:"Infernum safe poke." },
   "Yunara":     { [T.HARD_CC]:"Don’t burn dash/Flash for poke.", [T.SOFT_CC]:"Pre-move; avoid slow chains before you commit to DPS.",[T.SHIELD_PEEL]:"Bait peel first—kite out then re-enter with uptime.",[T.GAP_CLOSE]:"Kite back early; keep escape held for second engage.",[T.BURST]:"Short trades only.",[T.POKE_ZONE]:"Farm safely; don’t sit in zones to stack trades."}
+  "Smolder":    { [T.HARD_CC]:"Hard CC ends you—hold Flash/E for engage windows; don’t R into ready stuns.", [T.SOFT_CC]: "Pre-move on slows; trade max-range with W→Q and disengage if chainable.",[T.SHIELD_PEEL]:"Poke shields off first (W→Q) or swap target; commit only after peel is down.",[T.GAP_CLOSE]:"Kite back; save E for the second engage, not the first dash.",[T.BURST]:"Short trades around Q procs; respect assassin timers and keep sums for dive.",[T.POKE_ZONE]:"Stack Q through CS; tag with W then Q—don’t stand in zones to finish stacks."  }
 };
 
 // ---------- Ability-level tips ----------
@@ -1640,6 +1642,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
