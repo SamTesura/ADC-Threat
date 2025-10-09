@@ -478,6 +478,31 @@ function briefPassiveForADC(champ){
   return PASSIVE_OVERRIDES[champ.slug||champ.name] || "—";
 }
 
+function getSynergyNote(adcName, supportName, threatsUnion=[]){
+  if(!adcName || !supportName) return "";
+  const a = normalizeADCKey(adcName);
+  const s = normalizeSupportKey(supportName);
+  const map = SUPPORT_TEMPLATES[a];
+  if (!map) return ""; // fallback if adc not mapped yet
+  // try exact name first; also try common aliases
+  const direct = map[s];
+  if (direct) return direct;
+
+  // Light aliasing for supports with punctuation/variants
+  const aliases = {
+    "blitzcrank":["blitz"],
+    "nautilus":["naut"],
+    "morgana":["morg"],
+    "renataglasc":["renata"],
+    "tahmkench":["tahm","tk"],
+  };
+  for(const [canon, arr] of Object.entries(aliases)){
+    if (s===canon || arr.includes(s)) return map[canon] || map[s] || "";
+  }
+
+  return "";
+}
+
 // ---------- ADC picker ----------
 function buildAdcGrid(){
   const grid = qs("#adcGrid");
@@ -1731,6 +1756,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
