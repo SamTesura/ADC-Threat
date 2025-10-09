@@ -635,7 +635,11 @@ function renderChampRow(group, champ){
   const union = (abilities||[]).flatMap(a=>a.threat||[]);
   const adcNote = ov?.note || adcNoteFromTemplates(CURRENT_ADC, union);
 
-   return `<tr class="row">
+  // NEW: synergy text only if this is your selected support
+  const isSupportRow = group==="ALLY" && CURRENT_SUPPORT && champ.name.toLowerCase() === CURRENT_SUPPORT.toLowerCase();
+  const synergy = isSupportRow ? getSynergyNote(CURRENT_ADC, champ.name, union) : "";
+
+  return `<tr class="row">
     <td class="group">${group}</td>
     <td class="champ">
       <div class="cell-champ">
@@ -647,6 +651,7 @@ function renderChampRow(group, champ){
     <td class="passive">${briefPassiveForADC(champ)}</td>
     <td class="abilities"><div class="ability-pills">${abilityPills(abilities, champ)}</div></td>
     <td class="threats"><div class="tags-mini">${threatTagsUnion(abilities)}</div></td>
+    <td class="synergy">${synergy||""}</td>
     <td class="notes">${adcNote||""}</td>
   </tr>`;
 }
@@ -1756,6 +1761,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
