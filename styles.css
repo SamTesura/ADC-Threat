@@ -60,6 +60,7 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 #enemyInputs{grid-template-columns:repeat(5,minmax(0,1fr))}
 #allyInputs{grid-template-columns:repeat(4,minmax(0,1fr))}
 .search{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:6px;position:relative}
+.search-title{ margin:8px 0 4px; font-weight:700; color:var(--gold); text-transform:uppercase; font-size:.8rem; }
 .search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0b1117;color:#fff;font-size:13px}
 .suggestions{position:absolute;left:6px;right:6px;top:52px;background:#0b1117;border:1px solid var(--border);border-radius:12px;max-height:260px;overflow:auto;display:none;z-index:20}
 .suggestions.show{display:block}
@@ -151,6 +152,7 @@ body.compact-mode .pill .cds{font-size:11px}
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
 }
+
 
 
 
