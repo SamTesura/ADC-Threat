@@ -371,6 +371,77 @@ const ADC_TEMPLATES = {
   "Smolder":    { [T.HARD_CC]:"Hard CC ends you—hold Flash/E for engage windows; don’t R into ready stuns.",[T.SOFT_CC]:"Pre-move on slows; trade max-range with W→Q and disengage if chainable.",[T.SHIELD_PEEL]:"Poke shields off first (W→Q) or swap target; commit only after peel is down.",[T.GAP_CLOSE]:"Kite back; save E for the second engage, not the first dash.",[T.BURST]:"Short trades around Q procs; respect assassin timers and keep sums for dive.",[T.POKE_ZONE]:"Stack Q through CS; tag with W then Q—don’t stand in zones to finish stacks."}
 };
 
+// Normalizer for support names
+function normalizeSupportKey(name=""){ return name.replace(/['’\s.-]/g,"").toLowerCase(); }
+
+// Per-ADC support synergy (short, actionable)
+const SUPPORT_TEMPLATES = {
+  // Examples shown for popular ADCs; extend as you like.
+  "kogmaw": {
+    "lulu":"Premium lane+team peel. Play for W uptime; call polymorph on divers then free-fire.",
+    "milio":"Long trades; abuse enchant+range. Position behind frontline; R cleanses key CC for you.",
+    "janna":"Play safe push; bait engage then re-enter after Q/R. Don’t step past tornado line.",
+    "renata":"Greedier front-to-back. Save sums; W+R flips dives—kite until they overcommit.",
+    "braum":"Weaker lane, strong peel. Don’t overextend pre-6; fight around Braum passive."
+  },
+  "draven": {
+    "nautilus":"All-in lane. Stack wave 2–3, crash then fight on hook timers; don’t catch axes into counter-engage.",
+    "pyke":"Kill pressure—track sums and fog angles. Don’t overchase through minions; conserve E for reset.",
+    "leona":"Chain CC—call targets. If her W/E down, slow the lane.",
+    "rakan":"Tempo roam windows—ping when W/R up; hold E to follow his engage."
+  },
+  "jinx": {
+    "thresh":"Lantern discipline. Play two screens up only with lantern known; chompers where hook lands.",
+    "leona":"Level 2–3 kills. Don’t rocket into wave; place chompers to cut escape lines.",
+    "milio":"Siege and scale. Poke, don’t all-in; save R to cleanse pick tools."
+  },
+  "ashe": {
+    "hecarim": "If jungle support or roam—set up arrows from fog and force bot prio to unlock plays.",
+    "rakan":   "Pick tools layered—Ashe R → W knockup. Don’t overlap engages."
+  },
+  "lucian": {
+    "nami":"Classic burst lane. Sync E+Tidecaller slow for double proc; short trades then back out.",
+    "milio":"Similar pattern; longer trades okay—dash discipline.",
+    "braum":"Level 2 spike—stack passive fast; don’t dash in if Braum is not in range."
+  },
+  "kaisa": {
+    "rell":"Hard engage. Ping when you have R marks; follow only after pull lands.",
+    "nautilus":"All-in picks—respect counterganks; farm under vision then turn.",
+    "morgana":"Play for W poke/black shield windows; take greedy Ws when E is up."
+  },
+  "varus": {
+    "lux":"Poke lane—sync Qs; after R root, layer snares, then full channel Q.",
+    "karma":"Shove+harass; don’t eat ganks—ward river deep.",
+    "morgana":"Black shield lets you fish R aggressively; don’t waste R when E is down."
+  },
+  "vayne": {
+    "lulu":"Scale & peel—avoid early 2v2 unless jungler is near. Save condemn for divers.",
+    "taric":"Dive denial—communicate R timing; bait cooldowns then re-engage.",
+    "alistar":"Peel + engage—don’t tumble forward before headbutt/pulverize is shown."
+  },
+  "smolder": {
+    "lulu":"Safe scaling poke. Use W→Q tags; call polymorph on divers then kite and stack Q.",
+    "milio":"Long lane trades; abuse extended fights with heals. Keep E to dodge 2nd engage.",
+    "rakan":"Pick/peel hybrid—follow only on clean W; otherwise play for counter-engage.",
+    "nautilus":"If engage, respect CC layers—save E for second dash, not the hook.",
+    "renata":"Great anti-dive—kite back until R or W bait triggers, then turn with R burst."
+  },
+  "zeri": {
+    "lulu":"MS+shield chain—play wide angles; save E to escape, not to start.",
+    "milio":"Siege lanes; don’t flip all-ins—R to cleanse and re-kite.",
+    "braum":"Front-to-back; kite through Braum wall timings."
+  }
+};
+
+// General, ADC-agnostic support tips (always useful)
+const GENERAL_SUPPORT_TIPS = [
+  "Track enemy engage CDs (Naut Q, Leona E/R, Rell W/R). Play up *only* when these are down.",
+  "Fight on your support’s spikes (lvl2 for engage, lvl3 for poke, 6 for most). No spike? Trim wave and ward.",
+  "Ping what you need: *Peel me*, *Shield me*, or *Go on X*. Clear calls → cleaner fights.",
+  "Don’t overlap peel: one tool per dive (e.g., Lulu W **or** Thresh Flay), then kite.",
+  "Set wave state for your support: heavy push for poke lanes; slow push then crash for engage lanes."
+];
+
 // ---------- Ability-level tips ----------
 function abilityTipFromTemplates(adcName, threats){
   const k = normalizeADCKey(adcName);
@@ -1660,6 +1731,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
