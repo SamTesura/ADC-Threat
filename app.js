@@ -1,5 +1,5 @@
 
-/* ADC Threat Lookup — 25.16
+/* ADC Threat Lookup — 25.20
    (ADD-ONLY patch)
    - Fix portraits/passives for Ambessa, Fiddle, LeBlanc, Mel, Yunara
    - Add Sivir coverage (builder side) + appears in search
@@ -53,7 +53,6 @@ const THREAT_LABEL = {
 let CHAMPIONS = [];
 let CURRENT_ADC = null;
 let ADC_OVERRIDES = null;
-let CURRENT_SUPPORT = null;
 // Optional per-ADC overrides are disabled by default to avoid 404s.
 // If you later add files like adc_overrides_Ashe_25.16.json, you can re-enable fetch.
 async function loadOverridesFor(_adcName){
@@ -368,79 +367,8 @@ const ADC_TEMPLATES = {
   "Zeri":       { [T.HARD_CC]:"Hard CC ends you—keep E/Flash.", [T.SOFT_CC]:"E terrain after slows.", [T.SHIELD_PEEL]:"Disengage then re-enter.", [T.GAP_CLOSE]:"Punish post-dash.", [T.BURST]:"Short trades; scale MS.", [T.POKE_ZONE]:"Zap poke; don’t overstay." },
   "Aphelios":   { [T.HARD_CC]:"Immobile—perfect position; keep sums.", [T.SOFT_CC]:"Gravitum peel vs slows.", [T.SHIELD_PEEL]:"Swap target when shield pops.", [T.GAP_CLOSE]:"Respect dives; Gravitum ready.", [T.BURST]:"Short trades.", [T.POKE_ZONE]:"Infernum safe poke." },
   "Yunara":     { [T.HARD_CC]:"Don’t burn dash/Flash for poke.", [T.SOFT_CC]:"Pre-move; avoid slow chains before you commit to DPS.",[T.SHIELD_PEEL]:"Bait peel first—kite out then re-enter with uptime.",[T.GAP_CLOSE]:"Kite back early; keep escape held for second engage.",[T.BURST]:"Short trades only.",[T.POKE_ZONE]:"Farm safely; don’t sit in zones to stack trades."},
-  "Smolder":    { [T.HARD_CC]:"Hard CC ends you—hold Flash/E for engage windows; don’t R into ready stuns.",[T.SOFT_CC]:"Pre-move on slows; trade max-range with W→Q and disengage if chainable.",[T.SHIELD_PEEL]:"Poke shields off first (W→Q) or swap target; commit only after peel is down.",[T.GAP_CLOSE]:"Kite back; save E for the second engage, not the first dash.",[T.BURST]:"Short trades around Q procs; respect assassin timers and keep sums for dive.",[T.POKE_ZONE]:"Stack Q through CS; tag with W then Q—don’t stand in zones to finish stacks."}
+  "Smolder":    { [T.HARD_CC]:"Hard CC ends you—hold Flash/E for engage windows; don’t R into ready stuns.", [T.SOFT_CC]: "Pre-move on slows; trade max-range with W→Q and disengage if chainable.", [T.SHIELD_PEEL]:"Poke shields off first (W→Q) or swap target; commit only after peel is down.",[T.GAP_CLOSE]:"Kite back; save E for the second engage, not the first dash.",[T.BURST]:"Short trades around Q procs; respect assassin timers and keep sums for dive.",[T.POKE_ZONE]:"Stack Q through CS; tag with W then Q—don’t stand in zones to finish stacks."}
 };
-
-// Normalizer for support names
-function normalizeSupportKey(name=""){ return name.replace(/['’\s.-]/g,"").toLowerCase(); }
-
-// Per-ADC support synergy (short, actionable)
-const SUPPORT_TEMPLATES = {
-  // Examples shown for popular ADCs; extend as you like.
-  "kogmaw": {
-    "lulu":"Premium lane+team peel. Play for W uptime; call polymorph on divers then free-fire.",
-    "milio":"Long trades; abuse enchant+range. Position behind frontline; R cleanses key CC for you.",
-    "janna":"Play safe push; bait engage then re-enter after Q/R. Don’t step past tornado line.",
-    "renata":"Greedier front-to-back. Save sums; W+R flips dives—kite until they overcommit.",
-    "braum":"Weaker lane, strong peel. Don’t overextend pre-6; fight around Braum passive."
-  },
-  "draven": {
-    "nautilus":"All-in lane. Stack wave 2–3, crash then fight on hook timers; don’t catch axes into counter-engage.",
-    "pyke":"Kill pressure—track sums and fog angles. Don’t overchase through minions; conserve E for reset.",
-    "leona":"Chain CC—call targets. If her W/E down, slow the lane.",
-    "rakan":"Tempo roam windows—ping when W/R up; hold E to follow his engage."
-  },
-  "jinx": {
-    "thresh":"Lantern discipline. Play two screens up only with lantern known; chompers where hook lands.",
-    "leona":"Level 2–3 kills. Don’t rocket into wave; place chompers to cut escape lines.",
-    "milio":"Siege and scale. Poke, don’t all-in; save R to cleanse pick tools."
-  },
-  "ashe": {
-    "hecarim": "If jungle support or roam—set up arrows from fog and force bot prio to unlock plays.",
-    "rakan":   "Pick tools layered—Ashe R → W knockup. Don’t overlap engages."
-  },
-  "lucian": {
-    "nami":"Classic burst lane. Sync E+Tidecaller slow for double proc; short trades then back out.",
-    "milio":"Similar pattern; longer trades okay—dash discipline.",
-    "braum":"Level 2 spike—stack passive fast; don’t dash in if Braum is not in range."
-  },
-  "kaisa": {
-    "rell":"Hard engage. Ping when you have R marks; follow only after pull lands.",
-    "nautilus":"All-in picks—respect counterganks; farm under vision then turn.",
-    "morgana":"Play for W poke/black shield windows; take greedy Ws when E is up."
-  },
-  "varus": {
-    "lux":"Poke lane—sync Qs; after R root, layer snares, then full channel Q.",
-    "karma":"Shove+harass; don’t eat ganks—ward river deep.",
-    "morgana":"Black shield lets you fish R aggressively; don’t waste R when E is down."
-  },
-  "vayne": {
-    "lulu":"Scale & peel—avoid early 2v2 unless jungler is near. Save condemn for divers.",
-    "taric":"Dive denial—communicate R timing; bait cooldowns then re-engage.",
-    "alistar":"Peel + engage—don’t tumble forward before headbutt/pulverize is shown."
-  },
-  "smolder": {
-    "lulu":"Safe scaling poke. Use W→Q tags; call polymorph on divers then kite and stack Q.",
-    "milio":"Long lane trades; abuse extended fights with heals. Keep E to dodge 2nd engage.",
-    "rakan":"Pick/peel hybrid—follow only on clean W; otherwise play for counter-engage.",
-    "nautilus":"If engage, respect CC layers—save E for second dash, not the hook.",
-    "renata":"Great anti-dive—kite back until R or W bait triggers, then turn with R burst."
-  },
-  "zeri": {
-    "lulu":"MS+shield chain—play wide angles; save E to escape, not to start.",
-    "milio":"Siege lanes; don’t flip all-ins—R to cleanse and re-kite.",
-    "braum":"Front-to-back; kite through Braum wall timings."
-  }
-};
-
-// General, ADC-agnostic support tips (always useful)
-const GENERAL_SUPPORT_TIPS = [
-  "Track enemy engage CDs (Naut Q, Leona E/R, Rell W/R). Play up *only* when these are down.",
-  "Fight on your support’s spikes (lvl2 for engage, lvl3 for poke, 6 for most). No spike? Trim wave and ward.",
-  "Ping what you need: *Peel me*, *Shield me*, or *Go on X*. Clear calls → cleaner fights.",
-  "Don’t overlap peel: one tool per dive (e.g., Lulu W **or** Thresh Flay), then kite.",
-  "Set wave state for your support: heavy push for poke lanes; slow push then crash for engage lanes."
-];
 
 // ---------- Ability-level tips ----------
 function abilityTipFromTemplates(adcName, threats){
@@ -478,31 +406,6 @@ function briefPassiveForADC(champ){
   return PASSIVE_OVERRIDES[champ.slug||champ.name] || "—";
 }
 
-function getSynergyNote(adcName, supportName, threatsUnion=[]){
-  if(!adcName || !supportName) return "";
-  const a = normalizeADCKey(adcName);
-  const s = normalizeSupportKey(supportName);
-  const map = SUPPORT_TEMPLATES[a];
-  if (!map) return ""; // fallback if adc not mapped yet
-  // try exact name first; also try common aliases
-  const direct = map[s];
-  if (direct) return direct;
-
-  // Light aliasing for supports with punctuation/variants
-  const aliases = {
-    "blitzcrank":["blitz"],
-    "nautilus":["naut"],
-    "morgana":["morg"],
-    "renataglasc":["renata"],
-    "tahmkench":["tahm","tk"],
-  };
-  for(const [canon, arr] of Object.entries(aliases)){
-    if (s===canon || arr.includes(s)) return map[canon] || map[s] || "";
-  }
-
-  return "";
-}
-
 // ---------- ADC picker ----------
 function buildAdcGrid(){
   const grid = qs("#adcGrid");
@@ -536,10 +439,7 @@ function lockTeamUI(locked){
 function makeSearchCell(team){
   const wrap = document.createElement("div");
   wrap.className = "search";
-  const ph = team==='enemy' ? "Enemy champion..." :
-             team==='ally'  ? "Ally champion..."  :
-                               "Your Support (ally)…";
-  wrap.innerHTML = `<input type="text" placeholder="${ph}" autocomplete="off"/><div class="suggestions"></div>`;
+  wrap.innerHTML = `<input type="text" placeholder="${team==='enemy'?'Enemy':'Ally'} champion..." autocomplete="off"/><div class="suggestions"></div>`;
   const input = wrap.querySelector("input");
   const sug = wrap.querySelector(".suggestions");
 
@@ -555,27 +455,21 @@ function makeSearchCell(team){
     </button>`).join("");
     sug.classList.add("show");
   });
-
-  const commit = (name)=>{
-    input.value = name; 
-    sug.classList.remove("show");
-    if (team === "support") CURRENT_SUPPORT = name;
-    render();
-  };
   sug.addEventListener("click",e=>{
     const btn = e.target.closest("button"); if(!btn) return;
-    commit(btn.dataset.name);
+    input.value = btn.dataset.name; sug.classList.remove("show");
+    render();
   });
   input.addEventListener("keydown",(e)=>{
     if(e.key==="Enter"){
       e.preventDefault();
       if(!CURRENT_ADC) return;
-      commit(input.value.trim());
+      sug.classList.remove("show");
+      render();
     }
   });
   return {wrap,input};
 }
-
 function buildSearchInputs(){
   const enemyInputsEl = qs("#enemyInputs");
   const allyInputsEl  = qs("#allyInputs");
@@ -583,14 +477,6 @@ function buildSearchInputs(){
   const allySlots  = Array.from({length:4},()=>makeSearchCell("ally"));
   enemySlots.forEach(s=>enemyInputsEl.appendChild(s.wrap));
   allySlots.forEach(s=>allyInputsEl.appendChild(s.wrap));
-
-  // NEW: Your Support (single, dedicated)
-  const supportTitle = document.createElement("div");
-  supportTitle.className = "search-title";
-  supportTitle.textContent = "Your Support";
-  const supportSlot = makeSearchCell("support");
-  allyInputsEl.appendChild(supportTitle);
-  allyInputsEl.appendChild(supportSlot.wrap);
 }
 
 // ---------- Rendering ----------
@@ -623,7 +509,7 @@ function threatTagsUnion(abilities){
   return union.map(t => `<span class="tag ${tagToClass(t)}">${THREAT_LABEL[t]||t}</span>`).join("");
 }
 
-function renderGroupRow(label, cols=8){ // was 7
+function renderGroupRow(label, cols=7){
   return `<tr class="row" style="background:transparent;border:0">
     <td colspan="${cols}" style="color:var(--gold);text-transform:uppercase;font-weight:700;padding:2px 6px">${label}</td>
   </tr>`;
@@ -635,11 +521,7 @@ function renderChampRow(group, champ){
   const union = (abilities||[]).flatMap(a=>a.threat||[]);
   const adcNote = ov?.note || adcNoteFromTemplates(CURRENT_ADC, union);
 
-  // NEW: synergy text only if this is your selected support
-  const isSupportRow = group==="ALLY" && CURRENT_SUPPORT && champ.name.toLowerCase() === CURRENT_SUPPORT.toLowerCase();
-  const synergy = isSupportRow ? getSynergyNote(CURRENT_ADC, champ.name, union) : "";
-
-  return `<tr class="row">
+   return `<tr class="row">
     <td class="group">${group}</td>
     <td class="champ">
       <div class="cell-champ">
@@ -651,39 +533,8 @@ function renderChampRow(group, champ){
     <td class="passive">${briefPassiveForADC(champ)}</td>
     <td class="abilities"><div class="ability-pills">${abilityPills(abilities, champ)}</div></td>
     <td class="threats"><div class="tags-mini">${threatTagsUnion(abilities)}</div></td>
-    <td class="synergy">${synergy||""}</td>
     <td class="notes">${adcNote||""}</td>
   </tr>`;
-}
-
-function render(){
-  const locked = !CURRENT_ADC;
-  lockTeamUI(locked);
-
-  const {enemies, allies} = readTeamSelection();
-  tbody.innerHTML = "";
-  if (locked || (enemies.length+allies.length===0 && !CURRENT_SUPPORT)){ 
-    emptyState.style.display="block"; 
-    return; 
-  }
-  emptyState.style.display="none";
-
-  if(enemies.length){ 
-    tbody.insertAdjacentHTML("beforeend", renderGroupRow("Enemy Team")); 
-    enemies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ENEMY", c))); 
-  }
-
-  // NEW: General support tips (shown if a support is selected)
-  if (CURRENT_SUPPORT){
-    const tipHTML = `<ul class="tips">${GENERAL_SUPPORT_TIPS.map(t=>`<li>${t}</li>`).join("")}</ul>`;
-    tbody.insertAdjacentHTML("beforeend", renderGroupRow("General Support Tips", 8));
-    tbody.insertAdjacentHTML("beforeend", `<tr class="row"><td colspan="8">${tipHTML}</td></tr>`);
-  }
-
-  if(allies.length){ 
-    tbody.insertAdjacentHTML("beforeend", renderGroupRow("Allied Team", 8)); 
-    allies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ALLY", c))); 
-  }
 }
 
 function readTeamSelection(){
@@ -1791,16 +1642,3 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
-
-
-
-
-
-
-
-
-
-
-
-
-
