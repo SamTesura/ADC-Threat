@@ -527,7 +527,7 @@ function threatTagsUnion(abilities){
   return union.map(t => `<span class="tag ${tagToClass(t)}">${THREAT_LABEL[t]||t}</span>`).join("");
 }
 
-function renderGroupRow(label, cols=7){
+function renderGroupRow(label, cols=8){ // was 7
   return `<tr class="row" style="background:transparent;border:0">
     <td colspan="${cols}" style="color:var(--gold);text-transform:uppercase;font-weight:700;padding:2px 6px">${label}</td>
   </tr>`;
@@ -1660,6 +1660,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
