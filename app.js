@@ -656,6 +656,36 @@ function renderChampRow(group, champ){
   </tr>`;
 }
 
+function render(){
+  const locked = !CURRENT_ADC;
+  lockTeamUI(locked);
+
+  const {enemies, allies} = readTeamSelection();
+  tbody.innerHTML = "";
+  if (locked || (enemies.length+allies.length===0 && !CURRENT_SUPPORT)){ 
+    emptyState.style.display="block"; 
+    return; 
+  }
+  emptyState.style.display="none";
+
+  if(enemies.length){ 
+    tbody.insertAdjacentHTML("beforeend", renderGroupRow("Enemy Team")); 
+    enemies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ENEMY", c))); 
+  }
+
+  // NEW: General support tips (shown if a support is selected)
+  if (CURRENT_SUPPORT){
+    const tipHTML = `<ul class="tips">${GENERAL_SUPPORT_TIPS.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+    tbody.insertAdjacentHTML("beforeend", renderGroupRow("General Support Tips", 8));
+    tbody.insertAdjacentHTML("beforeend", `<tr class="row"><td colspan="8">${tipHTML}</td></tr>`);
+  }
+
+  if(allies.length){ 
+    tbody.insertAdjacentHTML("beforeend", renderGroupRow("Allied Team", 8)); 
+    allies.forEach(c=>tbody.insertAdjacentHTML("beforeend", renderChampRow("ALLY", c))); 
+  }
+}
+
 function readTeamSelection(){
   const grab = sel => [...document.querySelectorAll(`${sel} .search input`)]
     .map(i=>i.value.trim().toLowerCase()).filter(Boolean);
@@ -1761,6 +1791,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
