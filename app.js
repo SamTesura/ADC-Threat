@@ -53,6 +53,7 @@ const THREAT_LABEL = {
 let CHAMPIONS = [];
 let CURRENT_ADC = null;
 let ADC_OVERRIDES = null;
+let CURRENT_SUPPORT = null;
 // Optional per-ADC overrides are disabled by default to avoid 404s.
 // If you later add files like adc_overrides_Ashe_25.16.json, you can re-enable fetch.
 async function loadOverridesFor(_adcName){
@@ -439,7 +440,10 @@ function lockTeamUI(locked){
 function makeSearchCell(team){
   const wrap = document.createElement("div");
   wrap.className = "search";
-  wrap.innerHTML = `<input type="text" placeholder="${team==='enemy'?'Enemy':'Ally'} champion..." autocomplete="off"/><div class="suggestions"></div>`;
+  const ph = team==='enemy' ? "Enemy champion..." :
+             team==='ally'  ? "Ally champion..."  :
+                               "Your Support (ally)…";
+  wrap.innerHTML = `<input type="text" placeholder="${ph}" autocomplete="off"/><div class="suggestions"></div>`;
   const input = wrap.querySelector("input");
   const sug = wrap.querySelector(".suggestions");
 
@@ -455,21 +459,27 @@ function makeSearchCell(team){
     </button>`).join("");
     sug.classList.add("show");
   });
+
+  const commit = (name)=>{
+    input.value = name; 
+    sug.classList.remove("show");
+    if (team === "support") CURRENT_SUPPORT = name;
+    render();
+  };
   sug.addEventListener("click",e=>{
     const btn = e.target.closest("button"); if(!btn) return;
-    input.value = btn.dataset.name; sug.classList.remove("show");
-    render();
+    commit(btn.dataset.name);
   });
   input.addEventListener("keydown",(e)=>{
     if(e.key==="Enter"){
       e.preventDefault();
       if(!CURRENT_ADC) return;
-      sug.classList.remove("show");
-      render();
+      commit(input.value.trim());
     }
   });
   return {wrap,input};
 }
+
 function buildSearchInputs(){
   const enemyInputsEl = qs("#enemyInputs");
   const allyInputsEl  = qs("#allyInputs");
@@ -477,6 +487,14 @@ function buildSearchInputs(){
   const allySlots  = Array.from({length:4},()=>makeSearchCell("ally"));
   enemySlots.forEach(s=>enemyInputsEl.appendChild(s.wrap));
   allySlots.forEach(s=>allyInputsEl.appendChild(s.wrap));
+
+  // NEW: Your Support (single, dedicated)
+  const supportTitle = document.createElement("div");
+  supportTitle.className = "search-title";
+  supportTitle.textContent = "Your Support";
+  const supportSlot = makeSearchCell("support");
+  allyInputsEl.appendChild(supportTitle);
+  allyInputsEl.appendChild(supportSlot.wrap);
 }
 
 // ---------- Rendering ----------
@@ -1642,6 +1660,7 @@ if (compactToggle) {
 
 // Go!
 loadChampions();
+
 
 
 
