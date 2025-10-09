@@ -92,6 +92,10 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 .row{border-radius:12px;overflow:hidden}
 .cell-champ{display:flex;gap:10px;align-items:center}
 .portrait-sm{width:32px;height:32px;border-radius:8px;border:1px solid #333;object-fit:cover;background:#0b0f14}
+td.synergy { max-width: 360px; }
+ul.tips{ margin:8px 0 0 16px; }
+ul.tips li{ margin:2px 0; }
+
 
 /* Ability pills — CC first */
 .ability-pills{display:flex;flex-wrap:wrap;gap:6px}
@@ -152,6 +156,7 @@ body.compact-mode .pill .cds{font-size:11px}
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
 }
+
 
 
 
