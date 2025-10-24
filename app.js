@@ -4,7 +4,7 @@
 // CONFIGURATION & CONSTANTS
 // ============================================================================
 const DDRAGON_VERSION = "14.14.1";
-const DATA_URL = "./champions-summary.json";
+const DATA_URL = "/champions-summary.json";
 
 const MAX_ENEMIES = 5;
 const MAX_ALLIES = 4;
