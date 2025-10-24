@@ -114,7 +114,7 @@
     <!-- Step 1: ADC picker (required) -->
     <section class="adc-select-panel" id="adcPanel">
       <h2>Choose your ADC</h2>
-      <p class="muted">You can’t search champions until you pick your ADC.</p>
+      <p class="muted">You can't search champions until you pick your ADC.</p>
       <div id="adcGrid" class="adc-grid"></div>
     </section>
 
@@ -125,6 +125,33 @@
         <p>Select your marksman above to enable champion search.</p>
       </div>
     </div>
+
+    <!-- General Support Tips Section -->
+    <section class="support-tips-section" id="supportTipsSection" style="display:none;">
+      <h2>🛡️ General Support Tips for <span id="currentAdcName"></span></h2>
+      <div class="support-tips-grid">
+        <div class="tip-card">
+          <h3>🎯 Positioning</h3>
+          <p id="positioningTip"></p>
+        </div>
+        <div class="tip-card">
+          <h3>⚡ Trading Windows</h3>
+          <p id="tradingTip"></p>
+        </div>
+        <div class="tip-card">
+          <h3>🔄 Wave Management</h3>
+          <p id="waveTip"></p>
+        </div>
+        <div class="tip-card">
+          <h3>🎪 All-In Timing</h3>
+          <p id="allinTip"></p>
+        </div>
+      </div>
+      <div class="best-supports-section">
+        <h3>✨ Best Support Synergies</h3>
+        <div id="bestSupportsGrid" class="best-supports-grid"></div>
+      </div>
+    </section>
 
     <!-- Step 2: team inputs -->
     <section class="team">
@@ -150,6 +177,7 @@
               <th class="abilities">Abilities • CDs • CC</th>
               <th class="threats">CC & Tags</th>
               <th class="notes">ADC Tip</th>
+              <th class="support-synergy">Support Synergy</th>
             </tr>
           </thead>
           <tbody id="resultsBody"></tbody>
@@ -194,4 +222,3 @@
   <script src="./build-from-cdragon.js"></script>
 </body>
 </html>
-
