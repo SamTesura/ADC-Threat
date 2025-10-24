@@ -1,201 +1,327 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- SEO -->
-  <title>ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes</title>
-  <meta name="description" content="Real-time bot lane cooldowns, hard CC windows, and matchup notes for ADC mains. Optimized for any ADC. Gold-on-dark, clean, fast.">
-  
-  <!-- 
-    Favicons: Made paths relative for portability. 
-    Assuming an 'icons' folder exists in the same directory.
-  -->
-  <link rel="icon" href="./icons/favicon.ico" sizes="32x32">
-  <link rel="icon" href="./icons/favicon-192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="./icons/apple-touch-180.png">
-  <link rel="manifest" href="./site.webmanifest">
-  <meta name="theme-color" content="#0B0B0F">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes">
-  <meta property="og:description" content="Quick-reference bot lane cooldowns, burst windows, and CC threats. Built for ADC mains.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content=""> <!-- Removed hardcoded URL for portability -->
-  <meta property="og:image" content="./icons/og-image.png"> <!-- Assuming an OG image exists -->
-  
-  <!-- 
-    STYLES: Renamed to 'styles.css'
-  -->
-  <link rel="stylesheet" href="./styles.css">
-  
-  <!-- 
-    FONTS: Added Google Fonts for a cleaner look.
-    Using 'Inter' for UI and 'Roboto Mono' for cooldowns.
-  -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+:root{
+  --bg:#0b0f14; --panel:#0f141b; --panel-2:#0c1117; --panel-3:#0a0f15;
+  --gold:#c8aa6e; --gold-2:#9c7c4a; --text:#e5e9f0; --muted:#9aa4b2; --border:#1b2430;
 
-</head>
-<body>
+  /* Threat palette (CC first) */
+  --hard:#e53e3e;   /* Hard CC (displacements/airborne, etc.) */
+  --soft:#f6e05e;   /* Soft CC (Cleanse/QSS removable) */
+  --peel:#ed8936;   /* Shields, DR, cleanse ults */
+  --gap:#2f855a;    /* Dashes, lunges, teleports to target */
+  --burst:#805ad5;  /* Executes, nukes, big ults */
+  --poke:#3182ce;   /* Zoning, turrets, AoE fields */
 
-  <!-- Viewport-Fit Wrapper -->
-  <div class="viewport-fit">
+  --cleanse:#68d391; /* Badge for cleanseable (soft) CC */
+  --radius:14px; --shadow:0 10px 26px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;background:radial-gradient(1200px 800px at 10% -10%, #101826 0%, #0b0f14 55%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,sans-serif}
 
-    <!-- HEADER: Contains champion selection inputs -->
-    <header class="site-header">
-      <div classs="header-left">
-        <h1>ADC Threat Analysis</h1>
-        <p class="tagline">Botlane Cooldowns, CC Threats & Matchup Notes</p>
-      </div>
-      
-      <!-- Champion Inputs -->
-      <div class="inputs-grid">
-        <section class="input-section" aria-labelledby="enemy-team-heading">
-          <h2 id="enemy-team-heading" class="section-title">Enemy Team</h2>
-          <div id="enemyInputs" class="input-group">
-            <!-- Enemy inputs will be injected here by app.js -->
-          </div>
-        </section>
-        
-        <section class="input-section" aria-labelledby="ally-team-heading">
-          <h2 id="ally-team-heading" class="section-title">Ally Team</h2>
-          <div id="allyInputs" class="input-group">
-            <!-- Ally inputs will be injected here by app.js -->
-          </div>
-        </section>
-      </div>
-    </header>
+/* Header */
+.site-header{padding:12px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg, rgba(11,15,20,.95), rgba(11,15,20,.80));backdrop-filter: blur(5px)}
+.brand{display:flex;gap:12px;align-items:center}
+.brand-logo{width:28px;opacity:.9;filter:invert(100%) saturate(0%) brightness(200%)}
+h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:uppercase}
+.tagline{margin:2px 0 0;color:var(--muted);font-size:16px}
 
-    <!-- MAIN CONTENT -->
-    <main class="site-main">
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.legend .sep{opacity:.35;margin:0 6px}
+.tag{border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:11px;background:var(--panel)}
+.tag.hard{background:var(--hard);color:#fff}
+.tag.soft{background: var(--soft);color: #111}
+.tag.peel{background:var(--peel);color:#fff}
+.tag.gap{background:var(--gap);color:#fff}
+.tag.burst{background:var(--burst);color:#fff}
+.tag.poke{background:var(--poke);color:#fff}
+.badge.cleanse{background:var(--cleanse);color:#0b0f14;border-radius:10px;padding:1px 6px;font-size:11px;border:1px solid #2c6f3e}
 
-      <!-- 
-        NEW SECTION: ADC SELECTOR
-        This section was missing from the original HTML.
-      -->
-      <section class="adc-selector-wrap" aria-labelledby="adc-select-heading">
-        <div class="section-header">
-          <h2 id="adc-select-heading" class="section-title">1. Select Your ADC</h2>
-          <p>Get specific synergy tips and matchup advice.</p>
-        </div>
-        <div id="adcGrid" class="adc-grid">
-          <!-- ADC champion portraits will be injected here by app.js -->
-        </div>
-      </section>
+/* Toggles */
+.view-toggles{margin-top:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.switch-compact{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.switch-compact input{accent-color:var(--gold)}
 
-      <!-- 
-        NEW SECTION: SUPPORT SYNERGIES
-        This entire container was missing from the original HTML.
-        It will be populated by app.js based on ADC selection.
-      -->
-      <div id="supportTipsContainer" class="support-tips-container" style="display: none;">
-        <section class="support-synergy-section" aria-labelledby="good-synergy-heading">
-          <h3 id="good-synergy-heading" class="section-title good">Good Synergies</h3>
-          <div id="bestSupportsGrid" class_name="best-supports-grid">
-            <!-- Good synergy cards will be injected here -->
-          </div>
-        </section>
-        
-        <section class="support-synergy-section" aria-labelledby="bad-synergy-heading">
-          <h3 id="bad-synergy-heading" class="section-title bad">Difficult Synergies</h3>
-          <div id="supportTipsGrid" class="support-tips-grid">
-            <!-- Bad synergy cards will be injected here -->
-          </div>
-        </section>
-      </div>
+/* Layout */
+.viewport-fit{min-height:calc(100vh - 120px);display:grid;grid-template-rows:auto auto auto 1fr;gap:12px;padding:12px}
+.team h2,.results h2{margin:0 0 6px 0;color:var(--gold);font-size:14px;text-transform:uppercase;letter-spacing:.4px}
 
-      <!-- RESULTS TABLE -->
-      <section class="results-wrap" aria-labelledby="results-heading">
-        <div class="section-header">
-          <h2 id="results-heading" class="section-title">2. Threat Analysis</h2>
-          <div class="options-bar">
-            <!-- Global level slider -->
-            <div class="level-slider-wrap">
-              <label for="globalLevel">Global Level</label>
-              <input id="globalLevel" type="range" min="1" max="18" value="1" class="level-slider">
-              <span id="globalLevelValue" classs="level-value">1</span>
-            </div>
-            <!-- Compact mode toggle -->
-            <div class="toggle-wrap">
-              <input id="compactMode" type="checkbox" class="toggle">
-              <label for="compactMode">Compact Mode</label>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Table Wrapper for horizontal scrolling on mobile -->
-        <div class="table-wrap">
-          <table class="threat-table">
-            <thead>
-              <tr>
-                <th class="group">Team</th>
-                <th class="champ">Champion</th>
-                <th class="role">Role</th>
-                <th class="passive">Passive</th>
-                <th class="abilities">Abilities • Cooldowns • CC</th>
-                <th class="threats">Threat Tags</th>
-                <th class="notes">ADC Tip</th>
-              </tr>
-            </thead>
-            <tbody id="resultsBody">
-              <!-- Champion rows will be injected here by app.js -->
-            </tbody>
-          </table>
-          
-          <!-- Empty state, shown when no champions are selected -->
-          <div id="emptyState" class="empty">
-            <p><strong>No champions selected yet.</strong></p>
-            <p>Start typing champion names above to see their abilities, cooldowns, and CC threats.</p>
-          </div>
-        </div>
-      </section>
-      
-    </main>
+/* ADC picker */
+.adc-select-panel{border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);padding:12px}
+.adc-select-panel h2{margin:0 0 6px 0;color:var(--gold)}
+.adc-select-panel .muted{color:var(--muted);font-size:12px;margin:0 0 8px 0}
+.adc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.adc-card{position:relative;border:1px solid var(--border);border-radius:12px;background:var(--panel-3);overflow:hidden;cursor:pointer;transition:transform .12s ease, border-color .12s ease}
+.adc-card:hover{transform:translateY(-2px);border-color:#2b415f}
+.adc-card.selected{outline:2px solid var(--gold)}
+.adc-card img{width:100%;height:84px;object-fit:cover;display:block}
+.adc-card .label{position:absolute;left:6px;bottom:6px;background:rgba(255, 255, 255, 0.55);backdrop-filter:blur(4px);padding:2px 6px;border-radius:8px;font-size:12px}
 
-    <!-- FOOTER -->
-    <footer class="site-footer tight">
-      <div class="left">
-        <button id="exportData" class="btn btn-outline">Export JSON</button>
-        <input id="importFile" type="file" accept="application/json" hidden>
-        <button id="importData" class="btn btn-ghost">Import JSON</button>
-      </div>
-      <div class="right">
-        <!-- 
-          Patch version is now dynamic.
-          Added a link to the data-builder tool.
-        -->
-        <span id="patchVersion">Patch</span>
-        <span>•</span>
-        <a href="./build-from-cdragon.html" target="_blank" rel="noopener noreferrer">Data Builder</a>
-        <span>•</span>
-        <span>Images © Riot Games</span>
-      </div>
-    </footer>
+/* Inputs */
+.search-grid{display:grid;gap:8px}
+#enemyInputs{grid-template-columns:repeat(5,minmax(0,1fr))}
+#allyInputs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.search{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:6px;position:relative}
+.search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0b1117;color:#fff;font-size:13px}
+.suggestions{position:absolute;left:6px;right:6px;top:52px;background:#0b1117;border:1px solid var(--border);border-radius:12px;max-height:260px;overflow:auto;display:none;z-index:20}
+.suggestions.show{display:block}
+.suggestions button{width:100%;text-align:left;background:transparent;color:#fff;border:0;padding:10px 12px;cursor:pointer;font-size:13px}
+.suggestions button:hover{background:#101825}
 
-  </div> <!-- end .viewport-fit -->
+/* Lock overlay (until ADC is chosen) */
+.lock-overlay{position:relative}
+.lock-overlay::before{
+  content:"";position:absolute;inset:0;border-radius:14px;background:rgba(7,10,14,.55);backdrop-filter: blur(2px);z-index:4;display:none}
+.lock-overlay .lock-card{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;background:rgba(10,15,20,.9);border:1px solid var(--border);border-radius:12px;padding:10px 14px;text-align:center;max-width:320px}
+.lock-active .lock-overlay::before{display:block}
+.lock-active .lock-overlay .lock-card{display:block}
 
-  <!-- 
-    MODAL: For showing errors and messages.
-    This is a security and UX improvement over using alert().
-  -->
-  <div id="modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display: none;">
-    <div class="modal-content">
-      <h3 id="modalTitle" class="modal-title">Notification</h3>
-      <p id="modalMessage" class="modal-message">This is an error message.</p>
-      <button id="modalClose" class="btn btn-primary">Close</button>
-    </div>
-  </div>
+/* Table */
+.results-table{min-height:0}
+.table-wrap{height:100%;min-height:0;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);padding:8px;display:flex;flex-direction:column;overflow:hidden}
+.threat-table{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:12.5px;table-layout:fixed}
+.threat-table thead th{position:sticky;top:0;background:transparent;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:6px 8px}
+.threat-table tbody tr{background:#0b1117;border:1px solid var(--border)}
+.threat-table tbody tr td{padding:8px;vertical-align:top}
+.threat-table .group{width:74px;color:#cbd5e1}
+.threat-table .champ{width:200px}
+.threat-table .role{width:100px;color:#9aa4b2}
+.threat-table .passive{width:240px;color:#dbe2ea}
+.threat-table .abilities{width:auto}
+.threat-table .threats{width:140px}
+.threat-table .notes{width:280px;color:#dbe2ea}
+.row{border-radius:12px;overflow:hidden}
+.cell-champ{display:flex;gap:10px;align-items:center}
+.portrait-sm{width:32px;height:32px;border-radius:8px;border:1px solid #333;object-fit:cover;background:#0b0f14}
 
-  <!-- SCRIPTS -->
-  <!-- Data files first -->
-  <script src="./adc-list.js"></script>
-  <script src="./support-tips.js"></script> <!-- Added the missing file -->
-  <script src="./adc-templates.js"></script>
-  <!-- Main application logic last -->
-  <script src="./app.js"></script>
+/* Ability pills — CC first */
+.ability-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid #233044;background:#0a121d;border-radius:10px;padding:3px 8px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap;color:#e5e9f0}
+.pill b{font-weight:800;opacity:.95}
+.pill .cds{font-family:ui-monospace,Consolas,monospace;opacity:.95}
+.pill.hard { background: var(--hard);  color:#fff;  border-color:transparent;}
+.pill.soft { background: var(--soft);  color:#111; border-color:transparent;}
+.pill.peel { background: var(--peel);  color:#fff;  border-color:transparent;}
+.pill.gap  { background: var(--gap);   color:#fff;  border-color:transparent;}
+.pill.burst{ background: var(--burst); color:#fff;  border-color:transparent;}
+.pill.poke { background: var(--poke);  color:#fff;  border-color:transparent;}
+.pill .mini-badge.cleanse{background:var(--cleanse);color:#0b0f14;border:1px solid #2c6f3e;border-radius:7px;padding:0 6px;font-size:10px;line-height:16px}
+.pill .tlabel{font-size:10px;opacity:.9;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.12)}
+.pill.soft .tlabel{background:rgba(0,0,0,.08)}
 
-</body>
-</html>
+/* Threat chips — keep color (CC first) */
+.tags-mini{display:flex;flex-wrap:wrap;gap:4px}
+.tags-mini .tag{padding:2px 8px;font-size:10.5px;border-radius:999px;border:1px solid var(--border)}
+.tags-mini .tag.hard{background:var(--hard);color:#fff;border-color:transparent}
+.tags-mini .tag.soft{background:var(--soft);color:#111;border-color:transparent}
+.tags-mini .tag.peel{background:var(--peel);color:#fff;border-color:transparent}
+.tags-mini .tag.gap{background:var(--gap);color:#fff;border-color:transparent}
+.tags-mini .tag.burst{background:var(--burst);color:#fff;border-color:transparent}
+.tags-mini .tag.poke{background:var(--poke);color:#fff;border-color:transparent}
+
+/* Footer */
+.site-footer.tight{padding:10px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.btn{padding:9px 12px;border-radius:10px;border:1px solid var(--gold-2);background:transparent;color:#c8aa6e;cursor:pointer;font-size:12px}
+.btn-ghost{border-color:var(--border);color:var(--muted)}
+.btn-outline{border-color:var(--gold);color:var(--gold)}
+
+/* Compact mode */
+body.compact-mode .threat-table{font-size:11.5px}
+body.compact-mode .threat-table thead th{font-size:10px}
+body.compact-mode .notes{display:none}
+body.compact-mode .pill{padding:2px 6px}
+body.compact-mode .pill .cds{font-size:11px}
+
+/* Responsive */
+@media (max-width: 1200px){
+  .threat-table{table-layout:auto}
+  .threat-table .champ{width:180px}
+  .threat-table .role{width:84px}
+  .threat-table .passive{width:220px}
+  .threat-table .threats{width:120px}
+  .threat-table .notes{width:220px}
+}
+@media (max-width: 1024px){
+  #enemyInputs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .table-wrap{overflow:auto}
+  .threat-table{min-width:1120px} /* extra column */
+}
+@media (max-width: 700px){
+  #enemyInputs,#allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 520px){
+  #enemyInputs,#allyInputs{grid-template-columns:1fr}
+}
+:root{
+  --bg:#0b0f14; --panel:#0f141b; --panel-2:#0c1117; --panel-3:#0a0f15;
+  --gold:#c8aa6e; --gold-2:#9c7c4a; --text:#e5e9f0; --muted:#9aa4b2; --border:#1b2430;
+
+  /* Threat palette (CC first) */
+  --hard:#e53e3e;   /* Hard CC (displacements/airborne, etc.) */
+  --soft:#f6e05e;   /* Soft CC (Cleanse/QSS removable) */
+  --peel:#ed8936;   /* Shields, DR, cleanse ults */
+  --gap:#2f855a;    /* Dashes, lunges, teleports to target */
+  --burst:#805ad5;  /* Executes, nukes, big ults */
+  --poke:#3182ce;   /* Zoning, turrets, AoE fields */
+
+  --cleanse:#68d391; /* Badge for cleanseable (soft) CC */
+  --radius:14px; --shadow:0 10px 26px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;background:radial-gradient(1200px 800px at 10% -10%, #101826 0%, #0b0f14 55%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,sans-serif}
+
+/* Header */
+.site-header{padding:12px 16px;border-bottom:1px solid var(--border);background:linear-gradient(180deg, rgba(11,15,20,.95), rgba(11,15,20,.80));backdrop-filter: blur(5px)}
+.brand{display:flex;gap:12px;align-items:center}
+.brand-logo{width:28px;opacity:.9;filter:invert(100%) saturate(0%) brightness(200%)}
+h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:uppercase}
+.tagline{margin:2px 0 0;color:var(--muted);font-size:16px}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.legend .sep{opacity:.35;margin:0 6px}
+.tag{border:1px solid var(--border);padding:2px 8px;border-radius:999px;font-size:11px;background:var(--panel)}
+.tag.hard{background:var(--hard);color:#fff}
+.tag.soft{background: var(--soft);color: #111}
+.tag.peel{background:var(--peel);color:#fff}
+.tag.gap{background:var(--gap);color:#fff}
+.tag.burst{background:var(--burst);color:#fff}
+.tag.poke{background:var(--poke);color:#fff}
+.badge.cleanse{background:var(--cleanse);color:#0b0f14;border-radius:10px;padding:1px 6px;font-size:11px;border:1px solid #2c6f3e}
+
+/* Toggles */
+.view-toggles{margin-top:6px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.switch-compact{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.switch-compact input{accent-color:var(--gold)}
+
+/* Layout */
+.viewport-fit{min-height:calc(100vh - 120px);display:grid;grid-template-rows:auto auto auto 1fr;gap:12px;padding:12px}
+.team h2,.results h2{margin:0 0 6px 0;color:var(--gold);font-size:14px;text-transform:uppercase;letter-spacing:.4px}
+
+/* ADC picker */
+.adc-select-panel{border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);padding:12px}
+.adc-select-panel h2{margin:0 0 6px 0;color:var(--gold)}
+.adc-select-panel .muted{color:var(--muted);font-size:12px;margin:0 0 8px 0}
+.adc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.adc-card{position:relative;border:1px solid var(--border);border-radius:12px;background:var(--panel-3);overflow:hidden;cursor:pointer;transition:transform .12s ease, border-color .12s ease}
+.adc-card:hover{transform:translateY(-2px);border-color:#2b415f}
+.adc-card.selected{outline:2px solid var(--gold)}
+.adc-card img{width:100%;height:84px;object-fit:cover;display:block}
+.adc-card .label{position:absolute;left:6px;bottom:6px;background:rgba(255, 255, 255, 0.55);backdrop-filter:blur(4px);padding:2px 6px;border-radius:8px;font-size:12px}
+
+/* Support Tips Section */
+.support-tips-section{display:none;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.support-tips-section.show{display:block}
+.support-tips-section h2{margin:0 0 12px 0;color:var(--gold);font-size:16px;text-transform:uppercase;letter-spacing:.4px}
+
+.tip-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.tip-card{background:var(--panel-3);border:1px solid var(--border);border-radius:10px;padding:12px}
+.tip-card-title{display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--gold);font-size:13px;font-weight:600}
+.tip-card-text{color:var(--text);font-size:12px;line-height:1.5}
+
+.best-supports-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.support-card{background:var(--panel-3);border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px}
+.support-card img{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);object-fit:cover}
+.support-info{flex:1}
+.support-name{color:var(--text);font-size:13px;font-weight:600;margin-bottom:4px}
+.support-synergy{color:var(--muted);font-size:11px;line-height:1.4}
+
+/* Inputs */
+.search-grid{display:grid;gap:8px}
+#enemyInputs{grid-template-columns:repeat(5,minmax(0,1fr))}
+#allyInputs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.search{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:6px;position:relative}
+.search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0b1117;color:#fff;font-size:13px}
+.suggestions{position:absolute;left:6px;right:6px;top:52px;background:#0b1117;border:1px solid var(--border);border-radius:12px;max-height:260px;overflow:auto;display:none;z-index:20}
+.suggestions.show{display:block}
+.suggestions button{width:100%;text-align:left;background:transparent;color:#fff;border:0;padding:10px 12px;cursor:pointer;font-size:13px}
+.suggestions button:hover{background:#101825}
+
+/* Lock overlay (until ADC is chosen) */
+.lock-overlay{position:relative}
+.lock-overlay::before{
+  content:"";position:absolute;inset:0;border-radius:14px;background:rgba(7,10,14,.55);backdrop-filter: blur(2px);z-index:4;display:none}
+.lock-overlay .lock-card{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;background:rgba(10,15,20,.9);border:1px solid var(--border);border-radius:12px;padding:10px 14px;text-align:center;max-width:320px}
+.lock-active .lock-overlay::before{display:block}
+.lock-active .lock-overlay .lock-card{display:block}
+
+/* Table */
+.results-table{min-height:0}
+.table-wrap{height:100%;min-height:0;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);padding:8px;display:flex;flex-direction:column;overflow:hidden}
+.threat-table{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:12.5px;table-layout:fixed}
+.threat-table thead th{position:sticky;top:0;background:transparent;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:6px 8px}
+.threat-table tbody tr{background:#0b1117;border:1px solid var(--border)}
+.threat-table tbody tr td{padding:8px;vertical-align:top}
+.threat-table .group{width:74px;color:#cbd5e1}
+.threat-table .champ{width:200px}
+.threat-table .role{width:100px;color:#9aa4b2}
+.threat-table .passive{width:240px;color:#dbe2ea}
+.threat-table .abilities{width:auto}
+.threat-table .threats{width:140px}
+.threat-table .notes{width:280px;color:#dbe2ea}
+.threat-table .synergy{width:260px;color:#dbe2ea}
+.row{border-radius:12px;overflow:hidden}
+.cell-champ{display:flex;gap:10px;align-items:center}
+.portrait-sm{width:32px;height:32px;border-radius:8px;border:1px solid #333;object-fit:cover;background:#0b0f14}
+
+/* Ability pills — CC first */
+.ability-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid #233044;background:#0a121d;border-radius:10px;padding:3px 8px;display:inline-flex;gap:8px;align-items:center;white-space:nowrap;color:#e5e9f0}
+.pill b{font-weight:800;opacity:.95}
+.pill .cds{font-family:ui-monospace,Consolas,monospace;opacity:.95}
+.pill.hard { background: var(--hard);  color:#fff;  border-color:transparent;}
+.pill.soft { background: var(--soft);  color:#111; border-color:transparent;}
+.pill.peel { background: var(--peel);  color:#fff;  border-color:transparent;}
+.pill.gap  { background: var(--gap);   color:#fff;  border-color:transparent;}
+.pill.burst{ background: var(--burst); color:#fff;  border-color:transparent;}
+.pill.poke { background: var(--poke);  color:#fff;  border-color:transparent;}
+.pill .mini-badge.cleanse{background:var(--cleanse);color:#0b0f14;border:1px solid #2c6f3e;border-radius:7px;padding:0 6px;font-size:10px;line-height:16px}
+.pill .tlabel{font-size:10px;opacity:.9;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.12)}
+.pill.soft .tlabel{background:rgba(0,0,0,.08)}
+
+/* Threat chips — keep color (CC first) */
+.tags-mini{display:flex;flex-wrap:wrap;gap:4px}
+.tags-mini .tag{padding:2px 8px;font-size:10.5px;border-radius:999px;border:1px solid var(--border)}
+.tags-mini .tag.hard{background:var(--hard);color:#fff;border-color:transparent}
+.tags-mini .tag.soft{background:var(--soft);color:#111;border-color:transparent}
+.tags-mini .tag.peel{background:var(--peel);color:#fff;border-color:transparent}
+.tags-mini .tag.gap{background:var(--gap);color:#fff;border-color:transparent}
+.tags-mini .tag.burst{background:var(--burst);color:#fff;border-color:transparent}
+.tags-mini .tag.poke{background:var(--poke);color:#fff;border-color:transparent}
+
+/* Footer */
+.site-footer.tight{padding:10px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.btn{padding:9px 12px;border-radius:10px;border:1px solid var(--gold-2);background:transparent;color:#c8aa6e;cursor:pointer;font-size:12px}
+.btn-ghost{border-color:var(--border);color:var(--muted)}
+.btn-outline{border-color:var(--gold);color:var(--gold)}
+
+/* Compact mode */
+body.compact-mode .threat-table{font-size:11.5px}
+body.compact-mode .threat-table thead th{font-size:10px}
+body.compact-mode .notes{display:none}
+body.compact-mode .pill{padding:2px 6px}
+body.compact-mode .pill .cds{font-size:11px}
+
+/* Responsive */
+@media (max-width: 1200px){
+  .threat-table{table-layout:auto}
+  .threat-table .champ{width:180px}
+  .threat-table .role{width:84px}
+  .threat-table .passive{width:220px}
+  .threat-table .threats{width:120px}
+  .threat-table .notes{width:220px}
+  .threat-table .synergy{width:220px}
+}
+@media (max-width: 1024px){
+  #enemyInputs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .table-wrap{overflow:auto}
+  .threat-table{min-width:1280px}
+}
+@media (max-width: 700px){
+  #enemyInputs,#allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tip-cards{grid-template-columns:1fr}
+  .best-supports-grid{grid-template-columns:1fr}
+}
+@media (max-width: 520px){
+  #enemyInputs,#allyInputs{grid-template-columns:1fr}
+}
