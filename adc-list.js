@@ -17,7 +17,7 @@ const ADC_LIST = [
   { name: "Sivir", image: "img/sivir.png" },
   { name: "Lucian", image: "img/lucian.png" },
   { name: "Samira", image: "img/samira.png" },
-  { name:Vayne", image: "img/vayne.png" },
+  { name: "Vayne", image: "img/vayne.png" },
   { name: "Draven", image: "img/draven.png" },
   { name: "Varus", image: "img/varus.png" },
   { name: "Zeri", image: "img/zeri.png" },
