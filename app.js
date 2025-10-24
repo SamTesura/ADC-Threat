@@ -6,6 +6,7 @@
    - Adds rendering logic for macro/synergy tips (if #macroSection exists).
    - Preserves original structure, functions, CSS compatibility.
 */
+'use strict';
 // ============================================================================
 // CONFIGURATION & CONSTANTS (Mostly unchanged)
 // ============================================================================
