@@ -779,7 +779,7 @@ const ADC_LIST = {
 			key: '110',
 			name: 'Varus',
 			title: 'the Arrow of Retribution',
-			tags: ['Marksman',A: 'Mage'],
+			tags: ['Marksman', 'Mage'],
 			stats: {
 				hp: 600,
 				hpperlevel: 105,
