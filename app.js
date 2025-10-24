@@ -1213,7 +1213,7 @@ function setupGlobalEventListeners() {
                  // Basic fallback? editorModal.style.display = 'block';
              }
         });
-        qs('#saveEditor')?.addEventListener('click', handleSaveEditor);
+
         // Cancel button uses form method="dialog" value="cancel"
     }
 }
@@ -1254,21 +1254,6 @@ function handleSaveEditor(event) {
           // Keep modal open on error
      }
 }
-
-// Placeholder/Handler for your CDragon build button
-function handleBuildCDragonClick() {
-    console.log("Build CDragon button clicked.");
-    // This button was likely intended to trigger the logic now inside build-from-cdragon.js
-    // If that file needs to run client-side (unlikely for a build script),
-    // ensure it defines a global function (e.g., `buildFromCDragon`)
-    // and call it here. Otherwise, this button might be redundant client-side.
-    if (typeof buildFromCDragon === 'function') {
-        buildFromCDragon(qs('#buildCDragon'));
-    } else {
-        showError("Build function not available in this context.");
-    }
-}
-
 
 // ============================================================================
 // IMPORT / EXPORT / UTILITIES (Adapted for your state/UI)
