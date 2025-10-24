@@ -105,7 +105,7 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 .threat-table .support-synergy{width:280px;}
 
 
-.row{border-radius:12px;overflow:hidden} /* Applied via border-radius on TD now */
+.row{/* border-radius:12px; *//* Removed - applied via TD */} /* overflow:hidden; */ /* Removed - applied via TD */
 .cell-champ{display:flex;gap:10px;align-items:center}
 .portrait-sm{width:32px;height:32px;border-radius:8px;border:1px solid #333;object-fit:cover;background:#0b0f14; flex-shrink: 0;} /* Added flex-shrink */
 
@@ -272,3 +272,68 @@ dialog#editorModal menu {
 .hidden {
     display: none !important;
 }
+
+/* Added: Macro Section Styling (if used) */
+.support-tips-container {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 12px; /* Match viewport-fit gap */
+ }
+
+ .support-synergy-section {
+     background: linear-gradient(180deg,var(--panel),var(--panel-2));
+     border: 1px solid var(--border);
+     border-radius: var(--radius);
+     padding: 12px; /* Match adc-select-panel padding */
+     box-shadow: var(--shadow);
+     min-height: 200px; /* Example min-height */
+ }
+
+ .support-synergy-section .section-title {
+     color: var(--gold);
+     font-size: 14px; /* Match team h2 */
+     text-transform: uppercase;
+     letter-spacing: .4px;
+     border-bottom: 1px solid var(--border);
+     padding-bottom: 6px;
+     margin-bottom: 12px; /* Spacing below title */
+ }
+
+ .support-tips-grid { /* Class used by createMacroCard for list */
+     display: flex;
+     flex-direction: column;
+     gap: 8px; /* Spacing between tip cards */
+ }
+
+ .tip-card { /* Class used by createMacroCard for list item */
+     display: flex;
+     align-items: flex-start;
+     gap: 10px;
+     background: var(--panel-3);
+     padding: 8px;
+     border-radius: 8px; /* Slightly smaller radius */
+     border: 1px solid var(--border);
+ }
+
+ .tip-card img {
+     width: 32px; /* Smaller image */
+     height: 32px;
+     border-radius: 4px;
+     flex-shrink: 0;
+ }
+ .tip-card-content strong {
+     color: var(--text);
+     font-weight: 600;
+     font-size: 0.85em; /* Smaller text */
+ }
+ .tip-card-content p {
+     font-size: 0.8em; /* Smaller text */
+     color: var(--muted);
+     margin: 2px 0 0 0;
+     line-height: 1.4;
+ }
+
+ /* Responsive for Macro Section */
+ @media (max-width: 1024px) {
+     .support-tips-container { grid-template-columns: 1fr; }
+ }
