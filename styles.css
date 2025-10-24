@@ -55,6 +55,23 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 .adc-card img{width:100%;height:84px;object-fit:cover;display:block}
 .adc-card .label{position:absolute;left:6px;bottom:6px;background:rgba(255, 255, 255, 0.55);backdrop-filter:blur(4px);padding:2px 6px;border-radius:8px;font-size:12px}
 
+/* Support Tips Section */
+.support-tips-section{display:none;border:1px solid var(--border);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);padding:16px;margin-bottom:12px}
+.support-tips-section.show{display:block}
+.support-tips-section h2{margin:0 0 12px 0;color:var(--gold);font-size:16px;text-transform:uppercase;letter-spacing:.4px}
+
+.tip-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.tip-card{background:var(--panel-3);border:1px solid var(--border);border-radius:10px;padding:12px}
+.tip-card-title{display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--gold);font-size:13px;font-weight:600}
+.tip-card-text{color:var(--text);font-size:12px;line-height:1.5}
+
+.best-supports-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.support-card{background:var(--panel-3);border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px}
+.support-card img{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);object-fit:cover}
+.support-info{flex:1}
+.support-name{color:var(--text);font-size:13px;font-weight:600;margin-bottom:4px}
+.support-synergy{color:var(--muted);font-size:11px;line-height:1.4}
+
 /* Inputs */
 .search-grid{display:grid;gap:8px}
 #enemyInputs{grid-template-columns:repeat(5,minmax(0,1fr))}
@@ -88,6 +105,7 @@ h1{margin:0;font-size:22px;letter-spacing:.5px;color:var(--gold);text-transform:
 .threat-table .abilities{width:auto}
 .threat-table .threats{width:140px}
 .threat-table .notes{width:280px;color:#dbe2ea}
+.threat-table .synergy{width:260px;color:#dbe2ea}
 .row{border-radius:12px;overflow:hidden}
 .cell-champ{display:flex;gap:10px;align-items:center}
 .portrait-sm{width:32px;height:32px;border-radius:8px;border:1px solid #333;object-fit:cover;background:#0b0f14}
@@ -138,15 +156,18 @@ body.compact-mode .pill .cds{font-size:11px}
   .threat-table .passive{width:220px}
   .threat-table .threats{width:120px}
   .threat-table .notes{width:220px}
+  .threat-table .synergy{width:220px}
 }
 @media (max-width: 1024px){
   #enemyInputs{grid-template-columns:repeat(3,minmax(0,1fr))}
   #allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .table-wrap{overflow:auto}
-  .threat-table{min-width:1120px} /* extra column */
+  .threat-table{min-width:1280px}
 }
 @media (max-width: 700px){
   #enemyInputs,#allyInputs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tip-cards{grid-template-columns:1fr}
+  .best-supports-grid{grid-template-columns:1fr}
 }
 @media (max-width: 520px){
   #enemyInputs,#allyInputs{grid-template-columns:1fr}
