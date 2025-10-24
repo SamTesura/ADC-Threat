@@ -1365,12 +1365,17 @@ async function handleImport(e) {
         const allyInputs = qsa("#allyInputs .search input");
         if (data.allies && Array.isArray(data.allies)) {
             data.allies.slice(0, MAX_ALLIES).forEach((slug, index) => {
-                const champ = CHAMPIONS.find(c => c.slug === slug);
-                if (champ && allyInputs[index]) {
-                    allyInputs[index].value = champ.name;
-                    allyInputs[index].dataset.selectedSlug = champ.slug;
-                    // No input icon to update in this HTML version
-                }
+                // ADD THIS SAFETY CHECK
+    if (champ) { 
+        adcInput.value = champ.name;
+        adcInput.dataset.selectedSlug = champ.slug;
+        
+        // Also add a check for the icon element
+        const adcIcon = qs("#adcSelect .search .icon");
+        if (adcIcon) {
+            adcIcon.src = getChampIcon(champ.slug);
+        }
+    }
             });
         }
 
