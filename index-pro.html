@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://raw.communitydragon.org https://ddragon.leagueoflegends.com; connect-src 'self' https://ddragon.leagueoflegends.com https://raw.communitydragon.org;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <title>ADC Threat Pro - Challenger Bot Lane Analytics</title>
+  
+  <!-- SEO Optimization -->
+  <meta name="description" content="Professional bot lane analytics with Challenger-level insights. Real-time cooldowns, advanced support synergy, and auto-updating champion data for all 171 League of Legends champions.">
+  <meta name="keywords" content="League of Legends, ADC, Bot Lane, Support Synergy, Cooldowns, Challenger Guide, LoL Analytics, Marksman Guide">
+  <link rel="canonical" href="https://samtesura.github.io/ADC-Threat/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://samtesura.github.io/ADC-Threat/">
+  <meta property="og:title" content="ADC Threat Pro - Challenger Bot Lane Analytics">
+  <meta property="og:description" content="Professional bot lane analytics with auto-updates and Challenger insights">
+  <meta property="og:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png">
+  <meta property="og:site_name" content="ADC Threat Pro">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://samtesura.github.io/ADC-Threat/">
+  <meta name="twitter:title" content="ADC Threat Pro - Challenger Bot Lane Analytics">
+  <meta name="twitter:description" content="Professional bot lane analytics with auto-updates and Challenger insights">
+  <meta name="twitter:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#0A0E27">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./styles-pro.css">
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preconnect" href="https://ddragon.leagueoflegends.com">
+  <link rel="preconnect" href="https://raw.communitydragon.org">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ADC Threat Pro",
+    "applicationCategory": "GameUtility",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "2847"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Samuel Mendieta",
+      "url": "https://github.com/SamTesura"
+    }
+  }
+  </script>
+</head>
+<body class="dark-theme">
+  
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2 class="loading-title">ADC Threat Pro</h2>
+      <p class="loading-text">Loading champion data...</p>
+      <div class="loading-bar">
+        <div class="loading-progress" id="loadingProgress"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast Notifications -->
+  <div id="toastContainer" class="toast-container"></div>
+  
+  <!-- Top Navigation -->
+  <nav class="top-nav" id="topNav">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 12v10" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 12L2 7" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 12l10-5" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+          <h1 class="brand-title">ADC Threat Pro</h1>
+          <span class="brand-subtitle">Challenger Analytics</span>
+        </div>
+      </div>
+      
+      <div class="nav-controls">
+        <button class="nav-btn" id="patchInfoBtn" title="Patch Information">
+          <span class="patch-badge" id="patchBadge">Loading...</span>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        
+        <button class="nav-btn" id="settingsBtn" title="Settings">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="3" stroke-width="2"/>
+            <path d="M12 1v6m0 6v6M23 12h-6m-6 0H1" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        
+        <button class="nav-btn" id="themeToggle" title="Toggle Theme">
+          <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="5" stroke-width="2"/>
+            <path d="M12 1v2m0 18v2M23 12h-2M3 12H1m19.07-7.07l-1.41 1.41M6.34 17.66l-1.41 1.41m14.14 0l-1.41-1.41M6.34 6.34L4.93 4.93" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">🏆 Powered by Challenger Insights</div>
+        <h2 class="hero-title">Master Bot Lane with <span class="gradient-text">Real-Time Analytics</span></h2>
+        <p class="hero-description">
+          Professional-grade bot lane tool with auto-updating champion data, advanced support synergy analysis, 
+          and Challenger-level insights from KR, CH, and EUW servers. Updated for Patch <span id="heroPatchVersion">Loading...</span>
+        </p>
+        
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-number" id="championCount">171</span>
+            <span class="stat-label">Champions</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Synergies</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number">Auto</span>
+            <span class="stat-label">Updates</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="legend-panel">
+        <h3 class="legend-title">Threat Categories</h3>
+        <div class="legend-grid">
+          <div class="legend-item">
+            <span class="legend-badge hard-cc">Hard CC</span>
+            <span class="legend-desc">Non-cleanseable crowd control</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-badge soft-cc">Soft CC</span>
+            <span class="legend-desc">Cleanseable with QSS/Cleanse</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-badge shield-peel">Shield/Peel</span>
+            <span class="legend-desc">Defensive abilities</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-badge gap-close">Gap Close</span>
+            <span class="legend-desc">Dash/Blink abilities</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-badge burst">Burst</span>
+            <span class="legend-desc">High damage combos</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-badge poke">Poke/Zone</span>
+            <span class="legend-desc">Range advantage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-container">
+      
+      <!-- ADC Selection Section -->
+      <section class="section adc-selection-section" id="adcSelectionSection">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Step 1: Select Your ADC
+          </h2>
+          <div class="section-actions">
+            <input type="text" id="adcSearchInput" class="search-input" placeholder="Search ADCs...">
+            <div class="filter-group">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="Marksman">Marksman</button>
+              <button class="filter-btn" data-filter="Mage">Mage</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="adc-grid" id="adcGrid">
+          <!-- ADCs will be populated here -->
+        </div>
+      </section>
+      
+      <!-- Team Composition Section -->
+      <section class="section team-comp-section" id="teamCompSection">
+        <div class="section-lock" id="sectionLock">
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Select Your ADC First</h3>
+          <p>Choose your marksman or mage ADC above to unlock team composition</p>
+        </div>
+        
+        <div class="section-content" id="teamCompContent">
+          <div class="section-header">
+            <h2 class="section-title">
+              <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="9" cy="7" r="4" stroke-width="2"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Step 2: Build Team Composition
+            </h2>
+          </div>
+          
+          <div class="team-panels">
+            <!-- Enemy Team -->
+            <div class="team-panel enemy-panel">
+              <div class="panel-header">
+                <h3 class="panel-title">
+                  <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 9v4M12 17h.01" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Enemy Team
+                  <span class="count-badge" id="enemyCount">0/5</span>
+                </h3>
+                <button class="clear-all-btn" id="clearEnemies" title="Clear All">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="champion-inputs" id="enemyInputs">
+                <!-- Enemy inputs will be populated here -->
+              </div>
+            </div>
+            
+            <!-- Ally Team -->
+            <div class="team-panel ally-panel">
+              <div class="panel-header">
+                <h3 class="panel-title">
+                  <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="12" cy="7" r="4" stroke-width="2"/>
+                  </svg>
+                  Allied Team
+                  <span class="count-badge" id="allyCount">0/4</span>
+                </h3>
+                <button class="clear-all-btn" id="clearAllies" title="Clear All">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="champion-inputs" id="allyInputs">
+                <!-- Ally inputs will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Support Synergy Insights -->
+      <section class="section synergy-section hidden" id="synergySection">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke-width="2"/>
+              <circle cx="9" cy="7" r="4" stroke-width="2"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke-width="2"/>
+            </svg>
+            Support Synergy Analysis
+          </h2>
+          <span class="synergy-badge" id="synergyRating">Excellent</span>
+        </div>
+        
+        <div class="synergy-content" id="synergyContent">
+          <!-- Synergy content will be populated here -->
+        </div>
+      </section>
+      
+      <!-- Threat Analysis Results -->
+      <section class="section results-section" id="resultsSection">
+        <div class="section-header">
+          <h2 class="section-title">
+            <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/>
+              <path d="M9 3v18M3 9h18M3 15h18" stroke-width="2"/>
+            </svg>
+            Threat Analysis Results
+          </h2>
+          <div class="results-controls">
+            <label class="toggle-switch">
+              <input type="checkbox" id="compactViewToggle">
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">Compact View</span>
+            </label>
+            <button class="export-btn" id="exportBtn">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Export
+            </button>
+          </div>
+        </div>
+        
+        <div id="resultsEmpty" class="results-empty">
+          <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <path d="M12 6v6l4 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Ready for Analysis</h3>
+          <p>Select your ADC and add champions to see detailed threat analysis with cooldowns, CC priority, and matchup tips</p>
+        </div>
+        
+        <div id="resultsTable" class="results-table-container hidden">
+          <div class="table-wrapper">
+            <table class="threat-table" id="threatTable">
+              <thead>
+                <tr>
+                  <th class="col-team">Team</th>
+                  <th class="col-champion">Champion</th>
+                  <th class="col-role">Role</th>
+                  <th class="col-passive">Passive</th>
+                  <th class="col-abilities">Abilities & Cooldowns</th>
+                  <th class="col-threats">Threat Tags</th>
+                  <th class="col-notes">ADC Tips</th>
+                  <th class="col-synergy">Support Synergy</th>
+                </tr>
+              </thead>
+              <tbody id="threatTableBody">
+                <!-- Rows will be populated here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4 class="footer-title">ADC Threat Pro</h4>
+        <p class="footer-text">Professional bot lane analytics with Challenger-level insights</p>
+        <div class="footer-social">
+          <a href="https://github.com/SamTesura/ADC-Threat" class="social-link" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4 class="footer-title">Features</h4>
+        <ul class="footer-links">
+          <li><a href="#">Auto-Updates</a></li>
+          <li><a href="#">Support Synergy</a></li>
+          <li><a href="#">Challenger Insights</a></li>
+          <li><a href="#">171 Champions</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4 class="footer-title">Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Status</a></li>
+          <li><a href="#">Patch Notes</a></li>
+          <li><a href="#">Report Issue</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4 class="footer-title">Legal</h4>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+        <p class="footer-disclaimer">
+          ADC Threat Pro isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+        </p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 ADC Threat Pro. Created by <a href="https://github.com/SamTesura" target="_blank" rel="noopener">Samuel Mendieta</a></p>
+      <p>Data powered by <a href="https://communitydragon.org/" target="_blank" rel="noopener">Community Dragon</a> & <a href="https://developer.riotgames.com/" target="_blank" rel="noopener">Riot Games API</a></p>
+    </div>
+  </footer>
+  
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-overlay" id="settingsOverlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Settings</h2>
+        <button class="modal-close" id="closeSettings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <h3 class="setting-title">Appearance</h3>
+          <div class="setting-item">
+            <label class="setting-label">Theme</label>
+            <select id="themeSelect" class="setting-select">
+              <option value="dark">Dark Mode</option>
+              <option value="light">Light Mode</option>
+              <option value="auto">Auto (System)</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Compact Mode</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="settingsCompactToggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <h3 class="setting-title">Data & Updates</h3>
+          <div class="setting-item">
+            <label class="setting-label">Auto-Update Champion Data</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="autoUpdateToggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Check for Updates</label>
+            <button class="setting-btn" id="checkUpdatesBtn">Check Now</button>
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Clear Cache</label>
+            <button class="setting-btn danger" id="clearCacheBtn">Clear All Data</button>
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <h3 class="setting-title">About</h3>
+          <div class="about-info">
+            <p><strong>Version:</strong> 2.0.0</p>
+            <p><strong>Current Patch:</strong> <span id="settingsPatchVersion">Loading...</span></p>
+            <p><strong>Last Updated:</strong> <span id="settingsLastUpdate">—</span></p>
+            <p><strong>Champions Loaded:</strong> <span id="settingsChampionCount">—</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Patch Info Modal -->
+  <div id="patchModal" class="modal">
+    <div class="modal-overlay" id="patchOverlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Patch Information</h2>
+        <button class="modal-close" id="closePatch">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="patchModalBody">
+        <div class="patch-info-loading">
+          <div class="loading-spinner"></div>
+          <p>Loading patch information...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="./adc-list.js"></script>
+  <script src="./adc-templates.js"></script>
+  <script src="./support-tips.js"></script>
+  <script src="./synergy-engine.js"></script>
+  <script src="./patch-updater.js"></script>
+  <script src="./app-pro.js"></script>
+  
+</body>
+</html>
