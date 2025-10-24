@@ -399,7 +399,7 @@ const ADC_LIST = {
 				attackspeed: 0.625,
 			},
 			blurb:
-				'Jhin is a meticulous criminal psychopath who believes murder is art. Once an Ionian prisoner, but freed by shadowy elements within Ionia’s ruling council, the serial killer now works as their cabal's assassin. Using his gun as his paintbrush, Jhin...',
+				"Jhin is a meticulous criminal psychopath who believes murder is art. Once an Ionian prisoner, but freed by shadowy elements within Ionia’s ruling council, the serial killer now works as their cabal's assassin. Using his gun as his paintbrush, Jhin...",
 		},
 		Jinx: {
 			id: 'Jinx',
