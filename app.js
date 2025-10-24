@@ -11,7 +11,7 @@
 // CONFIGURATION & CONSTANTS (Mostly unchanged)
 // ============================================================================
 const DDRAGON_VERSION = "14.14.1";
-const DATA_URL = "./champions-summary.json";
+const DATA_URL = "champions-summary.json";
 
 // Fallback image in case DDragon link fails - Using Aatrox as a default example
 const DUMMY_IMAGE_PATH = `http://ddragon.leagueoflegends.com/cdn/${DDRAGON_VERSION}/img/champion/Aatrox.png`;
