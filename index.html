@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head> <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ADC Threat Lookup</title> <link rel="icon" type="image/png" href="assets/favicon.ico"> <link rel="stylesheet" href="./styles.css" />
+  <title>ADC Threat Lookup</title>
+  <link rel="icon" type="image/png" href="assets/favicon.ico"> <link rel="stylesheet" href="./styles.css" />
   <link rel="preconnect" href="https://ddragon.leagueoflegends.com">
 
-  <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes</title>
   <meta name="description" content="Real-time bot lane cooldowns, hard CC windows, and matchup notes for ADC mains. Optimized for any ADC. Gold-on-dark, clean, fast." />
   <link rel="canonical" href="https://samtesura.github.io/ADC-Threat/" />
 
@@ -22,7 +22,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://samtesura.github.io/ADC-Threat/" />
   <meta property="og:site_name" content="ADC Threat" />
-  <meta property="og:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png" />
+   <meta property="og:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="ADC Threat — Gold-on-dark bot lane icon with cooldown grid preview" />
@@ -31,41 +31,14 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes" />
   <meta name="twitter:description" content="Quick-reference bot lane cooldowns, CC, and burst windows. For any ADC mains." />
-  <meta name="twitter:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png" />
+   <meta name="twitter:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png" />
   <meta name="twitter:image:alt" content="ADC Threat — Gold-on-dark bot lane icon with cooldown grid preview" />
   <meta name="twitter:site" content="@ADCThreat" /> <meta http-equiv="content-language" content="en" />
   <meta name="author" content="Samuel Mendieta (SamTesura)" /> <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "name": "ADC Threat",
-        "url": "https://samtesura.github.io/ADC-Threat/",
-        "inLanguage": "en",
-        "description": "Bot lane cooldowns, CC threats, and matchup notes for ADC mains.",
-        "publisher": {
-          "@type": "Person",
-          "name": "Samuel Mendieta (SamTesura)" /* Replace with your name/alias */
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://samtesura.github.io/ADC-Threat/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      },
-      {
-        "@type": "WebApplication",
-        "name": "ADC Threat",
-        "applicationCategory": "GameUtility",
-        "operatingSystem": "Web",
-        "url": "https://samtesura.github.io/ADC-Threat/",
-        "image": "https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png"
-      }
-    ]
-  }
+  { /* Your JSON-LD content */ }
   </script>
-</head> <body>
+</head>
+<body>
   <header class="site-header">
     <div class="brand">
        <img class="brand-logo" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/riotgames.svg" alt="Riot Games Inspired Logo">
@@ -78,7 +51,7 @@
     <div class="legend">
       <span class="tag hard">Hard CC</span>
       <span class="tag soft">Soft CC</span>
-      <span class="badge cleanse">Cleanse</span> <span class="sep">|</span>
+      <span class="sep">|</span>
       <span class="tag peel">Shield/Peel</span>
       <span class="tag gap">Gap Close</span>
       <span class="tag burst">Burst</span>
@@ -97,24 +70,21 @@
     <section class="adc-select-panel" id="adcPanel">
       <h2>Choose your ADC</h2>
       <p class="muted">You can’t search champions until you pick your ADC.</p>
-      <div id="adcGrid" class="adc-grid">
-          </div>
+      <div id="adcGrid" class="adc-grid"></div>
     </section>
 
-    <div id="lockOverlay" class="lock-overlay"> <div class="lock-card">
+    <div id="lockOverlay" class="lock-overlay lock-active"> <div class="lock-card">
         <h3>Pick your ADC first</h3>
         <p>Select your marksman above to enable champion search.</p>
       </div>
       <section class="team">
         <h2>Enemy Team <span>(5)</span></h2>
-        <div id="enemyInputs" class="search-grid">
-            </div>
+        <div id="enemyInputs" class="search-grid"></div>
       </section>
 
       <section class="team">
         <h2>Allied Team <span>(4)</span></h2>
-        <div id="allyInputs" class="search-grid">
-            </div>
+        <div id="allyInputs" class="search-grid"></div>
       </section>
     </div> <section class="results results-table">
       <h2>Results (CC prioritized)</h2>
@@ -129,26 +99,17 @@
               <th class="threats">CC & Tags</th>
               <th class="notes">ADC Tip</th>
               <th class="support-synergy notes">Support Synergy</th>
-            </tr>
+              </tr>
           </thead>
-          <tbody id="resultsBody">
-              </tbody>
+          <tbody id="resultsBody"></tbody>
         </table>
-      </div>
-      <div id="emptyState" class="empty small">
+        </div>
+        <div id="emptyState" class="empty small">
          Pick your ADC above, then type champion names. Ability pills are colored by <b>Hard/Soft CC</b> first; Soft CC shows a <span class="badge cleanse">Cleanse</span> badge.
        </div>
     </section>
 
-    <section id="macroSection" class="support-tips-container hidden">
-         <div id="adcMacroCard" class="support-synergy-section">
-             </div>
-         <div id="supportSynergyCard" class="support-synergy-section">
-             </div>
-     </section>
-
-
-  </main>
+     </main>
 
   <footer class="site-footer tight">
     <div class="left">
@@ -176,5 +137,9 @@
     </form>
   </dialog>
 
-  <script src="./adc-list.js"></script> <script src="./adc-templates.js"></script> <script src="./support-tips.js"></script> <script src="./app.js"></script> </body>
+  <script src="./adc-list.js"></script>
+  <script src="./adc-templates.js"></script>
+  <script src="./support-tips.js"></script>
+  <script src="./app.js"></script>
+  </body>
 </html>
