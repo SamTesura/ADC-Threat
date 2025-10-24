@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SEO -->
+  <title>ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes</title>
+  <meta name="description" content="Real-time bot lane cooldowns, hard CC windows, and matchup notes for ADC mains. Optimized for any ADC. Gold-on-dark, clean, fast.">
+  <link rel="canonical" href="https://samtesura.github.io/ADC-Threat/">
+  
+  <!-- Favicons -->
+  <link rel="icon" href="/icons/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/icons/favicon.ico" sizes="192x192">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-180.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#0B0B0F">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes">
+  <meta property="og:description" content="Quick-reference bot lane cooldowns, burst windows, and CC threats. Built for ADC mains.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://samtesura.github.io/ADC-Threat/">
+  <meta property="og:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ADC Threat — Botlane Cooldowns, CC Threats & Matchup Notes">
+  <meta name="twitter:description" content="Quick-reference bot lane cooldowns, CC, and burst windows. For ADC mains.">
+  <meta name="twitter:image" content="https://samtesura.github.io/ADC-Threat/og/adc-threat-hero.png">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="./styles-fixed.css">
+  <link rel="preconnect" href="https://ddragon.leagueoflegends.com">
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="brand">
+      <img class="brand-logo" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/riotgames.svg" alt="Riot Games Logo">
+      <div>
+        <h1>ADC Threat Lookup — CC First</h1>
+        <p class="tagline">
+          <strong>1.</strong> Pick your ADC (optional) 
+          <strong>2.</strong> Type 5 enemy + 4 ally champs 
+          <strong>3.</strong> Get instant CC-prioritized threats
+        </p>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="tag hard">Hard CC</span>
+      <span class="tag soft">Soft CC</span>
+      <span class="badge cleanse">Cleanse</span>
+      <span class="sep">|</span>
+      <span class="tag peel">Shield/Peel</span>
+      <span class="tag gap">Gap Close</span>
+      <span class="tag burst">Burst</span>
+      <span class="tag poke">Poke/Zone</span>
+    </div>
+
+    <div class="view-toggles">
+      <label class="switch-compact">
+        <input id="toggleCompact" type="checkbox">
+        <span>Compact mode</span>
+      </label>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="viewport-fit">
+    
+    <!-- ADC PICKER (OPTIONAL) -->
+    <section class="adc-select-panel">
+      <h2>1. Choose Your ADC (Optional)</h2>
+      <p class="muted">Select your marksman to get personalized support tips and matchup notes. Skip if you just want threat info.</p>
+      <div id="adcGrid" class="adc-grid"></div>
+    </section>
+
+    <!-- SUPPORT TIPS (SHOWN WHEN ADC SELECTED) -->
+    <section class="support-tips-section" id="supportTipsSection" style="display:none;">
+      <h2>🛡️ Support Tips for <span id="currentAdcName"></span></h2>
+      
+      <div class="support-tips-grid">
+        <div class="tip-card">
+          <h3>🎯 Positioning</h3>
+          <p id="positioningTip"></p>
+        </div>
+        <div class="tip-card">
+          <h3>⚡ Trading Windows</h3>
+          <p id="tradingTip"></p>
+        </div>
+        <div class="tip-card">
+          <h3>🔄 Wave Management</h3>
+          <p id="waveTip"></p>
+        </div>
+        <div class="tip-card">
+          <h3>🎪 All-In Timing</h3>
+          <p id="allinTip"></p>
+        </div>
+      </div>
+      
+      <div class="best-supports-section">
+        <h3>✨ Best Support Synergies</h3>
+        <div id="bestSupportsGrid" class="best-supports-grid"></div>
+      </div>
+    </section>
+
+    <!-- ENEMY TEAM -->
+    <section class="team">
+      <h2>2. Enemy Team <span>(5)</span></h2>
+      <div id="enemyInputs" class="search-grid"></div>
+    </section>
+
+    <!-- ALLY TEAM -->
+    <section class="team">
+      <h2>3. Allied Team <span>(4)</span></h2>
+      <div id="allyInputs" class="search-grid"></div>
+    </section>
+
+    <!-- RESULTS TABLE -->
+    <section class="results results-table">
+      <h2>Results (CC Prioritized)</h2>
+      <div id="tableWrap" class="table-wrap">
+        <table id="resultsTable" class="threat-table">
+          <thead>
+            <tr>
+              <th class="group">Group</th>
+              <th class="champ">Champion</th>
+              <th class="role">Role</th>
+              <th class="passive">Passive (ADC)</th>
+              <th class="abilities">Abilities • CDs • CC</th>
+              <th class="threats">CC & Tags</th>
+              <th class="notes">ADC Tip</th>
+              <th class="support-synergy">Support Synergy</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody"></tbody>
+        </table>
+        
+        <div id="emptyState" class="empty">
+          <p><strong>No champions selected yet.</strong></p>
+          <p>Start typing champion names above to see their abilities, cooldowns, and CC threats.</p>
+          <p>Ability pills are colored by <strong>Hard/Soft CC</strong> first. Soft CC shows a <span class="badge cleanse">Cleanse</span> badge.</p>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer tight">
+    <div class="left">
+      <button id="exportData" class="btn btn-outline">Export JSON</button>
+      <input id="importFile" type="file" accept="application/json" hidden>
+      <button id="importData" class="btn btn-ghost">Import JSON</button>
+    </div>
+    <div class="right">
+      <span>Patch 25.21 • Images © Riot Games</span>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="./app-fixed.js"></script>
+</body>
+</html>
