@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ADC Threat - Quick Reference</title>
+  <title>ADC Threat - Challenger Quick Reference</title>
   <link rel="icon" type="image/png" href="assets/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,12 @@
   <div class="qr-container">
     <header class="qr-header">
       <div class="qr-title">
-        <h1>⚔️ ADC Threat Quick Reference</h1>
+        <h1>⚔️ ADC Threat - Challenger Reference</h1>
+        <div class="qr-meta">
+          <span class="region-badge">🌍 EUW</span>
+          <span class="region-badge">🇰🇷 KR</span>
+          <span class="region-badge">🇨🇳 CN</span>
+        </div>
         <div class="qr-legend">
           <span class="cd-badge cd-short">Short (0-8s)</span>
           <span class="cd-badge cd-medium">Med (9-20s)</span>
@@ -27,8 +32,8 @@
       <div class="qr-adc">
         <label>Your ADC:</label>
         <div style="position: relative;">
-          <input type="text" id="adcInput" placeholder="Search ADC...">
-          <div id="adcAutocomplete"></div>
+          <input type="text" id="adcInput" placeholder="Search and select your ADC...">
+          <div id="adcAutocomplete" class="autocomplete"></div>
         </div>
         <div id="selectedADC" class="selected-champion"></div>
       </div>
@@ -53,12 +58,12 @@
             <th>Champion</th>
             <th>Key Abilities</th>
             <th>Threats</th>
-            <th>Tips vs Your ADC</th>
+            <th>Challenger Tips</th>
           </tr>
         </thead>
         <tbody id="threatBody">
           <tr>
-            <td colspan="5" class="empty">Select your ADC and add champions to see instant analysis</td>
+            <td colspan="5" class="empty">Select your ADC and add champions to see Challenger-level analysis</td>
           </tr>
         </tbody>
       </table>
