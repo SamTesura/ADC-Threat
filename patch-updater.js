@@ -86,7 +86,21 @@ class PatchUpdater {
    * Fetch latest version from Data Dragon
    */
   async fetchLatestVersion() {
-    return '25.21';
+    try {
+      const response = await fetch(`${this.DDRAGON_BASE}/api/versions.json`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const versions = await response.json();
+      if (!Array.isArray(versions) || versions.length === 0) {
+        throw new Error('Invalid versions data');
+      }
+      
+      return versions[0]; // Latest version
+      
+    } catch (error) {
+      console.error('Failed to fetch version:', error);
+      throw new Error('Could not fetch latest patch version');
+    }
   }
 
   /**
