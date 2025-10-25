@@ -9,7 +9,7 @@ const CONFIG = {
   CHAMPION_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json',
   CHAMPION_DETAIL_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{championId}.json',
   CHAMPION_IMG: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png',
-  PATCH_NOTES_URL: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-{version}-notes/'
+  PATCH_NOTES_URL: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-25-21-notes/'
 };
 
 let state = {
