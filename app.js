@@ -7,6 +7,7 @@
  * - Stuck loading for abilities and cooldowns
  * - Only shows meta ADCs
  * - Proper error handling throughout
+ * - Loading screen element ID mismatch (loadingScreen vs loading-overlay)
  */
 
 // ======================
@@ -964,7 +965,7 @@ function debounce(func, wait) {
  * Show loading overlay
  */
 function showLoading(message) {
-    const overlay = document.getElementById('loading-overlay');
+    const overlay = document.getElementById('loadingScreen');
     const details = document.getElementById('loading-details');
     
     if (overlay) overlay.style.display = 'flex';
@@ -975,28 +976,22 @@ function showLoading(message) {
  * Hide loading overlay - FIXED VERSION
  */
 function hideLoading() {
-    const overlay = document.getElementById('loading-overlay');
+    const overlay = document.getElementById('loadingScreen');
     
     if (!overlay) {
         console.warn('Loading overlay not found');
         return;
     }
 
-    // Multiple methods to ensure it hides
-    overlay.style.display = 'none';
+    // Smooth fade out animation
+    overlay.style.transition = 'opacity 0.3s ease-out';
     overlay.style.opacity = '0';
-    overlay.style.visibility = 'hidden';
-    overlay.style.zIndex = '-9999';
-    overlay.classList.add('hidden');
     
-    // Also try removing it from DOM
     setTimeout(() => {
-        if (overlay.parentNode) {
-            overlay.parentNode.removeChild(overlay);
-        }
-    }, 500);
-    
-    console.log('✓ Loading screen hidden');
+        overlay.style.display = 'none';
+        overlay.style.visibility = 'hidden';
+        console.log('✓ Loading screen hidden');
+    }, 300);
 }
 
 /**
