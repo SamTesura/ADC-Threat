@@ -41,6 +41,7 @@ async function init() {
     setupADCInput();
     createInputs();
     setupListeners();
+    updateUIState();
   } catch (error) {
     console.error('Init failed:', error);
     alert('Failed to load champion data. Please refresh.');
@@ -137,6 +138,7 @@ function selectADC(champion) {
   
   const input = document.getElementById('adcInput');
   input.value = champion.name;
+  input.classList.add('selected');
   
   const selectedDiv = document.getElementById('selectedADC');
   selectedDiv.innerHTML = '';
@@ -154,7 +156,26 @@ function selectADC(champion) {
   selectedDiv.appendChild(img);
   selectedDiv.appendChild(name);
   
+  updateUIState();
   updateTable();
+}
+
+function updateUIState() {
+  const warning = document.getElementById('adcWarning');
+  const teamsContainer = document.getElementById('teamsContainer');
+  const inputs = document.querySelectorAll('#enemyInputs input, #allyInputs input');
+  
+  if (!state.selectedADC) {
+    // Show warning, disable inputs
+    warning.classList.remove('hidden');
+    teamsContainer.classList.add('disabled');
+    inputs.forEach(input => input.disabled = true);
+  } else {
+    // Hide warning, enable inputs
+    warning.classList.add('hidden');
+    teamsContainer.classList.remove('disabled');
+    inputs.forEach(input => input.disabled = false);
+  }
 }
 
 function createInputs() {
@@ -181,6 +202,7 @@ function createInput(team, index) {
   input.placeholder = `${team === 'enemy' ? 'Enemy' : 'Ally'} ${index + 1}`;
   input.dataset.team = team;
   input.dataset.index = index;
+  input.disabled = true;
   
   input.addEventListener('input', (e) => handleInput(e.target));
   input.addEventListener('blur', () => {
