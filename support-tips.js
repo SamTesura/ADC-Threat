@@ -35,7 +35,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your Q (Hook) sets up his E (Hexplosive Minefield) and W (Satchel Charge) combo.",
       "Karthus": "Your Q (Hook) holds them in his E (Defile). Your R (The Box) slow is devastating with his Q (Lay Waste).",
       "Swain": "Your Q (Hook) or E (Flay) guarantees his E (Nevermove) root. This is a double-pull lane.",
-      "Heimerdinger": "Your Q (Hook) pulls them into his turrets (Q). Your peel (E) protects his nest."
+      "Heimerdinger": "Your Q (Hook) pulls them into his turrets (Q). Your peel (E) protects his nest.",
+      "Yunara": "Thresh hooks when Yunara has stacks and ult ready; timing the hook to her R window creates consistent kill windows."
     }
   },
   "Leona": {
@@ -263,7 +264,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your peel (W, R) keeps him safe to siege. Your E (Help, Pix!) gives his auto-attacks (Passive) more poke.",
       "Karthus": "Your W (Polymorph) and R (Wild Growth) can keep him alive to use his R (Requiem).",
       "Swain": "Your W (Whimsy) gives him the speed to land E (Nevermove). Your R (Wild Growth) on him during his R (Demonic Ascension) makes him a raid boss.",
-      "Heimerdinger": "Your W (Polymorph) and R (Wild Growth) are perfect peel for his turret (Q) nest."
+      "Heimerdinger": "Your W (Polymorph) and R (Wild Growth) are perfect peel for his turret (Q) nest.",
+      "Yunara": "Lulu buys Yunara time to stack and survive dives. Use polymorph/ult to deny early all-ins so Yunara reaches item spikes."
     }
   },
   "Janna": {
@@ -295,7 +297,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "You provide the peel he needs to siege. Your E (Eye of the Storm) shield buffs his auto (Passive) tower damage.",
       "Karthus": "Your peel (Q, R) keeps him alive. Your R (Monsoon) can push enemies *into* his E (Defile).",
       "Swain": "Your Q (Howling Gale) can set up his E (Nevermove). Your R (Monsoon) can peel for him or split the enemy team.",
-      "Heimerdinger": "You are the perfect bodyguard for his turret (Q) nest. Your Q (Howling Gale) and R (Monsoon) stop all divers."
+      "Heimerdinger": "You are the perfect bodyguard for his turret (Q) nest. Your Q (Howling Gale) and R (Monsoon) stop all divers.",
+      "Yunara": "Janna peel and disengage keeps Yunara safe to stack Q and wait for R. High-elo Janna players force safe, slow scaling and only fight when Yunara is ready."
     }
   },
   "Nami": {
@@ -327,7 +330,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your Q (Aqua Prison) bubble sets up his full combo (E-W-Q).",
       "Karthus": "Your Q (Aqua Prison) and R (Tidal Wave) hold them in his E (Defile).",
       "Swain": "Your Q (Aqua Prison) bubble is a free E (Nevermove) root for him.",
-      "Heimerdinger": "Your Q (Aqua Prison) bubble holds them in his turrets (Q) and sets up his E (Grenade) stun."
+      "Heimerdinger": "Your Q (Aqua Prison) bubble holds them in his turrets (Q) and sets up his E (Grenade) stun.",
+      "Yunara" : " Nami bubble + E slows chain into Yunara’s W to lock targets so Yunara can apply stacks and crits safely."
     }
   },
   "Soraka": {
