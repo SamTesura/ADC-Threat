@@ -1,6 +1,6 @@
 /**
  * ADC Threat - Challenger Reference
- * Challenger-level analysis with full cooldown progression
+ * Challenger-level analysis with CC type-based coloring
  * Data from EUW, KR, and China Challenger meta
  */
 
@@ -19,9 +19,14 @@ let state = {
   allies: []
 };
 
+// CC Classification (based on League of Legends mechanics)
+const CC_TYPES = {
+  HARD_NON_CLEANSABLE: ['suppression', 'airborne', 'knock', 'pull'],
+  SOFT_CLEANSABLE: ['stun', 'root', 'snare', 'slow', 'charm', 'fear', 'taunt', 'silence', 'blind', 'disarm']
+};
+
 // Challenger-level tips database
 const CHALLENGER_TIPS = {
-  // Positioning and trading patterns from Challenger gameplay
   general: {
     enemy: "Respect ability cooldowns. Trade when key spells are down. Position behind minions vs hooks.",
     ally: "Sync abilities with your ally. Watch their cooldowns and follow their engage/disengage."
@@ -77,7 +82,6 @@ function setupADCInput() {
 function handleADCInput(input) {
   const query = input.value.toLowerCase().trim();
   
-  // Get ADC champions only
   const adcIds = ADC_LIST.getAllADCs();
   const matches = adcIds
     .map(id => state.champions[id])
@@ -131,11 +135,9 @@ function clearADCAutocomplete() {
 function selectADC(champion) {
   state.selectedADC = champion;
   
-  // Update input
   const input = document.getElementById('adcInput');
   input.value = champion.name;
   
-  // Show selected champion with image
   const selectedDiv = document.getElementById('selectedADC');
   selectedDiv.innerHTML = '';
   
@@ -333,6 +335,67 @@ async function createRow(champion, isEnemy) {
   return row;
 }
 
+function classifyCC(spell) {
+  const desc = spell.description?.toLowerCase() || '';
+  
+  // Check for hard CC (non-cleansable)
+  if (desc.includes('suppress') || desc.includes('suppression')) {
+    return { type: 'hard', ccType: 'suppression', cleansable: false };
+  }
+  if (desc.includes('knock') || desc.includes('airborne') || desc.includes('suspend')) {
+    return { type: 'hard', ccType: 'airborne', cleansable: false };
+  }
+  
+  // Check for soft CC (cleansable)
+  if (desc.includes('stun')) {
+    return { type: 'soft', ccType: 'stun', cleansable: true };
+  }
+  if (desc.includes('root') || desc.includes('immobilize')) {
+    return { type: 'soft', ccType: 'root', cleansable: true };
+  }
+  if (desc.includes('slow')) {
+    return { type: 'soft', ccType: 'slow', cleansable: true };
+  }
+  if (desc.includes('charm')) {
+    return { type: 'soft', ccType: 'charm', cleansable: true };
+  }
+  if (desc.includes('fear')) {
+    return { type: 'soft', ccType: 'fear', cleansable: true };
+  }
+  if (desc.includes('taunt')) {
+    return { type: 'soft', ccType: 'taunt', cleansable: true };
+  }
+  if (desc.includes('silence')) {
+    return { type: 'soft', ccType: 'silence', cleansable: true };
+  }
+  
+  // Check for high threats
+  if (desc.includes('dash') || desc.includes('blink') || desc.includes('leap')) {
+    return { type: 'high', ccType: 'dash', cleansable: false };
+  }
+  if (desc.includes('burst') || (desc.includes('damage') && desc.includes('bonus'))) {
+    return { type: 'high', ccType: 'burst', cleansable: false };
+  }
+  if (desc.includes('stealth') || desc.includes('invisible')) {
+    return { type: 'high', ccType: 'stealth', cleansable: false };
+  }
+  
+  // Check for medium threats
+  if (desc.includes('shield')) {
+    return { type: 'medium', ccType: 'shield', cleansable: false };
+  }
+  if (desc.includes('poke')) {
+    return { type: 'medium', ccType: 'poke', cleansable: false };
+  }
+  
+  // Check for low threats
+  if (desc.includes('heal') || desc.includes('regenerat')) {
+    return { type: 'low', ccType: 'sustain', cleansable: false };
+  }
+  
+  return null;
+}
+
 function populateAbilities(cell, detail) {
   cell.innerHTML = '';
   
@@ -350,13 +413,24 @@ function populateAbilities(cell, detail) {
     
     const name = document.createElement('span');
     
-    // Show cooldown progression for all levels
+    // Classify the spell's CC type and threat
+    const classification = classifyCC(spell);
     const cooldowns = spell.cooldown || [];
+    
     if (cooldowns.length > 0) {
       const cdText = cooldowns.join('/');
-      const maxCd = cooldowns[cooldowns.length - 1];
-      const cdClass = maxCd <= 8 ? 'cd-short' : maxCd <= 20 ? 'cd-medium' : 'cd-long';
-      name.innerHTML = `${spell.name} <span class="cd-badge ${cdClass}">${cdText}s</span>`;
+      let cdClass = 'cd-medium';
+      
+      if (classification) {
+        cdClass = `cd-${classification.type}`;
+      }
+      
+      let badgeText = `${cdText}s`;
+      if (classification && classification.cleansable) {
+        badgeText += ' ✓';
+      }
+      
+      name.innerHTML = `${spell.name} <span class="cd-badge ${cdClass}">${badgeText}</span>`;
     } else {
       name.textContent = spell.name;
     }
@@ -373,29 +447,39 @@ function populateThreats(cell, detail) {
   const tags = analyzeThreatTags(detail);
   tags.forEach(tag => {
     const span = document.createElement('span');
-    span.className = `threat-tag tag-${tag.toLowerCase()}`;
-    span.textContent = tag;
+    const tagLower = tag.tag.toLowerCase();
+    span.className = `threat-tag tag-${tagLower}`;
+    span.textContent = tag.tag;
+    
+    if (tag.cleansable) {
+      const note = document.createElement('span');
+      note.className = 'cleanse-note';
+      note.textContent = 'Cleansable';
+      span.appendChild(document.createTextNode(' '));
+      span.appendChild(note);
+    }
+    
     cell.appendChild(span);
   });
 }
 
 function analyzeThreatTags(detail) {
-  const tags = new Set();
+  const tags = [];
   const spells = detail.spells || [];
+  const seenTypes = new Set();
   
   spells.forEach(spell => {
-    const desc = spell.description?.toLowerCase() || '';
-    
-    if (desc.includes('stun') || desc.includes('root') || desc.includes('immobilize')) tags.add('CC');
-    if (desc.includes('slow')) tags.add('Slow');
-    if (desc.includes('dash') || desc.includes('blink') || desc.includes('leap')) tags.add('Dash');
-    if (desc.includes('shield')) tags.add('Shield');
-    if (desc.includes('damage') && (desc.includes('bonus') || desc.includes('burst'))) tags.add('Burst');
-    if (desc.includes('heal') || desc.includes('regenerat')) tags.add('Sustain');
-    if (desc.includes('stealth') || desc.includes('invisible')) tags.add('Stealth');
+    const classification = classifyCC(spell);
+    if (classification && !seenTypes.has(classification.ccType)) {
+      tags.push({
+        tag: classification.ccType.charAt(0).toUpperCase() + classification.ccType.slice(1),
+        cleansable: classification.cleansable
+      });
+      seenTypes.add(classification.ccType);
+    }
   });
   
-  return Array.from(tags).slice(0, 4);
+  return tags.slice(0, 5);
 }
 
 function populateChallengerTips(cell, champion, detail, isEnemy) {
@@ -441,19 +525,23 @@ function populateChallengerTips(cell, champion, detail, isEnemy) {
 
 function generateChallengerEnemyTip(champion, detail) {
   const threats = analyzeThreatTags(detail);
-  const hasCC = threats.includes('CC');
-  const hasDash = threats.includes('Dash');
-  const hasBurst = threats.includes('Burst');
+  const hasHardCC = threats.some(t => t.tag === 'Suppression' || t.tag === 'Airborne');
+  const hasSoftCC = threats.some(t => t.cleansable);
+  const hasDash = threats.some(t => t.tag === 'Dash');
+  const hasBurst = threats.some(t => t.tag === 'Burst');
   
-  // Challenger positioning tips based on champion threats
-  if (hasCC && hasDash) {
-    return `High threat: ${champion.name} has CC + mobility. Stay max range, position behind minions. Trade only when dash is down.`;
-  } else if (hasCC) {
-    return `CC threat: Position behind minions vs ${champion.name}. Respect their CC cooldown (~15-20s). Trade aggressively when it's down.`;
+  if (hasHardCC && hasDash) {
+    return `CRITICAL THREAT: ${champion.name} has non-cleansable CC + mobility. Max range positioning required. QSS mandatory.`;
+  } else if (hasHardCC) {
+    return `Hard CC Alert: ${champion.name}'s CC cannot be cleansed. Build QSS. Requires team peel or positioning.`;
+  } else if (hasSoftCC && hasDash) {
+    return `High threat: ${champion.name} has cleansable CC + mobility. Cleanse/QSS recommended. Position defensively when dash is up.`;
+  } else if (hasSoftCC) {
+    return `CC threat (Cleansable): Take Cleanse vs ${champion.name}. Position behind minions. Trade when CC is down (~12-18s window).`;
   } else if (hasBurst) {
-    return `Burst threat: ${champion.name} has high damage. Track their combo cooldowns. Play safe when abilities are up, trade when down.`;
+    return `Burst threat: ${champion.name} has high damage. Track combo cooldowns. Play safe when abilities up, trade when down.`;
   } else if (hasDash) {
-    return `Mobility threat: ${champion.name} can gap close. Maintain spacing. Use your range advantage. Ward flanks.`;
+    return `Mobility threat: ${champion.name} can gap close. Maintain spacing. Use range advantage. Ward flanks.`;
   }
   
   return `Monitor ${champion.name}'s cooldowns. Trade during ability downtime. Maintain optimal spacing.`;
@@ -461,14 +549,13 @@ function generateChallengerEnemyTip(champion, detail) {
 
 function generateChallengerAllyTip(champion, detail) {
   const threats = analyzeThreatTags(detail);
-  const hasCC = threats.includes('CC');
-  const hasDash = threats.includes('Dash');
+  const hasCC = threats.some(t => t.cleansable || t.tag === 'Suppression' || t.tag === 'Airborne');
+  const hasDash = threats.some(t => t.tag === 'Dash');
   
-  // Challenger coordination tips
   if (hasCC && hasDash) {
     return `Engage potential: ${champion.name} has CC + gap close. Position for follow-up. Be ready to all-in when they engage.`;
   } else if (hasCC) {
-    return `CC setup: When ${champion.name} lands CC, follow immediately with your damage combo. Communicate engage timing.`;
+    return `CC setup: When ${champion.name} lands CC, follow immediately with damage combo. Communicate engage timing.`;
   } else if (hasDash) {
     return `Mobile ally: ${champion.name} can engage/disengage. Stay in range to follow. Don't overextend alone.`;
   }
