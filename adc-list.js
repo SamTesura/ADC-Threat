@@ -1,111 +1,42 @@
-/**
- * ADC List - Meta ADCs Only (Updated for Patch 15.21.1)
- * Only includes champions actually played as ADC in current meta
- * Separated by role: Marksman and Mage
- */
 
-const ADC_LIST = {
-    // Traditional Marksman ADCs (Meta picks)
-    marksman: [
-        'Aphelios',
-        'Ashe', 
-        'Caitlyn',
-        'Draven',
-        'Ezreal',
-        'Jhin',
-        'Jinx',
-        'Kaisa',
-        'Kalista',
-        'Kogmaw',
-        'Lucian',
-        'MissFortune',
-        'Nilah',
-        'Samira',
-        'Senna',
-        'Sivir',
-        'Smolder',
-        'Tristana',
-        'Twitch',
-        'Varus',
-        'Vayne',
-        'Xayah',
-        'Zeri'
-    ],
-    
-    // Mage ADCs (Viable in current meta)
-    mage: [
-        'AurelionSol',
-        'Cassiopeia',
-        'Hwei',
-        'Karthus',
-        'Seraphine',
-        'Swain',
-        'Syndra',
-        'Veigar',
-        'Yasuo',
-        'Yone',
-        'Ziggs'
-    ],
-    
-    // Get all ADCs
-    getAllADCs() {
-        return [...this.marksman, ...this.mage];
-    },
-    
-    // Check if champion is an ADC
-    isADC(championId) {
-        return this.getAllADCs().includes(championId);
-    },
-    
-    // Get role of ADC
-    getADCRole(championId) {
-        if (this.marksman.includes(championId)) return 'marksman';
-        if (this.mage.includes(championId)) return 'mage';
-        return null;
-    },
-    
-    // Get meta tier (for future implementation)
-    getMetaTier(championId) {
-        // S+ Tier (Patch 15.21.1)
-        const sTierPlus = ['Ashe', 'Jinx', 'Caitlyn', 'Kogmaw', 'Ziggs'];
-        
-        // S Tier
-        const sTier = ['Jhin', 'MissFortune', 'Varus', 'Ezreal', 'Nilah', 'Twitch'];
-        
-        // A Tier
-        const aTier = ['Kaisa', 'Vayne', 'Smolder', 'Tristana', 'Lucian', 'Draven', 'Swain'];
-        
-        if (sTierPlus.includes(championId)) return 'S+';
-        if (sTier.includes(championId)) return 'S';
-        if (aTier.includes(championId)) return 'A';
-        return 'B';
-    }
-};
+/* ============================================================
+   ADC_LIST — Updated 2025
+   Contains all modern ADC champions for grid rendering.
+   Now using direct DDragon image links.
+   ============================================================ */
 
-// Support types for synergy calculation
-const SUPPORT_TYPES = {
-    enchanter: [
-        'Janna', 'Lulu', 'Nami', 'Sona', 'Soraka', 'Yuumi', 
-        'Karma', 'Milio', 'Renata', 'Seraphine', 'Senna'
-    ],
-    tank: [
-        'Alistar', 'Braum', 'Leona', 'Nautilus', 'Rell', 'Tahm Kench',
-        'Taric', 'Thresh'
-    ],
-    engage: [
-        'Bard', 'Blitzcrank', 'Pyke', 'Rakan', 'Thresh', 'Nautilus',
-        'Leona', 'Rell'
-    ],
-    poke: [
-        'Brand', 'Lux', 'Xerath', 'Zyra', 'Vel\'Koz', 'Swain',
-        'Karma', 'Senna', 'Ashe'
-    ],
-    catcher: [
-        'Thresh', 'Morgana', 'Lux', 'Neeko', 'Zyra', 'Bard'
-    ]
-};
+const ADC_LIST = [
+  // Core traditional ADCs
+  { name: "Ashe", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Ashe.png" },
+  { name: "Caitlyn", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Caitlyn.png" },
+  { name: "Jinx", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Jinx.png" },
+  { name: "Ezreal", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Ezreal.png" },
+  { name: "Kai'Sa", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Kaisa.png" },
+  { name: "Miss Fortune", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/MissFortune.png" },
+  { name: "Xayah", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Xayah.png" },
+  { name: "Aphelios", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Aphelios.png" },
+  { name: "Tristana", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Tristana.png" },
+  { name: "Sivir", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Sivir.png" },
+  { name: "Lucian", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Lucian.png" },
+  { name: "Samira", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Samira.png" },
+  { name: "Vayne", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Vayne.png" },
+  { name: "Draven", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Draven.png" },
+  { name: "Varus", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Varus.png" },
+  { name: "Zeri", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Zeri.png" },
+  { name: "Nilah", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Nilah.png" },
+  { name: "Smolder", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Smolder.png" },
 
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { ADC_LIST, SUPPORT_TYPES };
-}
+  // Hybrid or flex ADCs
+  { name: "Twitch", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Twitch.png" },
+  { name: "Kog'Maw", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/KogMaw.png" },
+  { name: "Kalista", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Kalista.png" },
+  
+  // Mage / APCs (common in high elo)
+  { name: "Senna", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Senna.png" }, // Often played as "fasting" ADC
+  { name: "Seraphine", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Seraphine.png" },
+  { name: "Veigar", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Veigar.png" },
+  { name: "Ziggs", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Ziggs.png" },
+  { name: "Karthus", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Karthus.png" },
+  { name: "Swain", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Swain.png" },
+  { name: "Heimerdinger", image: "http://ddragon.leagueoflegends.com/cdn/14.14.1/img/champion/Heimerdinger.png" }
+];
