@@ -1,1126 +1,1153 @@
 /**
- * ADC Threat Lookup - Professional Edition
- * Main Application Logic - Fixed Version
- * 
- * Fixes:
- * - Line 522: emptySlots undefined error
- * - Stuck loading for abilities and cooldowns
- * - Only shows meta ADCs
- * - Proper error handling throughout
+ * ADC Threat Pro - Professional Application
+ * Enterprise-grade bot lane analytics with auto-updates
  */
 
-// ======================
-// CONSTANTS & CONFIGURATION
-// ======================
+'use strict';
 
-const CONFIG = {
-    PATCH_API: 'https://ddragon.leagueoflegends.com/api/versions.json',
-    CHAMPION_DATA_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json',
-    CHAMPION_FULL_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{championId}.json',
-    CHAMPION_IMG_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png',
-    ABILITY_IMG_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/spell/{spellId}.png',
-    PASSIVE_IMG_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/passive/{passiveId}.png',
-    CACHE_DURATION: 1000 * 60 * 60, // 1 hour
-    AUTO_UPDATE_INTERVAL: 1000 * 60 * 30 // 30 minutes
+// =============================================================================
+// Application State
+// =============================================================================
+
+const AppState = {
+  // Core data
+  champions: [],
+  selectedADC: null,
+  enemyTeam: [],
+  allyTeam: [],
+  
+  // UI state
+  theme: 'dark',
+  compactView: false,
+  isInitialized: false,
+  
+  // Patch info
+  currentPatch: 'Loading...',
+  lastUpdate: null,
+  
+  // Settings
+  autoUpdate: true,
+  settings: {},
+  
+  // Filters
+  adcFilter: 'all',
+  adcSearchQuery: ''
 };
 
-const MAX_ENEMIES = 5;
-const MAX_ALLIES = 1;
+// =============================================================================
+// Initialization
+// =============================================================================
 
-// ======================
-// GLOBAL STATE
-// ======================
-
-let appState = {
-    currentPatch: null,
-    championData: null,
-    selectedADC: null,
-    selectedSupport: null,
-    selectedEnemies: [],
-    selectedAllies: [],
-    synergyEngine: null,
-    settings: {
-        theme: 'dark',
-        animations: true,
-        autoUpdate: true,
-        region: 'kr'
-    }
-};
-
-// ======================
-// INITIALIZATION
-// ======================
-
-/**
- * Initialize application
- */
-async function initializeApp() {
-    try {
-        console.log('🚀 ADC Threat Pro initializing...');
-        showLoading('Initializing application...');
-
-        // Load settings from localStorage
-        loadSettings();
-
-        // Get latest patch version
-        showLoading('Fetching latest patch data...');
-        const patch = await getCurrentPatch();
-        appState.currentPatch = patch;
-        updatePatchDisplay(patch);
-        console.log(`✓ Latest patch: ${patch}`);
-
-        // Load champion data
-        showLoading('Loading champion data...');
-        const championData = await loadChampionData(patch);
-        appState.championData = championData;
-        console.log(`✓ Loaded ${Object.keys(championData.data).length} champions`);
-
-        // Initialize synergy engine
-        showLoading('Initializing synergy engine...');
-        appState.synergyEngine = new SynergyEngine();
-        await appState.synergyEngine.initialize(championData);
-
-        // Build UI
-        showLoading('Building interface...');
-        buildADCGrid();
-        setupEventListeners();
-        
-        // Hide loading screen
-        hideLoading();
-        
-        console.log('✓ Application initialized successfully');
-
-        // Setup auto-update if enabled
-        if (appState.settings.autoUpdate) {
-            setupAutoUpdate();
-        }
-
-    } catch (error) {
-        console.error('Initialization failed:', error);
-        showError('Failed to initialize application. Please refresh the page.');
-        hideLoading();
-    }
-}
-
-/**
- * Get current patch version from Riot API
- */
-async function getCurrentPatch() {
-    try {
-        const cached = getCachedData('current_patch');
-        if (cached && Date.now() - cached.timestamp < CONFIG.CACHE_DURATION) {
-            return cached.data;
-        }
-
-        const response = await fetch(CONFIG.PATCH_API);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const versions = await response.json();
-        const latestPatch = versions[0];
-        
-        setCachedData('current_patch', latestPatch);
-        return latestPatch;
-
-    } catch (error) {
-        console.error('Failed to fetch patch version:', error);
-        // Fallback to cached or default
-        const cached = getCachedData('current_patch');
-        return cached?.data || '15.21.1';
-    }
-}
-
-/**
- * Load champion data from Riot CDN
- */
-async function loadChampionData(patch) {
-    try {
-        const cacheKey = `champion_data_${patch}`;
-        const cached = getCachedData(cacheKey);
-        
-        if (cached && Date.now() - cached.timestamp < CONFIG.CACHE_DURATION) {
-            return cached.data;
-        }
-
-        const url = CONFIG.CHAMPION_DATA_API.replace('{version}', patch);
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setCachedData(cacheKey, data);
-        
-        return data;
-
-    } catch (error) {
-        console.error('Failed to load champion data:', error);
-        throw error;
-    }
-}
-
-/**
- * Load full champion data (with abilities)
- */
-async function loadFullChampionData(championId) {
-    try {
-        const cacheKey = `champion_full_${championId}_${appState.currentPatch}`;
-        const cached = getCachedData(cacheKey);
-        
-        if (cached && Date.now() - cached.timestamp < CONFIG.CACHE_DURATION) {
-            return cached.data;
-        }
-
-        const url = CONFIG.CHAMPION_FULL_API
-            .replace('{version}', appState.currentPatch)
-            .replace('{championId}', championId);
-        
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        const championData = data.data[championId];
-        
-        setCachedData(cacheKey, championData);
-        return championData;
-
-    } catch (error) {
-        console.error(`Failed to load full data for ${championId}:`, error);
-        return null;
-    }
-}
-
-// ======================
-// UI BUILDING
-// ======================
-
-/**
- * Build ADC champion grid - ONLY META ADCs
- */
-function buildADCGrid() {
-    const grid = document.getElementById('adc-grid');
-    if (!grid) {
-        console.error('ADC grid element not found');
-        return;
-    }
-
-    grid.innerHTML = '';
-
-    // Get only meta ADCs from our curated list
-    const metaADCs = ADC_LIST.getAllADCs();
-    const championData = appState.championData.data;
-
-    // Filter and sort ADCs
-    const adcChampions = metaADCs
-        .map(championId => championData[championId])
-        .filter(champ => champ !== undefined)
-        .sort((a, b) => a.name.localeCompare(b.name));
-
-    console.log(`✓ Displaying ${adcChampions.length} meta ADCs`);
-
-    // Build grid
-    adcChampions.forEach(champion => {
-        const card = createChampionCard(champion, 'adc');
-        grid.appendChild(card);
-    });
-}
-
-/**
- * Build support champion grid
- */
-function buildSupportGrid() {
-    const grid = document.getElementById('support-grid');
-    if (!grid) {
-        console.error('Support grid element not found');
-        return;
-    }
-
-    grid.innerHTML = '';
-
-    const championData = appState.championData.data;
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('🚀 ADC Threat Pro initializing...');
+  
+  try {
+    // Show loading screen
+    showLoadingProgress(0, 'Initializing...');
     
-    // Filter supports
-    const supportChampions = Object.values(championData)
-        .filter(champ => champ.tags && champ.tags.includes('Support'))
-        .sort((a, b) => a.name.localeCompare(b.name));
-
-    // Build grid
-    supportChampions.forEach(champion => {
-        const card = createChampionCard(champion, 'support');
-        grid.appendChild(card);
-    });
-}
-
-/**
- * Create champion card element
- */
-function createChampionCard(champion, role) {
-    const card = document.createElement('div');
-    card.className = 'champion-card';
-    card.dataset.championId = champion.id;
-    card.dataset.role = role;
-
-    // Get meta tier if ADC
-    let tierBadge = '';
-    if (role === 'adc') {
-        const tier = ADC_LIST.getMetaTier(champion.id);
-        tierBadge = `<span class="tier-badge tier-${tier.toLowerCase().replace('+', 'plus')}">${tier}</span>`;
-    }
-
-    const imgUrl = CONFIG.CHAMPION_IMG_API
-        .replace('{version}', appState.currentPatch)
-        .replace('{championId}', champion.id);
-
-    card.innerHTML = `
-        <div class="champion-card-img">
-            <img src="${imgUrl}" alt="${champion.name}" loading="lazy">
-            ${tierBadge}
-        </div>
-        <div class="champion-card-name">${champion.name}</div>
-    `;
-
-    card.addEventListener('click', () => handleChampionSelect(champion, role));
-
-    return card;
-}
-
-// ======================
-// CHAMPION SELECTION
-// ======================
-
-/**
- * Handle champion selection
- */
-async function handleChampionSelect(champion, role) {
-    if (role === 'adc') {
-        await selectADC(champion);
-    } else if (role === 'support') {
-        await selectSupport(champion);
-    }
-}
-
-/**
- * Select ADC champion
- */
-async function selectADC(champion) {
-    try {
-        console.log(`ADC selected: ${champion.name}`);
-        
-        appState.selectedADC = champion;
-
-        // Update UI
-        updateSelectedChampion('adc', champion);
-        
-        // Show support selection
-        const supportSection = document.getElementById('support-section');
-        if (supportSection) {
-            supportSection.style.display = 'block';
-            buildSupportGrid();
-        }
-
-        // Load full champion data in background
-        loadFullChampionData(champion.id);
-
-    } catch (error) {
-        console.error('Error selecting ADC:', error);
-        showError('Failed to select ADC');
-    }
-}
-
-/**
- * Select support champion
- */
-async function selectSupport(champion) {
-    try {
-        console.log(`Support selected: ${champion.name}`);
-        
-        appState.selectedSupport = champion;
-
-        // Update UI
-        updateSelectedChampion('support', champion);
-
-        // Show synergy analysis
-        await showSynergyAnalysis();
-
-    } catch (error) {
-        console.error('Error selecting support:', error);
-        showError('Failed to select support');
-    }
-}
-
-/**
- * Update selected champion display
- */
-function updateSelectedChampion(role, champion) {
-    const imgElement = document.getElementById(`selected-${role}-img`);
-    const nameElement = document.getElementById(`selected-${role}-name`);
-
-    if (imgElement && nameElement) {
-        const imgUrl = CONFIG.CHAMPION_IMG_API
-            .replace('{version}', appState.currentPatch)
-            .replace('{championId}', champion.id);
-
-        imgElement.src = imgUrl;
-        imgElement.alt = champion.name;
-        nameElement.textContent = champion.name;
-    }
-}
-
-// ======================
-// SYNERGY ANALYSIS
-// ======================
-
-/**
- * Show synergy analysis section
- */
-async function showSynergyAnalysis() {
-    try {
-        const section = document.getElementById('synergy-section');
-        if (!section) return;
-
-        section.style.display = 'block';
-        section.scrollIntoView({ behavior: 'smooth' });
-
-        // Calculate synergy
-        await updateSynergyAnalysis();
-
-    } catch (error) {
-        console.error('Error showing synergy analysis:', error);
-    }
-}
-
-/**
- * Update synergy analysis - FIXED VERSION
- */
-async function updateSynergyAnalysis() {
-    try {
-        if (!appState.selectedADC || !appState.selectedSupport) {
-            console.warn('Both ADC and Support must be selected');
-            return;
-        }
-
-        console.log('Calculating synergy...');
-
-        // Load full champion data for both if not already loaded
-        const [adcFullData, supportFullData] = await Promise.all([
-            loadFullChampionData(appState.selectedADC.id),
-            loadFullChampionData(appState.selectedSupport.id)
-        ]);
-
-        // Calculate synergy using the engine
-        const synergy = appState.synergyEngine.calculateSynergy(
-            appState.selectedADC.id,
-            appState.selectedSupport.id
-        );
-
-        // Update synergy rating display
-        updateSynergyRating(synergy);
-
-        // Update strengths, weaknesses, tips
-        updateSynergyInsights(synergy);
-
-        // Update phase guides
-        updatePhaseGuides(synergy);
-
-        // Build threat matrix with full champion data
-        await buildThreatMatrix(adcFullData, supportFullData);
-
-        console.log('✓ Synergy analysis updated');
-
-    } catch (error) {
-        console.error('Error updating synergy analysis:', error);
-        showError('Failed to update synergy analysis');
-    }
-}
-
-/**
- * Update synergy rating display
- */
-function updateSynergyRating(synergy) {
-    const ratingElement = document.getElementById('synergy-rating');
-    if (!ratingElement) return;
-
-    const ratingValue = ratingElement.querySelector('.rating-value');
-    if (ratingValue) {
-        ratingValue.textContent = synergy.grade;
-        ratingValue.className = `rating-value rating-${synergy.grade.toLowerCase().replace('+', 'plus')}`;
-    }
-}
-
-/**
- * Update synergy insights (strengths, weaknesses, tips)
- */
-function updateSynergyInsights(synergy) {
-    // Strengths
-    const strengthsContainer = document.getElementById('synergy-strengths');
-    if (strengthsContainer && synergy.strengths) {
-        strengthsContainer.innerHTML = synergy.strengths
-            .map(strength => `<div class="synergy-item"><span class="icon">✓</span> ${strength}</div>`)
-            .join('');
-    }
-
-    // Weaknesses
-    const weaknessesContainer = document.getElementById('synergy-weaknesses');
-    if (weaknessesContainer && synergy.weaknesses) {
-        weaknessesContainer.innerHTML = synergy.weaknesses
-            .map(weakness => `<div class="synergy-item"><span class="icon">!</span> ${weakness}</div>`)
-            .join('');
-    }
-
-    // Tips
-    const tipsContainer = document.getElementById('synergy-tips');
-    if (tipsContainer && synergy.tips) {
-        tipsContainer.innerHTML = synergy.tips
-            .map(tip => `<div class="synergy-item"><span class="icon">💡</span> ${tip}</div>`)
-            .join('');
-    }
-}
-
-/**
- * Update phase guides
- */
-function updatePhaseGuides(synergy) {
-    // Early game guide
-    const earlyGuide = document.getElementById('early-game-guide');
-    if (earlyGuide && synergy.earlyGame) {
-        earlyGuide.innerHTML = `<p>${synergy.earlyGame}</p>`;
-    }
-
-    // All-in windows
-    const allInWindows = document.getElementById('all-in-windows');
-    if (allInWindows) {
-        allInWindows.innerHTML = `<p>Look for all-ins when both champions have key abilities available. Coordinate cooldowns and positioning.</p>`;
-    }
-
-    // Defensive guide
-    const defensiveGuide = document.getElementById('defensive-guide');
-    if (defensiveGuide) {
-        defensiveGuide.innerHTML = `<p>When behind, focus on farming safely and avoiding risky trades. Let enemies push and farm under tower.</p>`;
-    }
-
-    // Positioning guide
-    const positioningGuide = document.getElementById('positioning-guide');
-    if (positioningGuide && synergy.lateGame) {
-        positioningGuide.innerHTML = `<p>${synergy.lateGame}</p>`;
-    }
-
-    // Target priority
-    const targetPriority = document.getElementById('target-priority');
-    if (targetPriority) {
-        targetPriority.innerHTML = `<p>Prioritize high-value targets while maintaining safe positioning. Focus backline when possible.</p>`;
-    }
-
-    // Combo guide
-    const comboGuide = document.getElementById('combo-guide');
-    if (comboGuide) {
-        comboGuide.innerHTML = `<p>Coordinate abilities for maximum impact. ADC should follow up on support's engagement or peel.</p>`;
-    }
-}
-
-/**
- * Build threat matrix - FIXED VERSION WITH PROPER LOADING
- */
-async function buildThreatMatrix(adcData, supportData) {
-    try {
-        const grid = document.getElementById('threat-matrix-grid');
-        if (!grid) return;
-
-        grid.innerHTML = '<div class="loading-message">Loading threat data...</div>';
-
-        // Get all champions
-        const allChampions = Object.values(appState.championData.data)
-            .filter(champ => {
-                // Exclude selected ADC and Support
-                return champ.id !== appState.selectedADC.id && 
-                       champ.id !== appState.selectedSupport.id;
-            })
-            .sort((a, b) => a.name.localeCompare(b.name));
-
-        // Build threat matrix
-        grid.innerHTML = '';
-
-        for (const champion of allChampions.slice(0, 20)) { // Limit to 20 for performance
-            const threatCard = await createThreatCard(champion, adcData);
-            grid.appendChild(threatCard);
-        }
-
-        console.log('✓ Threat matrix built');
-
-    } catch (error) {
-        console.error('Error building threat matrix:', error);
-        const grid = document.getElementById('threat-matrix-grid');
-        if (grid) {
-            grid.innerHTML = '<div class="error-message">Failed to load threat data</div>';
-        }
-    }
-}
-
-/**
- * Create threat card - FIXED VERSION
- */
-async function createThreatCard(champion, adcData) {
-    const card = document.createElement('div');
-    card.className = 'threat-card';
-
-    const imgUrl = CONFIG.CHAMPION_IMG_API
-        .replace('{version}', appState.currentPatch)
-        .replace('{championId}', champion.id);
-
-    // Calculate threat level
-    const threatLevel = calculateThreatLevel(champion, adcData);
-
-    // Load abilities in background - FIXED: Don't block rendering
-    const abilitiesPromise = loadFullChampionData(champion.id);
-
-    card.innerHTML = `
-        <div class="threat-card-header">
-            <img src="${imgUrl}" alt="${champion.name}" class="threat-champion-img">
-            <div class="threat-champion-info">
-                <div class="threat-champion-name">${champion.name}</div>
-                <div class="threat-level threat-${threatLevel}">${threatLevel.toUpperCase()}</div>
-            </div>
-        </div>
-        <div class="threat-card-body">
-            <div class="threat-stat">
-                <span class="stat-label">Role:</span>
-                <span class="stat-value">${champion.tags?.join(', ') || 'Unknown'}</span>
-            </div>
-            <div class="threat-abilities" data-champion-id="${champion.id}">
-                <div class="ability-loading">Loading abilities...</div>
-            </div>
-        </div>
-    `;
-
-    // Load abilities asynchronously - FIXED: Proper async handling
-    abilitiesPromise.then(fullData => {
-        const abilitiesContainer = card.querySelector('.threat-abilities');
-        if (abilitiesContainer && fullData) {
-            updateAbilitiesDisplay(abilitiesContainer, fullData);
-        }
-    }).catch(error => {
-        console.error(`Failed to load abilities for ${champion.id}:`, error);
-        const abilitiesContainer = card.querySelector('.threat-abilities');
-        if (abilitiesContainer) {
-            abilitiesContainer.innerHTML = '<div class="ability-error">Failed to load abilities</div>';
-        }
-    });
-
-    return card;
-}
-
-/**
- * Update abilities display - FIXED VERSION
- */
-function updateAbilitiesDisplay(container, championData) {
-    if (!championData || !championData.spells) {
-        container.innerHTML = '<div class="ability-error">No ability data available</div>';
-        return;
-    }
-
-    const abilities = [];
-
-    // Add passive
-    if (championData.passive) {
-        abilities.push({
-            name: championData.passive.name,
-            description: cleanDescription(championData.passive.description),
-            cooldown: 'Passive',
-            image: championData.passive.image?.full
-        });
-    }
-
-    // Add spells (Q, W, E, R)
-    championData.spells.forEach((spell, index) => {
-        const key = ['Q', 'W', 'E', 'R'][index];
-        const cooldowns = spell.cooldown || [];
-        const cdText = cooldowns.length > 0 
-            ? `${cooldowns[cooldowns.length - 1]}s` 
-            : 'N/A';
-
-        abilities.push({
-            name: `${key}: ${spell.name}`,
-            description: cleanDescription(spell.description),
-            cooldown: cdText,
-            image: spell.image?.full
-        });
-    });
-
-    // Build HTML
-    container.innerHTML = abilities.map(ability => `
-        <div class="ability-item">
-            <div class="ability-header">
-                <span class="ability-name">${ability.name}</span>
-                <span class="ability-cd">${ability.cooldown}</span>
-            </div>
-            <div class="ability-desc">${ability.description}</div>
-        </div>
-    `).join('');
-}
-
-/**
- * Calculate threat level
- */
-function calculateThreatLevel(champion, adcData) {
-    const tags = champion.tags || [];
+    // Initialize patch updater
+    showLoadingProgress(20, 'Checking patch version...');
+    const patchData = await window.patchUpdater.initialize();
     
-    // Simple threat calculation
-    if (tags.includes('Assassin')) return 'extreme';
-    if (tags.includes('Fighter') || tags.includes('Tank')) return 'high';
-    if (tags.includes('Mage')) return 'medium';
+    AppState.champions = patchData.champions;
+    AppState.currentPatch = patchData.version;
+    AppState.lastUpdate = new Date();
     
-    return 'low';
+    showLoadingProgress(40, 'Loading champion data...');
+    
+    // Merge with local champion data if available
+    if (typeof window.ADC_LIST !== 'undefined') {
+      mergeChampionData();
+    }
+    
+    showLoadingProgress(60, 'Setting up interface...');
+    
+    // Initialize UI components
+    initializeUI();
+    
+    showLoadingProgress(80, 'Loading settings...');
+    
+    // Load saved settings
+    loadSettings();
+    
+    showLoadingProgress(100, 'Ready!');
+    
+    // Hide loading screen
+    setTimeout(() => {
+      hideLoadingScreen();
+      AppState.isInitialized = true;
+      console.log('✅ Application initialized successfully');
+      
+      // Show update notification if needed
+      if (patchData.isUpdate) {
+        showToast('success', 'Updated!', `Champion data updated to patch ${patchData.version}`);
+      }
+    }, 500);
+    
+  } catch (error) {
+    console.error('❌ Initialization failed:', error);
+    showLoadingProgress(100, 'Failed to initialize');
+    setTimeout(() => {
+      hideLoadingScreen();
+      showToast('error', 'Initialization Failed', error.message);
+    }, 1000);
+  }
+});
+
+// =============================================================================
+// UI Initialization
+// =============================================================================
+
+function initializeUI() {
+  // Theme system
+  initializeTheme();
+  
+  // Navigation
+  setupNavigation();
+  
+  // ADC selection
+  renderADCGrid();
+  setupADCSearch();
+  
+  // Team composition
+  renderTeamInputs();
+  
+  // Modals
+  setupModals();
+  
+  // Event listeners
+  setupEventListeners();
 }
 
-/**
- * Clean HTML from descriptions
- */
-function cleanDescription(description) {
-    if (!description) return '';
-    
-    return description
-        .replace(/<[^>]*>/g, '') // Remove HTML tags
-        .replace(/\{\{[^}]*\}\}/g, '') // Remove template variables
-        .substring(0, 150) + '...'; // Limit length
+function setupNavigation() {
+  // Patch info button
+  const patchBtn = document.getElementById('patchInfoBtn');
+  const patchBadge = document.getElementById('patchBadge');
+  
+  if (patchBadge) {
+    patchBadge.textContent = `Patch ${AppState.currentPatch}`;
+    document.getElementById('heroPatchVersion').textContent = AppState.currentPatch;
+  }
+  
+  if (patchBtn) {
+    patchBtn.addEventListener('click', () => openModal('patchModal'));
+  }
+  
+  // Settings button
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => openModal('settingsModal'));
+  }
+  
+  // Theme toggle
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
 }
 
-// ======================
-// EVENT LISTENERS
-// ======================
-
-/**
- * Setup all event listeners
- */
 function setupEventListeners() {
-    // Navigation tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', handleTabClick);
+  // ADC filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      AppState.adcFilter = e.target.dataset.filter;
+      filterADCGrid();
     });
-
-    // Search inputs
-    const adcSearch = document.getElementById('adc-search');
-    if (adcSearch) {
-        adcSearch.addEventListener('input', debounce(handleADCSearch, 300));
-    }
-
-    const supportSearch = document.getElementById('support-search');
-    if (supportSearch) {
-        supportSearch.addEventListener('input', debounce(handleSupportSearch, 300));
-    }
-
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', handleFilterClick);
+  });
+  
+  // Clear team buttons
+  const clearEnemies = document.getElementById('clearEnemies');
+  const clearAllies = document.getElementById('clearAllies');
+  
+  if (clearEnemies) {
+    clearEnemies.addEventListener('click', () => {
+      AppState.enemyTeam = [];
+      renderTeamInputs();
+      renderResults();
     });
-
-    // Reset button
-    const resetBtn = document.getElementById('reset-selection');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetSelection);
-    }
-
-    // Settings button
-    const settingsBtn = document.getElementById('settings-btn');
-    if (settingsBtn) {
-        settingsBtn.addEventListener('click', () => openModal('settings-modal'));
-    }
-
-    // Help button
-    const helpBtn = document.getElementById('help-btn');
-    if (helpBtn) {
-        helpBtn.addEventListener('click', () => openModal('help-modal'));
-    }
-
-    // Modal close buttons
-    document.querySelectorAll('.modal-close').forEach(btn => {
-        btn.addEventListener('click', function() {
-            closeModal(this.dataset.modal);
-        });
+  }
+  
+  if (clearAllies) {
+    clearAllies.addEventListener('click', () => {
+      AppState.allyTeam = [];
+      renderTeamInputs();
+      renderResults();
+      hideSynergySection();
     });
-
-    // Patch refresh button
-    const refreshBtn = document.getElementById('refresh-patch-btn');
-    if (refreshBtn) {
-        refreshBtn.addEventListener('click', handlePatchRefresh);
-    }
-
-    // Settings toggles
-    const settingsInputs = document.querySelectorAll('.setting-select, .toggle-switch input');
-    settingsInputs.forEach(input => {
-        input.addEventListener('change', handleSettingChange);
+  }
+  
+  // Compact view toggle
+  const compactToggle = document.getElementById('compactViewToggle');
+  if (compactToggle) {
+    compactToggle.addEventListener('change', (e) => {
+      AppState.compactView = e.target.checked;
+      document.body.classList.toggle('compact-view', e.target.checked);
+      renderResults();
     });
+  }
+  
+  // Export button
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', exportData);
+  }
+  
+  // Settings modal controls
+  setupSettingsControls();
 }
 
-/**
- * Handle tab click
- */
-function handleTabClick(event) {
-    const tabName = event.target.dataset.tab;
+// =============================================================================
+// ADC Grid
+// =============================================================================
+
+function renderADCGrid() {
+  const grid = document.getElementById('adcGrid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  
+  // Use ADC_LIST if available, otherwise filter champions by role
+  const adcs = typeof window.ADC_LIST !== 'undefined' 
+    ? window.ADC_LIST 
+    : AppState.champions.filter(c => c.tags && (c.tags.includes('Marksman') || c.tags.includes('Mage')));
+  
+  adcs.forEach(adc => {
+    const card = createADCCard(adc);
+    grid.appendChild(card);
+  });
+  
+  // Update champion count
+  const countEl = document.getElementById('championCount');
+  if (countEl) {
+    countEl.textContent = AppState.champions.length;
+  }
+}
+
+function createADCCard(adc) {
+  const card = document.createElement('div');
+  card.className = 'adc-card';
+  card.dataset.name = adc.name;
+  card.dataset.tags = (adc.tags || []).join(',');
+  
+  const img = document.createElement('img');
+  img.className = 'adc-portrait';
+  img.src = adc.image || adc.splash || `https://ddragon.leagueoflegends.com/cdn/${AppState.currentPatch}/img/champion/${adc.slug || adc.name}.png`;
+  img.alt = adc.name;
+  img.onerror = () => {
+    img.src = 'data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"80\" height=\"80\"%3E%3Crect fill=\"%23374151\" width=\"80\" height=\"80\"/%3E%3Ctext x=\"50%25\" y=\"50%25\" text-anchor=\"middle\" dy=\".3em\" fill=\"%239CA3AF\" font-family=\"sans-serif\" font-size=\"14\"%3E' + adc.name.charAt(0) + '%3C/text%3E%3C/svg%3E';
+  };
+  
+  const name = document.createElement('span');
+  name.className = 'adc-name';
+  name.textContent = adc.name;
+  
+  card.appendChild(img);
+  card.appendChild(name);
+  
+  card.addEventListener('click', () => selectADC(adc));
+  
+  return card;
+}
+
+function selectADC(adc) {
+  console.log('ADC selected:', adc.name);
+  
+  AppState.selectedADC = adc;
+  
+  // Update UI
+  document.querySelectorAll('.adc-card').forEach(card => {
+    card.classList.toggle('selected', card.dataset.name === adc.name);
+  });
+  
+  // Unlock team composition
+  const sectionLock = document.getElementById('sectionLock');
+  if (sectionLock) {
+    sectionLock.classList.add('hidden');
+  }
+  
+  // Re-render results
+  renderResults();
+  
+  // Update synergy if support selected
+  if (AppState.allyTeam[0]) {
+    updateSynergyAnalysis();
+  }
+  
+  showToast('info', 'ADC Selected', `Playing as ${adc.name}`);
+}
+
+function setupADCSearch() {
+  const searchInput = document.getElementById('adcSearchInput');
+  if (!searchInput) return;
+  
+  searchInput.addEventListener('input', debounce((e) => {
+    AppState.adcSearchQuery = e.target.value.toLowerCase();
+    filterADCGrid();
+  }, 200));
+}
+
+function filterADCGrid() {
+  const cards = document.querySelectorAll('.adc-card');
+  
+  cards.forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const tags = card.dataset.tags.toLowerCase();
+    const matchesSearch = name.includes(AppState.adcSearchQuery);
+    const matchesFilter = AppState.adcFilter === 'all' || tags.includes(AppState.adcFilter.toLowerCase());
     
-    // Update active tab
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    event.target.classList.add('active');
+    card.classList.toggle('hidden', !(matchesSearch && matchesFilter));
+  });
+}
 
-    // Show corresponding content
-    document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-    });
+// =============================================================================
+// Team Composition
+// =============================================================================
+
+function renderTeamInputs() {
+  renderEnemyInputs();
+  renderAllyInputs();
+  updateTeamCounts();
+}
+
+function renderEnemyInputs() {
+  const container = document.getElementById('enemyInputs');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  for (let i = 0; i < 5; i++) {
+    const input = createChampionInput('enemy', i);
+    container.appendChild(input);
+  }
+}
+
+function renderAllyInputs() {
+  const container = document.getElementById('allyInputs');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  for (let i = 0; i < 4; i++) {
+    const input = createChampionInput('ally', i);
+    container.appendChild(input);
+  }
+}
+
+function createChampionInput(team, index) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'champion-input-wrapper';
+  wrapper.dataset.team = team;
+  wrapper.dataset.index = index;
+  
+  const selected = team === 'enemy' ? AppState.enemyTeam[index] : AppState.allyTeam[index];
+  
+  if (selected) {
+    wrapper.appendChild(createSelectedChampion(selected, team, index));
+  } else {
+    wrapper.appendChild(createSearchInput(team, index));
+  }
+  
+  return wrapper;
+}
+
+function createSearchInput(team, index) {
+  const container = document.createElement('div');
+  
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'champion-input';
+  input.placeholder = team === 'enemy' ? `Enemy ${index + 1}` : (index === 0 ? 'Support' : `Ally ${index + 1}`);
+  input.autocomplete = 'off';
+  
+  const dropdown = document.createElement('div');
+  dropdown.className = 'suggestions-dropdown';
+  dropdown.style.display = 'none';
+  
+  input.addEventListener('input', debounce((e) => {
+    const query = e.target.value.trim().toLowerCase();
+    if (query.length > 0) {
+      showSuggestions(dropdown, query, team, index);
+    } else {
+      dropdown.style.display = 'none';
+    }
+  }, 150));
+  
+  input.addEventListener('blur', () => {
+    setTimeout(() => dropdown.style.display = 'none', 200);
+  });
+  
+  container.appendChild(input);
+  container.appendChild(dropdown);
+  
+  return container;
+}
+
+function showSuggestions(dropdown, query, team, index) {
+  const matches = AppState.champions.filter(champ => 
+    champ.name.toLowerCase().includes(query) ||
+    (champ.slug && champ.slug.toLowerCase().includes(query))
+  ).slice(0, 8);
+  
+  if (matches.length === 0) {
+    dropdown.innerHTML = '<div class=\"suggestion-item\">No matches found</div>';
+    dropdown.style.display = 'block';
+    return;
+  }
+  
+  dropdown.innerHTML = '';
+  matches.forEach(champ => {
+    const item = createSuggestionItem(champ, team, index);
+    dropdown.appendChild(item);
+  });
+  dropdown.style.display = 'block';
+}
+
+function createSuggestionItem(champ, team, index) {
+  const item = document.createElement('div');
+  item.className = 'suggestion-item';
+  
+  const img = document.createElement('img');
+  img.className = 'suggestion-avatar';
+  img.src = champ.image || `https://ddragon.leagueoflegends.com/cdn/${AppState.currentPatch}/img/champion/${champ.slug || champ.name}.png`;
+  img.alt = champ.name;
+  
+  const name = document.createElement('span');
+  name.className = 'suggestion-name';
+  name.textContent = champ.name;
+  
+  item.appendChild(img);
+  item.appendChild(name);
+  
+  item.addEventListener('click', () => selectChampion(champ, team, index));
+  
+  return item;
+}
+
+function createSelectedChampion(champ, team, index) {
+  const container = document.createElement('div');
+  container.className = 'champion-selected';
+  
+  const img = document.createElement('img');
+  img.className = 'champion-avatar';
+  img.src = champ.image || `https://ddragon.leagueoflegends.com/cdn/${AppState.currentPatch}/img/champion/${champ.slug || champ.name}.png`;
+  img.alt = champ.name;
+  
+  const info = document.createElement('div');
+  info.className = 'champion-info';
+  
+  const name = document.createElement('div');
+  name.className = 'champion-name';
+  name.textContent = champ.name;
+  
+  const role = document.createElement('div');
+  role.className = 'champion-role';
+  role.textContent = (champ.tags || ['Champion']).join(', ');
+  
+  info.appendChild(name);
+  info.appendChild(role);
+  
+  const removeBtn = document.createElement('button');
+  removeBtn.className = 'champion-remove';
+  removeBtn.innerHTML = '&times;';
+  removeBtn.addEventListener('click', () => removeChampion(team, index));
+  
+  container.appendChild(img);
+  container.appendChild(info);
+  container.appendChild(removeBtn);
+  
+  return container;
+}
+
+function selectChampion(champ, team, index) {
+  console.log(`Selected ${champ.name} for ${team} slot ${index}`);
+  
+  if (team === 'enemy') {
+    AppState.enemyTeam[index] = champ;
+  } else {
+    AppState.allyTeam[index] = champ;
+  }
+  
+  renderTeamInputs();
+  renderResults();
+  updateTeamCounts();
+  
+  // Update synergy if support (first ally)
+  if (team === 'ally' && index === 0 && AppState.selectedADC) {
+    updateSynergyAnalysis();
+  }
+  
+  showToast('success', 'Champion Added', `${champ.name} added to ${team} team`);
+}
+
+function removeChampion(team, index) {
+  if (team === 'enemy') {
+    AppState.enemyTeam[index] = null;
+  } else {
+    AppState.allyTeam[index] = null;
+  }
+  
+  renderTeamInputs();
+  renderResults();
+  updateTeamCounts();
+  
+  if (team === 'ally' && index === 0) {
+    hideSynergySection();
+  }
+}
+
+function updateTeamCounts() {
+  const enemyCount = AppState.enemyTeam.filter(Boolean).length;
+  const allyCount = AppState.allyTeam.filter(Boolean).length;
+  
+  const enemyCountEl = document.getElementById('enemyCount');
+  const allyCountEl = document.getElementById('allyCount');
+  
+  if (enemyCountEl) enemyCountEl.textContent = `${enemyCount}/5`;
+  if (allyCountEl) allyCountEl.textContent = `${allyCount}/4`;
+}
+
+// =============================================================================
+// Synergy Analysis
+// =============================================================================
+
+function updateSynergyAnalysis() {
+  if (!AppState.selectedADC || !AppState.allyTeam[0]) {
+    hideSynergySection();
+    return;
+  }
+  
+  const support = AppState.allyTeam[0];
+  const synergy = window.synergyEngine.analyzeSynergy(AppState.selectedADC.name, support.name);
+  
+  if (!synergy) {
+    hideSynergySection();
+    return;
+  }
+  
+  renderSynergySection(synergy, support);
+}
+
+function renderSynergySection(synergy, support) {
+  const section = document.getElementById('synergySection');
+  const content = document.getElementById('synergyContent');
+  const rating = document.getElementById('synergyRating');
+  
+  if (!section || !content) return;
+  
+  // Set rating
+  if (rating) {
+    rating.textContent = getSynergyRatingText(synergy.rating);
+    rating.className = 'synergy-badge ' + getSynergyRatingClass(synergy.rating);
+  }
+  
+  // Render content
+  content.innerHTML = `
+    <div class=\"synergy-card\">
+      <div class=\"synergy-card-header\">
+        <svg class=\"synergy-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+          <path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\" stroke-width=\"2\"/>
+          <circle cx=\"9\" cy=\"7\" r=\"4\" stroke-width=\"2\"/>
+        </svg>
+        <h4>${AppState.selectedADC.name} + ${support.name}</h4>
+      </div>
+      <p>${synergy.summary}</p>
+    </div>
     
-    const targetContent = document.getElementById(`${tabName}-tab`);
-    if (targetContent) {
-        targetContent.classList.add('active');
-    }
-}
-
-/**
- * Handle ADC search
- */
-function handleADCSearch(event) {
-    const query = event.target.value.toLowerCase();
-    filterChampionGrid('adc-grid', query);
-}
-
-/**
- * Handle support search
- */
-function handleSupportSearch(event) {
-    const query = event.target.value.toLowerCase();
-    filterChampionGrid('support-grid', query);
-}
-
-/**
- * Filter champion grid
- */
-function filterChampionGrid(gridId, query) {
-    const grid = document.getElementById(gridId);
-    if (!grid) return;
-
-    const cards = grid.querySelectorAll('.champion-card');
+    <div class=\"synergy-card\">
+      <div class=\"synergy-card-header\">
+        <svg class=\"synergy-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+          <polyline points=\"22 12 18 12 15 21 9 3 6 12 2 12\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+        </svg>
+        <h4>Laning Phase Strategy</h4>
+      </div>
+      <div class=\"synergy-tips\">
+        <div class=\"synergy-tip\">
+          <svg class=\"synergy-tip-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+            <circle cx=\"12\" cy=\"12\" r=\"10\" stroke-width=\"2\"/>
+            <polyline points=\"12 6 12 12 16 14\" stroke-width=\"2\" stroke-linecap=\"round\"/>
+          </svg>
+          <div class=\"synergy-tip-text\">
+            <strong>Levels 1-3:</strong> ${synergy.laningPhase.level1_3}
+          </div>
+        </div>
+        <div class=\"synergy-tip\">
+          <svg class=\"synergy-tip-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+            <circle cx=\"12\" cy=\"12\" r=\"10\" stroke-width=\"2\"/>
+            <polyline points=\"12 6 12 12 16 14\" stroke-width=\"2\" stroke-linecap=\"round\"/>
+          </svg>
+          <div class=\"synergy-tip-text\">
+            <strong>Levels 4-6:</strong> ${synergy.laningPhase.level4_6}
+          </div>
+        </div>
+        <div class=\"synergy-tip\">
+          <svg class=\"synergy-tip-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+            <circle cx=\"12\" cy=\"12\" r=\"10\" stroke-width=\"2\"/>
+            <polyline points=\"12 6 12 12 16 14\" stroke-width=\"2\" stroke-linecap=\"round\"/>
+          </svg>
+          <div class=\"synergy-tip-text\">
+            <strong>Levels 7+:</strong> ${synergy.laningPhase.level7_9}
+          </div>
+        </div>
+      </div>
+    </div>
     
-    cards.forEach(card => {
-        const name = card.querySelector('.champion-card-name').textContent.toLowerCase();
-        const matches = name.includes(query);
-        card.style.display = matches ? 'block' : 'none';
-    });
+    <div class=\"synergy-card\">
+      <div class=\"synergy-card-header\">
+        <svg class=\"synergy-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+          <path d=\"M12 20l9-11-9-9-9 9 9 11z\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+        </svg>
+        <h4>Challenger Tips</h4>
+      </div>
+      <div class=\"synergy-tips\">
+        ${synergy.challengerTips.map(tip => `
+          <div class=\"synergy-tip\">
+            <svg class=\"synergy-tip-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\">
+              <polyline points=\"20 6 9 17 4 12\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>
+            </svg>
+            <div class=\"synergy-tip-text\">${tip}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  section.classList.remove('hidden');
 }
 
-/**
- * Handle filter click
- */
-function handleFilterClick(event) {
-    const btn = event.target;
-    const parent = btn.parentElement;
-    
-    // Update active state
-    parent.querySelectorAll('.filter-btn').forEach(b => {
-        b.classList.remove('active');
-    });
-    btn.classList.add('active');
-
-    // Apply filter based on data attributes
-    if (btn.dataset.role) {
-        filterADCsByRole(btn.dataset.role);
-    } else if (btn.dataset.supportType) {
-        filterSupportsByType(btn.dataset.supportType);
-    }
+function hideSynergySection() {
+  const section = document.getElementById('synergySection');
+  if (section) {
+    section.classList.add('hidden');
+  }
 }
 
-/**
- * Filter ADCs by role
- */
-function filterADCsByRole(role) {
-    const grid = document.getElementById('adc-grid');
-    if (!grid) return;
-
-    if (role === 'all') {
-        buildADCGrid();
-        return;
-    }
-
-    grid.innerHTML = '';
-    const championData = appState.championData.data;
-    const adcs = role === 'marksman' ? ADC_LIST.marksman : ADC_LIST.mage;
-
-    adcs.forEach(championId => {
-        const champion = championData[championId];
-        if (champion) {
-            const card = createChampionCard(champion, 'adc');
-            grid.appendChild(card);
-        }
-    });
+function getSynergyRatingText(rating) {
+  if (rating >= 90) return 'Excellent';
+  if (rating >= 80) return 'Very Good';
+  if (rating >= 70) return 'Good';
+  if (rating >= 60) return 'Average';
+  return 'Below Average';
 }
 
-/**
- * Filter supports by type
- */
-function filterSupportsByType(type) {
-    const grid = document.getElementById('support-grid');
-    if (!grid) return;
-
-    if (type === 'all') {
-        buildSupportGrid();
-        return;
-    }
-
-    // Filter logic here
-    // Would need SUPPORT_TYPES data
+function getSynergyRatingClass(rating) {
+  if (rating >= 80) return 'excellent';
+  if (rating >= 70) return 'good';
+  if (rating >= 60) return 'average';
+  return 'below-average';
 }
 
-/**
- * Reset selection
- */
-function resetSelection() {
-    appState.selectedADC = null;
-    appState.selectedSupport = null;
-    appState.selectedEnemies = [];
-    appState.selectedAllies = [];
+// =============================================================================
+// Results Table
+// =============================================================================
 
-    // Hide sections
-    const supportSection = document.getElementById('support-section');
-    const synergySection = document.getElementById('synergy-section');
-    
-    if (supportSection) supportSection.style.display = 'none';
-    if (synergySection) synergySection.style.display = 'none';
-
-    // Reset UI
-    buildADCGrid();
-    
-    console.log('Selection reset');
+function renderResults() {
+  const resultsEmpty = document.getElementById('resultsEmpty');
+  const resultsTable = document.getElementById('resultsTable');
+  const tbody = document.getElementById('threatTableBody');
+  
+  if (!tbody) return;
+  
+  const allChampions = [
+    ...AppState.enemyTeam.filter(Boolean),
+    ...AppState.allyTeam.filter(Boolean)
+  ];
+  
+  if (allChampions.length === 0) {
+    resultsEmpty.classList.remove('hidden');
+    resultsTable.classList.add('hidden');
+    return;
+  }
+  
+  resultsEmpty.classList.add('hidden');
+  resultsTable.classList.remove('hidden');
+  
+  tbody.innerHTML = '';
+  
+  // Sort: enemies first (hard CC priority), then allies
+  const sorted = sortChampionsByThreat(allChampions);
+  
+  sorted.forEach(champ => {
+    const row = createResultRow(champ);
+    tbody.appendChild(row);
+  });
 }
 
-/**
- * Handle patch refresh
- */
-async function handlePatchRefresh() {
-    try {
-        const btn = document.getElementById('refresh-patch-btn');
-        if (btn) {
-            btn.classList.add('refreshing');
-        }
-
-        // Clear patch cache
-        clearCachedData('current_patch');
-
-        // Reinitialize
-        await initializeApp();
-
-        showNotification('Patch data updated successfully');
-
-    } catch (error) {
-        console.error('Failed to refresh patch data:', error);
-        showError('Failed to refresh patch data');
-    } finally {
-        const btn = document.getElementById('refresh-patch-btn');
-        if (btn) {
-            btn.classList.remove('refreshing');
-        }
-    }
+function sortChampionsByThreat(champions) {
+  const enemies = champions.filter(c => AppState.enemyTeam.includes(c));
+  const allies = champions.filter(c => AppState.allyTeam.includes(c));
+  
+  // Sort enemies by threat (hard CC first)
+  enemies.sort((a, b) => {
+    const aHardCC = hasHardCC(a);
+    const bHardCC = hasHardCC(b);
+    if (aHardCC && !bHardCC) return -1;
+    if (!aHardCC && bHardCC) return 1;
+    return a.name.localeCompare(b.name);
+  });
+  
+  return [...enemies, ...allies];
 }
 
-/**
- * Handle setting change
- */
-function handleSettingChange(event) {
-    const setting = event.target.id.replace('-toggle', '').replace('-select', '');
-    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-
-    appState.settings[setting] = value;
-    saveSettings();
-
-    console.log(`Setting updated: ${setting} = ${value}`);
-
-    // Apply settings
-    if (setting === 'theme') {
-        document.body.className = `theme-${value}`;
-    }
+function hasHardCC(champion) {
+  // Check if champion has hard CC abilities
+  if (!champion.abilities) return false;
+  return champion.abilities.some(ability => 
+    ability.threat && ability.threat.includes('HARD_CC')
+  );
 }
 
-// ======================
-// UTILITY FUNCTIONS
-// ======================
-
-/**
- * Debounce function
- */
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
+function createResultRow(champion) {
+  const tr = document.createElement('tr');
+  const isEnemy = AppState.enemyTeam.includes(champion);
+  tr.className = isEnemy ? 'enemy-row' : 'ally-row';
+  
+  // Team badge
+  const tdTeam = document.createElement('td');
+  tdTeam.className = 'col-team';
+  const teamBadge = document.createElement('span');
+  teamBadge.className = `team-badge ${isEnemy ? 'enemy' : 'ally'}`;
+  teamBadge.textContent = isEnemy ? 'Enemy' : 'Ally';
+  tdTeam.appendChild(teamBadge);
+  
+  // Champion
+  const tdChamp = document.createElement('td');
+  tdChamp.className = 'col-champion';
+  const champCell = document.createElement('div');
+  champCell.className = 'champion-cell';
+  const champImg = document.createElement('img');
+  champImg.className = 'table-avatar';
+  champImg.src = champion.image || `https://ddragon.leagueoflegends.com/cdn/${AppState.currentPatch}/img/champion/${champion.slug || champion.name}.png`;
+  champImg.alt = champion.name;
+  const champName = document.createElement('div');
+  champName.textContent = champion.name;
+  champCell.appendChild(champImg);
+  champCell.appendChild(champName);
+  tdChamp.appendChild(champCell);
+  
+  // Role
+  const tdRole = document.createElement('td');
+  tdRole.className = 'col-role';
+  tdRole.textContent = (champion.tags || []).join(', ');
+  
+  // Passive (placeholder - enhance with actual data)
+  const tdPassive = document.createElement('td');
+  tdPassive.className = 'col-passive';
+  tdPassive.textContent = champion.passive || 'N/A';
+  
+  // Abilities (placeholder - enhance with actual data)
+  const tdAbilities = document.createElement('td');
+  tdAbilities.className = 'col-abilities';
+  if (champion.abilities && champion.abilities.length > 0) {
+    const abilityPills = document.createElement('div');
+    abilityPills.className = 'ability-pills';
+    // Add ability pills here
+    tdAbilities.appendChild(abilityPills);
+  } else {
+    tdAbilities.textContent = 'Loading...';
+  }
+  
+  // Threat tags (placeholder)
+  const tdThreats = document.createElement('td');
+  tdThreats.className = 'col-threats';
+  tdThreats.innerHTML = '<span class=\"threat-tag hard-cc\">Hard CC</span>';
+  
+  // ADC tips
+  const tdTips = document.createElement('td');
+  tdTips.className = 'col-notes';
+  tdTips.textContent = getADCTip(champion.name);
+  
+  // Support synergy
+  const tdSynergy = document.createElement('td');
+  tdSynergy.className = 'col-synergy';
+  tdSynergy.textContent = getSupportSynergy(champion.name);
+  
+  tr.appendChild(tdTeam);
+  tr.appendChild(tdChamp);
+  tr.appendChild(tdRole);
+  tr.appendChild(tdPassive);
+  tr.appendChild(tdAbilities);
+  tr.appendChild(tdThreats);
+  tr.appendChild(tdTips);
+  tr.appendChild(tdSynergy);
+  
+  return tr;
 }
 
-/**
- * Show loading overlay
- */
-function showLoading(message) {
-    const overlay = document.getElementById('loading-overlay');
-    const details = document.getElementById('loading-details');
-    
-    if (overlay) overlay.style.display = 'flex';
-    if (details) details.textContent = message;
+function getADCTip(championName) {
+  if (!AppState.selectedADC || !window.ADC_TEMPLATES) {
+    return 'Select your ADC for tips';
+  }
+  
+  const template = window.ADC_TEMPLATES[AppState.selectedADC.name];
+  if (!template || !template.tips) {
+    return 'No tip available';
+  }
+  
+  return template.tips[championName] || 'No specific tip';
 }
 
-/**
- * Hide loading overlay
- */
-function hideLoading() {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        overlay.style.display = 'none';
-    }
+function getSupportSynergy(championName) {
+  if (!AppState.allyTeam[0]) {
+    return 'N/A';
+  }
+  
+  const support = AppState.allyTeam[0];
+  if (support.name !== championName) {
+    return 'N/A';
+  }
+  
+  const synergy = window.synergyEngine?.analyzeSynergy(AppState.selectedADC?.name, championName);
+  return synergy ? `${synergy.rating}% synergy` : 'N/A';
 }
 
-/**
- * Show error message
- */
-function showError(message) {
-    console.error(message);
-    // Could show toast notification here
-    alert(message);
+// =============================================================================
+// Theme System
+// =============================================================================
+
+function initializeTheme() {
+  const savedTheme = localStorage.getItem('adc_threat_theme') || 'dark';
+  AppState.theme = savedTheme;
+  applyTheme(savedTheme);
 }
 
-/**
- * Show notification
- */
-function showNotification(message) {
-    console.log(message);
-    // Could show toast notification here
+function toggleTheme() {
+  const newTheme = AppState.theme === 'dark' ? 'light' : 'dark';
+  AppState.theme = newTheme;
+  applyTheme(newTheme);
+  localStorage.setItem('adc_threat_theme', newTheme);
 }
 
-/**
- * Open modal
- */
+function applyTheme(theme) {
+  document.body.className = theme === 'dark' ? 'dark-theme' : 'light-theme';
+}
+
+// =============================================================================
+// Modals
+// =============================================================================
+
+function setupModals() {
+  // Settings modal
+  const settingsModal = document.getElementById('settingsModal');
+  const closeSettings = document.getElementById('closeSettings');
+  const settingsOverlay = document.getElementById('settingsOverlay');
+  
+  if (closeSettings) {
+    closeSettings.addEventListener('click', () => closeModal('settingsModal'));
+  }
+  if (settingsOverlay) {
+    settingsOverlay.addEventListener('click', () => closeModal('settingsModal'));
+  }
+  
+  // Patch modal
+  const patchModal = document.getElementById('patchModal');
+  const closePatch = document.getElementById('closePatch');
+  const patchOverlay = document.getElementById('patchOverlay');
+  
+  if (closePatch) {
+    closePatch.addEventListener('click', () => closeModal('patchModal'));
+  }
+  if (patchOverlay) {
+    patchOverlay.addEventListener('click', () => closeModal('patchModal'));
+  }
+}
+
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'flex';
-    }
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  
+  modal.classList.add('active');
+  
+  // Load content for specific modals
+  if (modalId === 'patchModal') {
+    loadPatchInfo();
+  } else if (modalId === 'settingsModal') {
+    updateSettingsModal();
+  }
 }
 
-/**
- * Close modal
- */
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-    }
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('active');
+  }
 }
 
-/**
- * Update patch display
- */
-function updatePatchDisplay(patch) {
-    const element = document.getElementById('current-patch');
-    if (element) {
-        element.textContent = patch;
-    }
-}
-
-/**
- * Setup auto-update
- */
-function setupAutoUpdate() {
-    setInterval(async () => {
-        try {
-            const newPatch = await getCurrentPatch();
-            if (newPatch !== appState.currentPatch) {
-                console.log(`New patch detected: ${newPatch}`);
-                showNotification(`New patch available: ${newPatch}`);
-                // Could auto-reload here
-            }
-        } catch (error) {
-            console.error('Auto-update check failed:', error);
+function loadPatchInfo() {
+  const body = document.getElementById('patchModalBody');
+  if (!body) return;
+  
+  body.innerHTML = `
+    <div class=\"patch-info\">
+      <h3>Current Patch: ${AppState.currentPatch}</h3>
+      <p><strong>Last Updated:</strong> ${AppState.lastUpdate ? AppState.lastUpdate.toLocaleString() : 'Unknown'}</p>
+      <p><strong>Champions Loaded:</strong> ${AppState.champions.length}</p>
+      <p><strong>Auto-Updates:</strong> ${AppState.autoUpdate ? 'Enabled' : 'Disabled'}</p>
+      
+      <div class=\"patch-actions\" style=\"margin-top: 20px;\">
+        <button class=\"setting-btn\" id=\"checkPatchUpdate\">Check for Updates</button>
+      </div>
+      
+      <div id=\"patchUpdateResult\" style=\"margin-top: 20px;\"></div>
+    </div>
+  `;
+  
+  const checkBtn = document.getElementById('checkPatchUpdate');
+  if (checkBtn) {
+    checkBtn.addEventListener('click', async () => {
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Checking...';
+      
+      try {
+        const result = await window.patchUpdater.checkForUpdates();
+        const resultDiv = document.getElementById('patchUpdateResult');
+        
+        if (result.isAvailable) {
+          resultDiv.innerHTML = `
+            <div style=\"padding: 15px; background: #10B981; color: white; border-radius: 8px;\">
+              <strong>Update Available!</strong><br>
+              Current: ${result.current} → Latest: ${result.latest}
+            </div>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <div style=\"padding: 15px; background: #374151; border-radius: 8px;\">
+              You're up to date! (${result.current})
+            </div>
+          `;
         }
-    }, CONFIG.AUTO_UPDATE_INTERVAL);
+      } catch (error) {
+        const resultDiv = document.getElementById('patchUpdateResult');
+        resultDiv.innerHTML = `
+          <div style=\"padding: 15px; background: #EF4444; color: white; border-radius: 8px;\">
+            Error: ${error.message}
+          </div>
+        `;
+      } finally {
+        checkBtn.disabled = false;
+        checkBtn.textContent = 'Check for Updates';
+      }
+    });
+  }
 }
 
-// ======================
-// LOCAL STORAGE
-// ======================
+function updateSettingsModal() {
+  const patchVersion = document.getElementById('settingsPatchVersion');
+  const lastUpdate = document.getElementById('settingsLastUpdate');
+  const championCount = document.getElementById('settingsChampionCount');
+  
+  if (patchVersion) patchVersion.textContent = AppState.currentPatch;
+  if (lastUpdate) lastUpdate.textContent = AppState.lastUpdate ? AppState.lastUpdate.toLocaleString() : '—';
+  if (championCount) championCount.textContent = AppState.champions.length;
+}
 
-/**
- * Load settings from localStorage
- */
+function setupSettingsControls() {
+  // Theme select
+  const themeSelect = document.getElementById('themeSelect');
+  if (themeSelect) {
+    themeSelect.value = AppState.theme;
+    themeSelect.addEventListener('change', (e) => {
+      const theme = e.target.value;
+      if (theme === 'auto') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(prefersDark ? 'dark' : 'light');
+      } else {
+        applyTheme(theme);
+        AppState.theme = theme;
+        localStorage.setItem('adc_threat_theme', theme);
+      }
+    });
+  }
+  
+  // Auto-update toggle
+  const autoUpdateToggle = document.getElementById('autoUpdateToggle');
+  if (autoUpdateToggle) {
+    autoUpdateToggle.checked = AppState.autoUpdate;
+    autoUpdateToggle.addEventListener('change', (e) => {
+      AppState.autoUpdate = e.target.checked;
+      localStorage.setItem('adc_threat_auto_update', e.target.checked);
+    });
+  }
+  
+  // Check updates button
+  const checkUpdatesBtn = document.getElementById('checkUpdatesBtn');
+  if (checkUpdatesBtn) {
+    checkUpdatesBtn.addEventListener('click', async () => {
+      checkUpdatesBtn.disabled = true;
+      checkUpdatesBtn.textContent = 'Checking...';
+      
+      try {
+        await window.patchUpdater.update();
+        location.reload();
+      } catch (error) {
+        showToast('error', 'Update Failed', error.message);
+      } finally {
+        checkUpdatesBtn.disabled = false;
+        checkUpdatesBtn.textContent = 'Check Now';
+      }
+    });
+  }
+  
+  // Clear cache button
+  const clearCacheBtn = document.getElementById('clearCacheBtn');
+  if (clearCacheBtn) {
+    clearCacheBtn.addEventListener('click', () => {
+      if (confirm('Clear all cached data? This will reload the page.')) {
+        window.patchUpdater.clearCache();
+        localStorage.clear();
+        location.reload();
+      }
+    });
+  }
+}
+
+// =============================================================================
+// Export/Import
+// =============================================================================
+
+function exportData() {
+  const data = {
+    version: '2.0.0',
+    patch: AppState.currentPatch,
+    timestamp: new Date().toISOString(),
+    selectedADC: AppState.selectedADC?.name,
+    enemyTeam: AppState.enemyTeam.filter(Boolean).map(c => c.name),
+    allyTeam: AppState.allyTeam.filter(Boolean).map(c => c.name),
+    settings: {
+      theme: AppState.theme,
+      compactView: AppState.compactView
+    }
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `adc-threat-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  showToast('success', 'Exported', 'Configuration exported successfully');
+}
+
+// =============================================================================
+// Toast Notifications
+// =============================================================================
+
+function showToast(type, title, message) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const icons = {
+    success: '<svg class=\"toast-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><polyline points=\"20 6 9 17 4 12\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>',
+    error: '<svg class=\"toast-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"10\" stroke-width=\"2\"/><line x1=\"15\" y1=\"9\" x2=\"9\" y2=\"15\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"9\" y1=\"9\" x2=\"15\" y2=\"15\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>',
+    warning: '<svg class=\"toast-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><path d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\" stroke-width=\"2\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>',
+    info: '<svg class=\"toast-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"10\" stroke-width=\"2\"/><line x1=\"12\" y1=\"16\" x2=\"12\" y2=\"12\" stroke-width=\"2\" stroke-linecap=\"round\"/><line x1=\"12\" y1=\"8\" x2=\"12.01\" y2=\"8\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>'
+  };
+  
+  toast.innerHTML = `
+    ${icons[type] || icons.info}
+    <div class=\"toast-content\">
+      <div class=\"toast-title\">${title}</div>
+      ${message ? `<div class=\"toast-message\">${message}</div>` : ''}
+    </div>
+    <button class=\"toast-close\">×</button>
+  `;
+  
+  const closeBtn = toast.querySelector('.toast-close');
+  closeBtn.addEventListener('click', () => removeToast(toast));
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => removeToast(toast), 5000);
+}
+
+function removeToast(toast) {
+  toast.style.opacity = '0';
+  toast.style.transform = 'translateX(100%)';
+  setTimeout(() => toast.remove(), 300);
+}
+
+// =============================================================================
+// Loading Screen
+// =============================================================================
+
+function showLoadingProgress(percent, text) {
+  const progress = document.getElementById('loadingProgress');
+  const loadingText = document.querySelector('.loading-text');
+  
+  if (progress) {
+    progress.style.width = `${percent}%`;
+  }
+  if (loadingText) {
+    loadingText.textContent = text;
+  }
+}
+
+function hideLoadingScreen() {
+  const screen = document.getElementById('loadingScreen');
+  if (screen) {
+    screen.classList.add('hidden');
+  }
+}
+
+// =============================================================================
+// Utilities
+// =============================================================================
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function mergeChampionData() {
+  // Merge ADC_LIST data with patch updater data
+  if (typeof window.ADC_LIST !== 'undefined') {
+    AppState.champions.forEach(champ => {
+      const adcData = window.ADC_LIST.find(adc => adc.name === champ.name);
+      if (adcData) {
+        Object.assign(champ, adcData);
+      }
+    });
+  }
+}
+
 function loadSettings() {
-    try {
-        const saved = localStorage.getItem('adc_threat_settings');
-        if (saved) {
-            appState.settings = { ...appState.settings, ...JSON.parse(saved) };
-        }
-    } catch (error) {
-        console.error('Failed to load settings:', error);
-    }
+  // Load saved settings from localStorage
+  const theme = localStorage.getItem('adc_threat_theme');
+  const autoUpdate = localStorage.getItem('adc_threat_auto_update');
+  
+  if (theme) {
+    AppState.theme = theme;
+    applyTheme(theme);
+  }
+  
+  if (autoUpdate !== null) {
+    AppState.autoUpdate = autoUpdate === 'true';
+  }
 }
 
-/**
- * Save settings to localStorage
- */
-function saveSettings() {
-    try {
-        localStorage.setItem('adc_threat_settings', JSON.stringify(appState.settings));
-    } catch (error) {
-        console.error('Failed to save settings:', error);
-    }
+// =============================================================================
+// Expose for debugging
+// =============================================================================
+
+if (typeof window !== 'undefined') {
+  window.ADC_THREAT_PRO = {
+    state: AppState,
+    selectADC,
+    selectChampion,
+    renderResults,
+    exportData
+  };
 }
-
-/**
- * Get cached data
- */
-function getCachedData(key) {
-    try {
-        const cached = localStorage.getItem(`adc_cache_${key}`);
-        if (cached) {
-            return JSON.parse(cached);
-        }
-    } catch (error) {
-        console.error(`Failed to get cached data for ${key}:`, error);
-    }
-    return null;
-}
-
-/**
- * Set cached data
- */
-function setCachedData(key, data) {
-    try {
-        localStorage.setItem(`adc_cache_${key}`, JSON.stringify({
-            data,
-            timestamp: Date.now()
-        }));
-    } catch (error) {
-        console.error(`Failed to cache data for ${key}:`, error);
-    }
-}
-
-/**
- * Clear cached data
- */
-function clearCachedData(key) {
-    try {
-        localStorage.removeItem(`adc_cache_${key}`);
-    } catch (error) {
-        console.error(`Failed to clear cached data for ${key}:`, error);
-    }
-}
-
-// ======================
-// INITIALIZATION
-// ======================
-
-// Start app when DOM is ready
-document.addEventListener('DOMContentLoaded', initializeApp);
-
-// Export for debugging
-window.appState = appState;
