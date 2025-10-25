@@ -11,7 +11,9 @@ const ADC_TEMPLATES = {
       "Leona": "Her E (Zenith Blade) goes through minions. Respect her level 3 all-in. Use Hawkshot (E) for vision to enable her roams.",
       "Zed": "Hold your R (Arrow) for when he ults. Fire it at your location *after* he appears to guarantee the stun.",
       "Yone": "His E (Soul Unbound) and R (Fate Sealed) are telegraphed. Use your R to stop him mid-dash. Kite back, don't run.",
-      "Blitzcrank": "Stand behind minions. His hook (Q) is your death. Poke him with W (Volley) when he misses."
+      "Blitzcrank": "Stand behind minions. His hook (Q) is your death. Poke him with W (Volley) when he misses.",
+      "Yunara": "Avoid long trades; Yunara farms until R and wants grouped fights. Punish her early if she oversteps."
+
     },
     macro: {
       "tempo_advantage": "Use Volley (W) to build and crash a large minion wave. This forces the enemy to catch the wave under their tower, giving you 'tempo' to recall for an item advantage or help your jungler secure scuttle.",
@@ -26,7 +28,9 @@ const ADC_TEMPLATES = {
       "Sivir": "Her Spell Shield (E) will block your trap (W) root. Auto-attack the shield to break it, then trap her.",
       "Yasuo": "His Wind Wall (W) blocks your autos and ult (R). Bait it out with Q (Piltover Peacemaker) before committing.",
       "Leona": "Place traps (W) *behind* you. When she engages, E (Net) away and she will be forced to walk over a trap.",
-      "Zyra": "Her plants will block your Q (Peacemaker). Use your superior range to auto-attack her and her plants."
+      "Zyra": "Her plants will block your Q (Peacemaker). Use your superior range to auto-attack her and her plants.",
+      "Yunara": "Cait must deny Yunara farm/stack. Trap control and zone early — if you let her stack she outscales in mid-game."
+
     },
     macro: {
       "tempo_advantage": "You have the longest range. Shove the first two waves hard to get 'priority'. This lets you and your support move to ward the enemy jungle or help your jungler invade, a common KR/CN strategy.",
@@ -41,7 +45,8 @@ const ADC_TEMPLATES = {
       "Draven": "You lose all-ins. Use your range (Rockets) to farm safely. Place E (Chompers) defensively to stop his W (Blood Rush).",
       "Thresh": "His hook (Q) is lethal. Maintain distance and place E (Chompers) in his path if he walks up.",
       "Vi": "Her R (Cease and Desist) is point-and-click. Place E (Chompers) at your feet as she flies to you to root her after she lands.",
-      "Lucian": "He wins short trades. Do not let him dash (E) forward. Farm with rockets (Q) and scale."
+      "Lucian": "He wins short trades. Do not let him dash (E) forward. Farm with rockets (Q) and scale.",
+      "Yunara": "Jinx should avoid grouped brawls where Yunara's crits cleave—shove and rotate to avoid giving Yunara teamfights."
     },
     macro: {
       "tempo_advantage": "Create a 'cheater recall' by hard shoving the third minion wave with rockets (Q). Recall, buy a Long Sword, and walk back to 'freeze' the wave as it pushes back to you.",
@@ -56,7 +61,8 @@ const ADC_TEMPLATES = {
       "Alistar": "His W-Q (Headbutt-Pulverize) combo is hard to dodge. Hold your E (Arcane Shift) until *after* he uses it.",
       "Draven": "You out-range him with Q (Mystic Shot). Never E (Arcane Shift) *into* him unless he has no axes.",
       "Sivir": "Her Spell Shield (E) will block your Q (Mystic Shot) or R (Trueshot Barrage). Auto-attack to bait it out.",
-      "Yasuo": "His Wind Wall (W) blocks your entire kit. E (Arcane Shift) to the side to get a better angle."
+      "Yasuo": "His Wind Wall (W) blocks your entire kit. E (Arcane Shift) to the side to get a better angle.",
+      "Yunara": "Ezreal should keep poking to deny stacks. If Yunara hits items, group fights and sieges become risky for Ezreal."
     },
     macro: {
       "tempo_advantage": "Ezreal has cheap recalls. Shove a wave with Q and auto-attacks, then recall for a Tear or Sheen. This item lead creates poke pressure ('tempo') that forces the enemy to recall at a bad time.",
@@ -71,7 +77,8 @@ const ADC_TEMPLATES = {
       "Caitlyn": "You lose lane hard. Farm under tower with Q (Icathian Rain). Your all-in at level 6 (R) can kill her if she's isolated.",
       "Thresh": "His Flay (E) cancels your R (Killer Instinct) dash. Wait for him to use E before you ult in.",
       "Leona": "Perfect engage partner. Your R (Killer Instinct) shield stacks with her W (Eclipse) resists, making you deceptively tanky.",
-      "Brand": "His R (Pyroclasm) will bounce between you and your support. R (Killer Instinct) away to break the tether."
+      "Brand": "His R (Pyroclasm) will bounce between you and your support. R (Killer Instinct) away to break the tether.",
+      "Yunara": "Kai’Sa can win isolated skirmishes early—force those. Avoid giving Yunara the grouped mid-game she craves."
     },
     macro: {
       "tempo_advantage": "Your Q (Icathian Rain) is an execute on minions. Use it to quickly clear the last 3 minions of a wave to crash it, giving you tempo to ward or recall for a Pickaxe.",
@@ -86,7 +93,8 @@ const ADC_TEMPLATES = {
       "Yasuo": "His Wind Wall (W) blocks your R (Bullet Time). Wait for him to use it. Your Q (Double Up) is not blocked.",
       "Thresh": "His Flay (E) can cancel your R (Bullet Time). Position at max range so his E cannot reach you.",
       "Nautilus": "His hook (Q) or R (Depth Charge) is a perfect setup for your R (Bullet Time).",
-      "Sivir": "Her Spell Shield (E) will block your E (Make It Rain) slow. Try to pop it with a Q (Double Up) bounce first."
+      "Sivir": "Her Spell Shield (E) will block your E (Make It Rain) slow. Try to pop it with a Q (Double Up) bounce first.",
+      "Yunara": "MF must punish Yunara early with pressure and plates. If Yunara hits crit, she flips the threat in mid-game."
     },
     macro: {
       "tempo_advantage": "You are a lane bully. Shove the wave constantly with your Q (Double Up) bounces and E. This pressure gives your team 'tempo' to invade the enemy's bot-side jungle.",
@@ -101,7 +109,8 @@ const ADC_TEMPLATES = {
       "Yasuo": "His Wind Wall (W) blocks your Q (Double Daggers) and autos, but not your E (Bladecaller) pull-back. Setup feathers and pull *through* his wall.",
       "Zed": "Your R (Featherstorm) makes you untargetable. Time your R to dodge his R (Death Mark) 'pop' damage.",
       "Alistar": "His all-in is dangerous. Use your R (Featherstorm) to dodge his W-Q (Headbutt-Pulverize) combo, then root him with E (Bladecaller).",
-      "Samira": "Her W (Blade Whirl) blocks your Q (Double Daggers) and E (Bladecaller). Bait it out before using your E."
+      "Samira": "Her W (Blade Whirl) blocks your Q (Double Daggers) and E (Bladecaller). Bait it out before using your E.",
+      "Yunara": "Xayah wants to root and isolate before Yunara stacks. Team should avoid long clustered fights."
     },
     macro: {
       "tempo_advantage": "Your Q-E combo clears waves instantly. Shove the wave and then place 'Feather' traps (E) in the jungle entrances to protect your lane from ganks.",
@@ -116,7 +125,8 @@ const ADC_TEMPLATES = {
       "Nautilus": "Strong engage means you must rely on your support peel. Use Green (Calibrum) to poke him from a distance.",
       "Leona": "When Leona roams you must push quickly or lose plates; coordinate your Purple (Gravitum) root with her for kill windows.",
       "Zed": "You have no escape. Keep your Red (Infernum) weapon for the wave clear, then swap to White (Crescendum) for the close-range turret (Q). Buy stopwatch.",
-      "Vi": "Her R (Cease and Desist) is a nightmare. Use your Purple (Gravitum) Q (Binding) to root her *before* she can ult you."
+      "Vi": "Her R (Cease and Desist) is a nightmare. Use your Purple (Gravitum) Q (Binding) to root her *before* she can ult you.",
+      "Yunara": "Aphelios needs to use weapon windows to deny grouped fights; Yunara punishes immobile Aphelios in 5v5s."
     },
     macro: {
       "tempo_advantage": "Your tempo is dictated by your weapon order. When you have Red (Infernum), you have wave-clear 'tempo'. Shove the wave. When you have White (Crescendum), you have objective 'tempo'. Signal your team for Dragon.",
@@ -131,7 +141,8 @@ const ADC_TEMPLATES = {
       "Draven": "You can win all-ins if you dodge his R (Whirling Death) with your W (Rocket Jump). Use your R (Buster Shot) to disengage if you lose a trade.",
       "Thresh": "His Flay (E) cancels your W (Rocket Jump). Wait for him to use E before you jump in.",
       "Alistar": "He can W (Headbutt) you mid-W (Rocket Jump). Wait for him to use his combo first.",
-      "Samira": "Her W (Blade Whirl) blocks your E (Explosive Charge) and R (Buster Shot). Bait it out."
+      "Samira": "Her W (Blade Whirl) blocks your E (Explosive Charge) and R (Buster Shot). Bait it out.",
+      "Yunara": "Tristana must snowball and use tower pressure early — denying Yunara the time to stack is priority."      
     },
     macro: {
       "tempo_advantage": "Your E-on-tower is your main 'tempo' tool. Shove the wave, place your E on the enemy turret, and auto-attack it. This forces the enemy jungler to come bot, relieving pressure from your other lanes.",
@@ -146,7 +157,8 @@ const ADC_TEMPLATES = {
       "Caitlyn": "Your E (Spell Shield) blocks her R (Ace in the Hole) or W (Trap). Use it to negate her poke.",
       "Ezreal": "Your E (Spell Shield) blocks his R (Trueshot Barrage) and W (Essence Flux). Use it to win trades.",
       "Leona": "Your E (Spell Shield) blocks her E (Zenith Blade) or R (Solar Flare). This is a skill matchup. Shield the right ability, and you win.",
-      "Nautilus": "His R (Depth Charge) is a free E (Spell Shield) proc. Bait his point-and-click R to get free mana."
+      "Nautilus": "His R (Depth Charge) is a free E (Spell Shield) proc. Bait his point-and-click R to get free mana.",
+      "Yunara": "Sivir should perma-push and rotate to avoid long team fights; Yunara thrives in grouped engagements."
     },
     macro: {
       "tempo_advantage": "You are the 'Tempo Queen'. Your Q (Boomerang Blade) and W (Ricochet) clear waves instantly. Your job is to perma-shove bot lane, then rotate mid with your support to create a 5v4 ('tempo') and take objectives.",
@@ -166,7 +178,8 @@ const ADC_TEMPLATES = {
     macro: {
       "tempo_advantage": "Your E (Relentless Pursuit) dash allows you to trade and dodge abilities, winning 'tempo' in lane. Dash in, auto-Q-auto, then dash out as the enemy retaliates.",
       "wave_management": "You are a lane bully. Your goal is to get a 'priority' (pushed wave) so your jungler can invade or your support can roam mid.",
-      "key_timer": "Level 2/3. With an engage support (Nami, Braum, Leona), your level 2 all-in is unmatched. Shove the first wave, hit level 2, and immediately engage."
+      "key_timer": "Level 2/3. With an engage support (Nami, Braum, Leona), your level 2 all-in is unmatched. Shove the first wave, hit level 2, and immediately engage.",
+      "Yunara": "Lucian's early poke/all-in is dangerous — Yunara wants to keep lanes slow and safe until she can commit with R."
     }
   },
   "Samira": {
@@ -176,7 +189,8 @@ const ADC_TEMPLATES = {
       "Nautilus": "His full CC chain (Q, Passive, E, R) allows you to get your full S-rank combo (R) for free.",
       "Janna": "Anti-synergy. Her Q (Howling Gale) and R (Monsoon) push enemies *away* from you. Play passively.",
       "Leona": "Her E (Zenith Blade) and R (Solar Flare) are the setup you need. Follow her in.",
-      "Lulu": "Her W (Polymorph) on an enemy is your 'go' signal. Her R (Wild Growth) on you is a great dive tool."
+      "Lulu": "Her W (Polymorph) on an enemy is your 'go' signal. Her R (Wild Growth) on you is a great dive tool.",
+      "Yunara": "Samira must prevent Yunara from safely stacking Q. If Samira falls behind, Yunara punishes teamfights heavily."
     },
     macro: {
       "tempo_advantage": "Your 'tempo' comes from skirmishes. You want to fight. Shove the wave and look to roam into the river with your support to find 2v2 or 3v3 fights.",
@@ -191,7 +205,8 @@ const ADC_TEMPLATES = {
       "Caitlyn": "You lose lane, hard. Do not trade. Farm under tower. Your all-in at 6 with R (Final Hour) can win if you dodge her Q (Peacemaker).",
       "Draven": "Do not fight him. Ever. Farm and wait for ganks. Your E (Condemn) can interrupt his R (Whirling Death) recall.",
       "Leona": "Her stun (Q) is your death. Your E (Condemn) can interrupt her E (Zenith Blade) dash. This is a very hard skill matchup.",
-      "Ashe": "Her slows (Passive) make you an easy target. Wait for her to use W (Volley) before tumbling (Q)."
+      "Ashe": "Her slows (Passive) make you an easy target. Wait for her to use W (Volley) before tumbling (Q).",
+      "Yunara": "Vayne wants to isolate and duel; Yunara beats Vayne in grouped fights. Vayne should split and avoid 5v5s if behind."
     },
     macro: {
       "tempo_advantage": "You have no 'tempo' early. Your only goal is to survive. Give up CS if it means saving HP. Your 'tempo' comes *after* 2 items, where you become a split-pushing 'tempo' threat.",
@@ -206,7 +221,8 @@ const ADC_TEMPLATES = {
       "Thresh": "His hook (Q) or Flay (E) is a free kill. His lantern (W) helps you cash in your stacks safely.",
       "Vayne": "Bully her. Do not let her farm. Zone her off the wave. Your all-in kills her at all stages of the laning phase.",
       "Caitlyn": "Her range is annoying. You must all-in. Use W (Blood Rush) to dodge her Q (Peacemaker) and run her down.",
-      "Ezreal": "His E (Arcane Shift) is his only escape. Bait it out, then run him down with W (Blood Rush)."
+      "Ezreal": "His E (Arcane Shift) is his only escape. Bait it out, then run him down with W (Blood Rush).",
+      "Yunara": "Draven must snowball or Yunara will outscale. Prevent Draven stacks early or Yunara loses the mid-game fight."
     },
     macro: {
       "tempo_advantage": "You *are* the 'tempo'. From level 1, your axes create pressure. Your goal is to crash waves, dive the enemy, and cash in your Adoration stacks. This forces the enemy jungler bot, which *is* tempo for your team.",
@@ -221,7 +237,8 @@ const ADC_TEMPLATES = {
       "Ashe": "A skill matchup. Her R (Arrow) sets up your R (Chain of Corruption). Your poke (Q) out-ranges her.",
       "Braum": "His Unbreakable (E) blocks your Q (Piercing Arrow) and R (Chain of Corruption). Bait it out.",
       "Yasuo": "His Wind Wall (W) blocks your Q (Piercing Arrow) and R (Chain of Corruption). Wait for it to be down.",
-      "Sivir": "Her E (Spell Shield) blocks your R (Chain of Corruption). Poke her with W (Blight) autos to bait it."
+      "Sivir": "Her E (Spell Shield) blocks your R (Chain of Corruption). Poke her with W (Blight) autos to bait it.",
+      "Yunara": "Varus poke is strong vs Yunara — land chains to stop her stacking. Yunara will punish mispositioning into Varus ult."
     },
     macro: {
       "tempo_advantage": "Your 'tempo' depends on your build. Lethality: Shove and poke with Q. On-Hit: Look for extended trades with your W (Blight) stacks. Your ult (R) is a 'tempo' tool for ganks.",
@@ -236,7 +253,8 @@ const ADC_TEMPLATES = {
       "Sivir": "You can't hit her if she has E (Spell Shield). Her wave clear (Q/W) is better than yours early. Farm safely.",
       "Ezreal": "You are both mobile. His Q (Mystic Shot) is easier to land. Your E (Spark Surge) is a better escape. Farm lane.",
       "Thresh": "His Flay (E) cancels your E (Spark Surge) dash. Be very careful. His R (The Box) is a nightmare for you.",
-      "Nautilus": "His R (Depth Charge) is point-and-click. You must E (Spark Surge) over a wall to escape his all-in."
+      "Nautilus": "His R (Depth Charge) is point-and-click. You must E (Spark Surge) over a wall to escape his all-in.",
+      "Yunara": "Zeri should use mobility and poke to keep Yunara under farm; grouped fights favor Yunara later."
     },
     macro: {
       "tempo_advantage": "You scale hard. Early 'tempo' is about survival. Use your E (Spark Surge) to escape ganks. Late game, your 'tempo' is flanking a teamfight with your E over a wall.",
@@ -251,7 +269,8 @@ const ADC_TEMPLATES = {
       "Lulu": "Her R (Wild Growth) on you when you dive (E-R) is a guaranteed teamfight win.",
       "Caitlyn": "You lose lane, hard. You must wait for level 6. Use your W (Jubilant Veil) to dodge her R (Ace in the Hole).",
       "Ashe": "Her slows (Passive) make it impossible to get in range. Ask for ganks. Your W (Jubilant Veil) blocks her autos.",
-      "Ezreal": "He will poke you. You must all-in. Use your E (Slipstream) to dash through minions to reach him."
+      "Ezreal": "He will poke you. You must all-in. Use your E (Slipstream) to dash through minions to reach him.",
+      "Yunara": "Nilah thrives in isolated all-ins; Yunara wants group control. Nilah must snowball early or she loses grouped fights."
     },
     macro: {
       "tempo_advantage": "Your W (Jubilant Veil) blocks all auto-attacks. Use this to win 'tempo' in trades. Dash in (E), auto-Q, then W to block the enemy's return damage.",
@@ -283,7 +302,8 @@ const ADC_TEMPLATES = {
       "Rell": "Her R (Magnet Storm) pulls enemies together for your R (Spray and Pray). A devastating combo.",
       "Leona": "Her R (Solar Flare) is the perfect setup for your Q (Ambush) all-in.",
       "Brand": "His R (Pyroclasm) and your R (Spray and Pray) melt entire teams. Stack your passives.",
-      "Caitlyn": "You lose lane. Her range is too much. Farm, wait for ganks, and look for roams with Q (Ambush)."
+      "Caitlyn": "You lose lane. Her range is too much. Farm, wait for ganks, and look for roams with Q (Ambush).",
+      "Yunara": "Twitch stealth picks punish poor vision; Yunara needs vision control. If Twitch picks, avoid blind stacking."
     },
     macro: {
       "tempo_advantage": "Your Q (Ambush) is your 'tempo' tool. Shove the wave, then Q and roam mid for a gank. A kill mid gives your *team* tempo. This is a classic KR solo-queue strategy.",
@@ -298,7 +318,8 @@ const ADC_TEMPLATES = {
       "Milio": "His W (Cozy Campfire) gives you even more range. His R (Breath of Life) cleanses CC. A perfect support.",
       "Janna": "Her peel (Q, R) is god-tier. She keeps assassins off you.",
       "Zed": "You are a free kill. Stay far back. Your team *must* peel for you. Buy Zhonya's if necessary.",
-      "Leona": "She will dive you. Your E (Void Ooze) slow is your only defense. Play very safe."
+      "Leona": "She will dive you. Your E (Void Ooze) slow is your only defense. Play very safe.",
+      "Yunara": "Kog with peel can out-scale many; Yunara still threatens grouped fights—focus on peel and necessary positioning."
     },
     macro: {
       "tempo_advantage": "You are a ticking time bomb. You have no early 'tempo'. Your 'tempo' is your scaling. Survive, and you win. Your W gives you 'tempo' in trades due to its range.",
@@ -313,7 +334,8 @@ const ADC_TEMPLATES = {
       "Renata Glasc": "Your R (Fate's Call) on her is a game-changer. She can ult (R) *from* your R for a perfect engage.",
       "Ashe": "Her slows (Passive) make it impossible to hop (Passive). This is a hard counter. Do not fight her.",
       "Nasus": "His W (Wither) is your hardest counter. It cripples your hop (Passive) speed. Ban this champion.",
-      "Leona": "Her stuns (Q, R) will get you killed. Your R (Fate's Call) on your support is your only peel."
+      "Leona": "Her stuns (Q, R) will get you killed. Your R (Fate's Call) on your support is your only peel.",
+      "Yunara": "Kalista needs early pressure to stop Yunara stacking. If Kalista can't force early plays, Yunara scales past her in structured fights."
     },
     macro: {
       "tempo_advantage": "Your 'tempo' is objectives. Your E (Rend) is a better Smite. Shove the wave and constantly look to secure Dragon or Rift Herald with your jungler. This is your primary 'tempo' gain.",
