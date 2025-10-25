@@ -108,8 +108,7 @@ function handleADCInput(input) {
       if (aStarts && !bStarts) return -1;
       if (!aStarts && bStarts) return 1;
       return aName.localeCompare(bName);
-    })
-    .slice(0, 8);
+    });
   
   showADCAutocomplete(input, matches);
 }
