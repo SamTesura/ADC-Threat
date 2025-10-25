@@ -60,6 +60,25 @@ body {
   background: rgba(13, 32, 61, 0.6);
   color: #5b9acd;
   border: 1px solid #1e3a5f;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.region-badge:hover {
+  background: rgba(13, 32, 61, 0.8);
+  border-color: #2d4a6f;
+}
+
+.region-badge.patch-notes {
+  background: rgba(200, 155, 60, 0.15);
+  color: #c89b3c;
+  border-color: #c89b3c;
+  cursor: pointer;
+}
+
+.region-badge.patch-notes:hover {
+  background: rgba(200, 155, 60, 0.25);
+  border-color: #f0e6d2;
 }
 
 .qr-legend {
@@ -115,7 +134,7 @@ body {
 .adc-warning {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 16px;
   padding: 16px 20px;
   margin-bottom: 20px;
   background: linear-gradient(135deg, rgba(200, 155, 60, 0.12) 0%, rgba(200, 155, 60, 0.05) 100%);
@@ -324,6 +343,37 @@ body {
   border-color: #c89b3c;
   background: #05101f;
   box-shadow: 0 0 12px rgba(200, 155, 60, 0.2);
+}
+
+/* Actions */
+.qr-actions {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-clear {
+  padding: 10px 20px;
+  background: rgba(207, 38, 47, 0.15);
+  border: 1px solid #cf262f;
+  border-radius: 8px;
+  color: #cf262f;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-clear:hover {
+  background: rgba(207, 38, 47, 0.25);
+  border-color: #ff4444;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(207, 38, 47, 0.3);
+}
+
+.btn-clear:active {
+  transform: translateY(0);
 }
 
 /* Table */
@@ -571,12 +621,10 @@ tbody tr:hover {
 }
 
 #adcAutocomplete {
-  position: relative;
+  position: absolute;
   width: 100%;
-}
-
-#adcAutocomplete .autocomplete {
-  width: 100%;
+  left: 0;
+  top: 100%;
 }
 
 .autocomplete-item {

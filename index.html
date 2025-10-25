@@ -85,6 +85,7 @@
           <span class="region-badge">🌍 EUW</span>
           <span class="region-badge">🇰🇷 KR</span>
           <span class="region-badge">🇨🇳 CN</span>
+          <a href="#" id="patchNotesLink" class="region-badge patch-notes" target="_blank" rel="noopener noreferrer">📋 Patch Notes</a>
         </div>
         <div class="qr-legend">
           <span class="cd-badge cd-hard">Hard CC</span>
@@ -109,7 +110,7 @@
         <label>Your ADC:</label>
         <div style="position: relative;">
           <input type="text" id="adcInput" placeholder="Search and select your ADC...">
-          <div id="adcAutocomplete" class="autocomplete"></div>
+          <div id="adcAutocomplete"></div>
         </div>
         <div id="selectedADC" class="selected-champion"></div>
       </div>
@@ -124,6 +125,10 @@
           <div id="allyInputs"></div>
         </div>
       </div>
+    </div>
+
+    <div class="qr-actions">
+      <button id="clearBtn" class="btn-clear">🗑️ Clear All</button>
     </div>
 
     <div class="qr-table-wrap">

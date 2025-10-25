@@ -8,7 +8,8 @@ const CONFIG = {
   PATCH_API: 'https://ddragon.leagueoflegends.com/api/versions.json',
   CHAMPION_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json',
   CHAMPION_DETAIL_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{championId}.json',
-  CHAMPION_IMG: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png'
+  CHAMPION_IMG: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png',
+  PATCH_NOTES_URL: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-{version}-notes/'
 };
 
 let state = {
@@ -38,6 +39,7 @@ async function init() {
   try {
     state.patch = await fetchPatch();
     state.champions = await fetchChampions(state.patch);
+    setupPatchNotesLink();
     setupADCInput();
     createInputs();
     setupListeners();
@@ -70,13 +72,21 @@ async function fetchChampionDetail(championId) {
   return data.data[championId];
 }
 
+function setupPatchNotesLink() {
+  const link = document.getElementById('patchNotesLink');
+  if (link && state.patch) {
+    const patchVersion = state.patch.split('.').slice(0, 2).join('-');
+    link.href = CONFIG.PATCH_NOTES_URL.replace('{version}', patchVersion);
+  }
+}
+
 function setupADCInput() {
   const input = document.getElementById('adcInput');
   
   input.addEventListener('input', (e) => handleADCInput(e.target));
   input.addEventListener('focus', (e) => handleADCInput(e.target));
   input.addEventListener('blur', () => {
-    setTimeout(() => clearADCAutocomplete(), 200);
+    setTimeout(() => clearADCAutocomplete(), 300);
   });
 }
 
@@ -87,7 +97,18 @@ function handleADCInput(input) {
   const matches = adcIds
     .map(id => state.champions[id])
     .filter(c => c && (!query || c.name.toLowerCase().includes(query)))
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => {
+      if (!query) return a.name.localeCompare(b.name);
+      
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+      const aStarts = aName.startsWith(query);
+      const bStarts = bName.startsWith(query);
+      
+      if (aStarts && !bStarts) return -1;
+      if (!aStarts && bStarts) return 1;
+      return aName.localeCompare(bName);
+    })
     .slice(0, 8);
   
   showADCAutocomplete(input, matches);
@@ -98,9 +119,9 @@ function showADCAutocomplete(input, champions) {
   
   if (champions.length === 0) return;
   
+  const container = document.getElementById('adcAutocomplete');
   const dropdown = document.createElement('div');
   dropdown.className = 'autocomplete';
-  dropdown.id = 'adcAutocomplete';
   
   champions.forEach(champ => {
     const item = document.createElement('div');
@@ -117,7 +138,8 @@ function showADCAutocomplete(input, champions) {
     item.appendChild(img);
     item.appendChild(name);
     
-    item.addEventListener('click', () => {
+    item.addEventListener('mousedown', (e) => {
+      e.preventDefault();
       selectADC(champ);
       clearADCAutocomplete();
     });
@@ -125,7 +147,7 @@ function showADCAutocomplete(input, champions) {
     dropdown.appendChild(item);
   });
   
-  document.getElementById('adcAutocomplete').appendChild(dropdown);
+  container.appendChild(dropdown);
 }
 
 function clearADCAutocomplete() {
@@ -166,12 +188,10 @@ function updateUIState() {
   const inputs = document.querySelectorAll('#enemyInputs input, #allyInputs input');
   
   if (!state.selectedADC) {
-    // Show warning, disable inputs
     warning.classList.remove('hidden');
     teamsContainer.classList.add('disabled');
     inputs.forEach(input => input.disabled = true);
   } else {
-    // Hide warning, enable inputs
     warning.classList.add('hidden');
     teamsContainer.classList.remove('disabled');
     inputs.forEach(input => input.disabled = false);
@@ -206,7 +226,7 @@ function createInput(team, index) {
   
   input.addEventListener('input', (e) => handleInput(e.target));
   input.addEventListener('blur', () => {
-    setTimeout(() => clearAutocomplete(), 200);
+    setTimeout(() => clearAutocomplete(), 300);
   });
   
   wrapper.appendChild(input);
@@ -223,6 +243,16 @@ function handleInput(input) {
   
   const matches = Object.values(state.champions)
     .filter(c => c.name.toLowerCase().includes(query))
+    .sort((a, b) => {
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+      const aStarts = aName.startsWith(query);
+      const bStarts = bName.startsWith(query);
+      
+      if (aStarts && !bStarts) return -1;
+      if (!aStarts && bStarts) return 1;
+      return aName.localeCompare(bName);
+    })
     .slice(0, 5);
   
   showAutocomplete(input, matches);
@@ -252,7 +282,8 @@ function showAutocomplete(input, champions) {
     item.appendChild(img);
     item.appendChild(name);
     
-    item.addEventListener('click', () => {
+    item.addEventListener('mousedown', (e) => {
+      e.preventDefault();
       input.value = champ.name;
       selectChampion(input.dataset.team, parseInt(input.dataset.index), champ);
       clearAutocomplete();
@@ -279,7 +310,31 @@ function selectChampion(team, index, champion) {
 }
 
 function setupListeners() {
-  // Listeners are now set up in setupADCInput()
+  const clearBtn = document.getElementById('clearBtn');
+  clearBtn.addEventListener('click', clearAll);
+}
+
+function clearAll() {
+  // Clear ADC
+  state.selectedADC = null;
+  const adcInput = document.getElementById('adcInput');
+  adcInput.value = '';
+  adcInput.classList.remove('selected');
+  document.getElementById('selectedADC').innerHTML = '';
+  
+  // Clear all champion inputs
+  state.enemies = [];
+  state.allies = [];
+  
+  const inputs = document.querySelectorAll('#enemyInputs input, #allyInputs input');
+  inputs.forEach(input => {
+    input.value = '';
+    input.disabled = true;
+  });
+  
+  // Update UI
+  updateUIState();
+  updateTable();
 }
 
 async function updateTable() {
