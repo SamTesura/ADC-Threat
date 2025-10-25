@@ -426,5 +426,33 @@ const ADC_TEMPLATES = {
       "wave_management": "You perma-push. Your turrets (Q) automatically push the wave. Your goal is to take tower plates and force the enemy jungler to come bot.",
       "key_timer": "Dragon Spawns. You are one of the best champions for securing early drakes. Shove the wave, set up your turrets in the pit, and ping your jungler to assist."
     }
+  },
+  "Yunara": {
+    tips: {
+      "Ashe": "Play around your Q stacks. Yunara will avoid ugly early trades and only commit when her Active Q and R window line up — force fights before she stacks.",
+      "Caitlyn": "Caitlyn bullies pre-6; Yunara will avoid trades and scale. If you’re Caitlyn, punish her early and deny stacks; if you’re Yunara, survive until team fights.",
+      "Jinx": "Jinx struggles to stop Yunara’s grouped crit damage mid-game — Jinx wants to shove and avoid clustered fights until she has items.",
+      "Ezreal": "Ezreal can poke Yunara off stacks early. Don’t let her safely farm to 100% crit — constant harass breaks her timing.",
+      "Kai'Sa": "Kai’Sa can skirmish early; Yunara prefers grouped mid-game. If Kai’Sa forces isolated duels pre-spike she wins; otherwise Yunara outscores in 5v5.",
+      "Miss Fortune": "MF’s lane pressure is dangerous for Yunara. If MF takes plates and the wave lead, Yunara’s stacking is interrupted — play safe or punish MF pre-6.",
+      "Xayah": "Xayah’s zone matters early; Yunara counterganks team fights when she has R. Xayah should force short trades and avoid long grouped fights.",
+      "Aphelios": "Aphelios lacks mobility; Yunara punishes grouped Aphelios once she’s online. Pre-items Aphelios can bully Yunara though.",
+      "Tristana": "Tristana’s early snowball is a problem. If Tristana roams and plates, Yunara will be behind — otherwise Yunara outscales in mid-game fights.",
+      "Sivir": "Sivir wants to perma-push and deny Yunara stacks. Yunara wins if she forces team fights where Sivir’s single-target is weaker.",
+      "Lucian": "Lucian’s level 2-3 all-ins can punish Yunara early. Yunara must freeze and avoid these fights until her power spike.",
+      "Samira": "Samira’s dive threatens Yunara if Samira gets ahead — Yunara needs peel and vision to stack safely.",
+      "Vayne": "Vayne isolates and outplays in 1v1s; Yunara beats Vayne in grouped fights once fully stacked and built.",
+      "Draven": "Draven snowballs are catastrophic for Yunara. If Draven snowballs, Yunara cannot contest until items — avoid that scenario.",
+      "Varus": "Varus poke denies Yunara’s safe stack-farming; Yunara needs to avoid bad engages into Varus ult chains.",
+      "Zeri": "Zeri’s poke and mobility make early life hard for Yunara. If Yunara survives to team-fight stage, she outscales Zeri in organized fights.",
+      "Nilah": "Nilah all-ins are rough early; Yunara should not be isolated. In 5v5 Yunara’s AOE crits trump Nilah’s single-target pressure.",
+      "Twitch": "Twitch stealth picks can punish poor vision more than they punish strict stacking. Yunara needs vision control to avoid being collapsed on.",
+      "Kog'Maw": "When Kog has enchanter peel he wins scaling vs many, but Yunara’s burst crit windows still threaten Kog in grouped fights."
+    },
+    macro: {
+      "tempo_advantage": "Yunara's tempo is 'survive and scale'. She generates map pressure by forcing grouped mid-game fights once she hits core crit items — don't start fights before that.",
+      "wave_management": "Freeze early if you face lane bullies (Caitlyn/Draven). Crash waves only to recall for big items; soft-shove to deny the enemy recall windows when you have tempo.",
+      "key_timer": "Key timers: Q max-stacks ready, First full crit item (IE/PD/Runaan's spike), and Ultimate up. Treat the R window as the game’s commit button."
+    }
   }
 };
