@@ -3,11 +3,9 @@
  * Main Application Logic - Fixed Version
  * 
  * Fixes:
- * - Line 522: emptySlots undefined error
- * - Stuck loading for abilities and cooldowns
- * - Only shows meta ADCs
- * - Proper error handling throughout
- * - Loading screen element ID mismatch (loadingScreen vs loading-overlay)
+ * - API timeout handling
+ * - Force-hide loading screen after 10 seconds
+ * - Better error recovery
  */
 
 // ======================
@@ -22,7 +20,9 @@ const CONFIG = {
     ABILITY_IMG_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/spell/{spellId}.png',
     PASSIVE_IMG_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/passive/{passiveId}.png',
     CACHE_DURATION: 1000 * 60 * 60, // 1 hour
-    AUTO_UPDATE_INTERVAL: 1000 * 60 * 30 // 30 minutes
+    AUTO_UPDATE_INTERVAL: 1000 * 60 * 30, // 30 minutes
+    FETCH_TIMEOUT: 8000, // 8 seconds
+    MAX_INIT_TIME: 10000 // 10 seconds max for initialization
 };
 
 const MAX_ENEMIES = 5;
@@ -49,13 +49,58 @@ let appState = {
 };
 
 // ======================
+// UTILITY FUNCTIONS (Moved to top)
+// ======================
+
+/**
+ * Fetch with timeout
+ */
+async function fetchWithTimeout(url, timeout = CONFIG.FETCH_TIMEOUT) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+    
+    try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        return response;
+    } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+            throw new Error('Request timeout');
+        }
+        throw error;
+    }
+}
+
+/**
+ * Debounce function
+ */
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// ======================
 // INITIALIZATION
 // ======================
 
 /**
- * Initialize application
+ * Initialize application with timeout protection
  */
 async function initializeApp() {
+    // Force hide loading screen after max time
+    const forceHideTimeout = setTimeout(() => {
+        console.warn('⚠️ Initialization timeout - force hiding loading screen');
+        hideLoading();
+    }, CONFIG.MAX_INIT_TIME);
+
     try {
         console.log('🚀 ADC Threat Pro initializing...');
         showLoading('Initializing application...');
@@ -63,14 +108,14 @@ async function initializeApp() {
         // Load settings from localStorage
         loadSettings();
 
-        // Get latest patch version
-        showLoading('Fetching latest patch data...');
+        // Get latest patch version with timeout
+        showLoading('Fetching patch data...');
         const patch = await getCurrentPatch();
         appState.currentPatch = patch;
         updatePatchDisplay(patch);
         console.log(`✓ Latest patch: ${patch}`);
 
-        // Load champion data
+        // Load champion data with timeout
         showLoading('Loading champion data...');
         const championData = await loadChampionData(patch);
         appState.championData = championData;
@@ -86,7 +131,8 @@ async function initializeApp() {
         buildADCGrid();
         setupEventListeners();
         
-        // Hide loading screen
+        // Clear timeout and hide loading screen
+        clearTimeout(forceHideTimeout);
         hideLoading();
         
         console.log('✓ Application initialized successfully');
@@ -97,68 +143,121 @@ async function initializeApp() {
         }
 
     } catch (error) {
-        console.error('Initialization failed:', error);
-        showError('Failed to initialize application. Please refresh the page.');
+        console.error('❌ Initialization failed:', error);
+        console.error('Error details:', error.message);
+        
+        // Still try to hide loading and show something to the user
+        clearTimeout(forceHideTimeout);
         hideLoading();
+        
+        // Show error in UI
+        const adcGrid = document.getElementById('adc-grid');
+        if (adcGrid) {
+            adcGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                    <h2 style="color: var(--danger); margin-bottom: 20px;">⚠️ Failed to Load Data</h2>
+                    <p style="margin-bottom: 20px;">Unable to fetch champion data from Riot Games API.</p>
+                    <p style="margin-bottom: 20px;">Error: ${error.message}</p>
+                    <button onclick="location.reload()" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Refresh Page
+                    </button>
+                    <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
+                        Try clearing your browser cache (Ctrl+Shift+Delete) and refreshing again.
+                    </p>
+                </div>
+            `;
+        }
     }
 }
 
 /**
- * Get current patch version from Riot API
+ * Get current patch version from Riot API with timeout
  */
 async function getCurrentPatch() {
     try {
+        console.log('📡 Fetching patch version from:', CONFIG.PATCH_API);
+        
+        // Try cache first
         const cached = getCachedData('current_patch');
         if (cached && Date.now() - cached.timestamp < CONFIG.CACHE_DURATION) {
+            console.log('✓ Using cached patch:', cached.data);
             return cached.data;
         }
 
-        const response = await fetch(CONFIG.PATCH_API);
+        // Fetch with timeout
+        const response = await fetchWithTimeout(CONFIG.PATCH_API);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
         const versions = await response.json();
         const latestPatch = versions[0];
         
+        console.log('✓ Fetched latest patch:', latestPatch);
         setCachedData('current_patch', latestPatch);
         return latestPatch;
 
     } catch (error) {
-        console.error('Failed to fetch patch version:', error);
-        // Fallback to cached or default
+        console.error('❌ Failed to fetch patch version:', error.message);
+        
+        // Fallback to cached
         const cached = getCachedData('current_patch');
-        return cached?.data || '15.21.1';
+        if (cached) {
+            console.log('⚠️ Using cached patch:', cached.data);
+            return cached.data;
+        }
+        
+        // Ultimate fallback
+        const fallback = '14.23.1';
+        console.log('⚠️ Using fallback patch:', fallback);
+        return fallback;
     }
 }
 
 /**
- * Load champion data from Riot CDN
+ * Load champion data from Riot CDN with timeout
  */
 async function loadChampionData(patch) {
     try {
         const cacheKey = `champion_data_${patch}`;
-        const cached = getCachedData(cacheKey);
+        console.log('📡 Loading champion data for patch:', patch);
         
+        // Try cache first
+        const cached = getCachedData(cacheKey);
         if (cached && Date.now() - cached.timestamp < CONFIG.CACHE_DURATION) {
+            console.log('✓ Using cached champion data');
             return cached.data;
         }
 
+        // Fetch with timeout
         const url = CONFIG.CHAMPION_DATA_API.replace('{version}', patch);
-        const response = await fetch(url);
+        console.log('📡 Fetching from:', url);
+        
+        const response = await fetchWithTimeout(url);
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
         const data = await response.json();
-        setCachedData(cacheKey, data);
+        console.log('✓ Fetched champion data successfully');
         
+        setCachedData(cacheKey, data);
         return data;
 
     } catch (error) {
-        console.error('Failed to load champion data:', error);
-        throw error;
+        console.error('❌ Failed to load champion data:', error.message);
+        
+        // Try cache even if expired
+        const cacheKey = `champion_data_${patch}`;
+        const cached = getCachedData(cacheKey);
+        if (cached) {
+            console.log('⚠️ Using expired cached data');
+            return cached.data;
+        }
+        
+        throw new Error(`Cannot load champion data: ${error.message}`);
     }
 }
 
@@ -178,10 +277,10 @@ async function loadFullChampionData(championId) {
             .replace('{version}', appState.currentPatch)
             .replace('{championId}', championId);
         
-        const response = await fetch(url);
+        const response = await fetchWithTimeout(url);
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP ${response.status}`);
         }
         
         const data = await response.json();
@@ -191,7 +290,7 @@ async function loadFullChampionData(championId) {
         return championData;
 
     } catch (error) {
-        console.error(`Failed to load full data for ${championId}:`, error);
+        console.error(`Failed to load full data for ${championId}:`, error.message);
         return null;
     }
 }
@@ -396,7 +495,7 @@ async function showSynergyAnalysis() {
 }
 
 /**
- * Update synergy analysis - FIXED VERSION
+ * Update synergy analysis
  */
 async function updateSynergyAnalysis() {
     try {
@@ -524,7 +623,7 @@ function updatePhaseGuides(synergy) {
 }
 
 /**
- * Build threat matrix - FIXED VERSION WITH PROPER LOADING
+ * Build threat matrix
  */
 async function buildThreatMatrix(adcData, supportData) {
     try {
@@ -536,7 +635,6 @@ async function buildThreatMatrix(adcData, supportData) {
         // Get all champions
         const allChampions = Object.values(appState.championData.data)
             .filter(champ => {
-                // Exclude selected ADC and Support
                 return champ.id !== appState.selectedADC.id && 
                        champ.id !== appState.selectedSupport.id;
             })
@@ -545,7 +643,7 @@ async function buildThreatMatrix(adcData, supportData) {
         // Build threat matrix
         grid.innerHTML = '';
 
-        for (const champion of allChampions.slice(0, 20)) { // Limit to 20 for performance
+        for (const champion of allChampions.slice(0, 20)) {
             const threatCard = await createThreatCard(champion, adcData);
             grid.appendChild(threatCard);
         }
@@ -562,7 +660,7 @@ async function buildThreatMatrix(adcData, supportData) {
 }
 
 /**
- * Create threat card - FIXED VERSION
+ * Create threat card
  */
 async function createThreatCard(champion, adcData) {
     const card = document.createElement('div');
@@ -572,11 +670,7 @@ async function createThreatCard(champion, adcData) {
         .replace('{version}', appState.currentPatch)
         .replace('{championId}', champion.id);
 
-    // Calculate threat level
     const threatLevel = calculateThreatLevel(champion, adcData);
-
-    // Load abilities in background - FIXED: Don't block rendering
-    const abilitiesPromise = loadFullChampionData(champion.id);
 
     card.innerHTML = `
         <div class="threat-card-header">
@@ -597,8 +691,8 @@ async function createThreatCard(champion, adcData) {
         </div>
     `;
 
-    // Load abilities asynchronously - FIXED: Proper async handling
-    abilitiesPromise.then(fullData => {
+    // Load abilities asynchronously
+    loadFullChampionData(champion.id).then(fullData => {
         const abilitiesContainer = card.querySelector('.threat-abilities');
         if (abilitiesContainer && fullData) {
             updateAbilitiesDisplay(abilitiesContainer, fullData);
@@ -615,7 +709,7 @@ async function createThreatCard(champion, adcData) {
 }
 
 /**
- * Update abilities display - FIXED VERSION
+ * Update abilities display
  */
 function updateAbilitiesDisplay(container, championData) {
     if (!championData || !championData.spells) {
@@ -625,33 +719,26 @@ function updateAbilitiesDisplay(container, championData) {
 
     const abilities = [];
 
-    // Add passive
     if (championData.passive) {
         abilities.push({
             name: championData.passive.name,
             description: cleanDescription(championData.passive.description),
-            cooldown: 'Passive',
-            image: championData.passive.image?.full
+            cooldown: 'Passive'
         });
     }
 
-    // Add spells (Q, W, E, R)
     championData.spells.forEach((spell, index) => {
         const key = ['Q', 'W', 'E', 'R'][index];
         const cooldowns = spell.cooldown || [];
-        const cdText = cooldowns.length > 0 
-            ? `${cooldowns[cooldowns.length - 1]}s` 
-            : 'N/A';
+        const cdText = cooldowns.length > 0 ? `${cooldowns[cooldowns.length - 1]}s` : 'N/A';
 
         abilities.push({
             name: `${key}: ${spell.name}`,
             description: cleanDescription(spell.description),
-            cooldown: cdText,
-            image: spell.image?.full
+            cooldown: cdText
         });
     });
 
-    // Build HTML
     container.innerHTML = abilities.map(ability => `
         <div class="ability-item">
             <div class="ability-header">
@@ -669,7 +756,6 @@ function updateAbilitiesDisplay(container, championData) {
 function calculateThreatLevel(champion, adcData) {
     const tags = champion.tags || [];
     
-    // Simple threat calculation
     if (tags.includes('Assassin')) return 'extreme';
     if (tags.includes('Fighter') || tags.includes('Tank')) return 'high';
     if (tags.includes('Mage')) return 'medium';
@@ -684,9 +770,9 @@ function cleanDescription(description) {
     if (!description) return '';
     
     return description
-        .replace(/<[^>]*>/g, '') // Remove HTML tags
-        .replace(/\{\{[^}]*\}\}/g, '') // Remove template variables
-        .substring(0, 150) + '...'; // Limit length
+        .replace(/<[^>]*>/g, '')
+        .replace(/\{\{[^}]*\}\}/g, '')
+        .substring(0, 150) + '...';
 }
 
 // ======================
@@ -762,13 +848,11 @@ function setupEventListeners() {
 function handleTabClick(event) {
     const tabName = event.target.dataset.tab;
     
-    // Update active tab
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     event.target.classList.add('active');
 
-    // Show corresponding content
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
     });
@@ -818,13 +902,11 @@ function handleFilterClick(event) {
     const btn = event.target;
     const parent = btn.parentElement;
     
-    // Update active state
     parent.querySelectorAll('.filter-btn').forEach(b => {
         b.classList.remove('active');
     });
     btn.classList.add('active');
 
-    // Apply filter based on data attributes
     if (btn.dataset.role) {
         filterADCsByRole(btn.dataset.role);
     } else if (btn.dataset.supportType) {
@@ -868,9 +950,6 @@ function filterSupportsByType(type) {
         buildSupportGrid();
         return;
     }
-
-    // Filter logic here
-    // Would need SUPPORT_TYPES data
 }
 
 /**
@@ -882,14 +961,12 @@ function resetSelection() {
     appState.selectedEnemies = [];
     appState.selectedAllies = [];
 
-    // Hide sections
     const supportSection = document.getElementById('support-section');
     const synergySection = document.getElementById('synergy-section');
     
     if (supportSection) supportSection.style.display = 'none';
     if (synergySection) synergySection.style.display = 'none';
 
-    // Reset UI
     buildADCGrid();
     
     console.log('Selection reset');
@@ -905,10 +982,7 @@ async function handlePatchRefresh() {
             btn.classList.add('refreshing');
         }
 
-        // Clear patch cache
         clearCachedData('current_patch');
-
-        // Reinitialize
         await initializeApp();
 
         showNotification('Patch data updated successfully');
@@ -936,30 +1010,14 @@ function handleSettingChange(event) {
 
     console.log(`Setting updated: ${setting} = ${value}`);
 
-    // Apply settings
     if (setting === 'theme') {
         document.body.className = `theme-${value}`;
     }
 }
 
 // ======================
-// UTILITY FUNCTIONS
+// UI UTILITY FUNCTIONS
 // ======================
-
-/**
- * Debounce function
- */
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
 
 /**
  * Show loading overlay
@@ -968,12 +1026,18 @@ function showLoading(message) {
     const overlay = document.getElementById('loadingScreen');
     const details = document.getElementById('loading-details');
     
-    if (overlay) overlay.style.display = 'flex';
+    if (overlay) {
+        overlay.style.display = 'flex';
+        overlay.style.opacity = '1';
+        overlay.style.visibility = 'visible';
+    }
     if (details) details.textContent = message;
+    
+    console.log('🔄', message);
 }
 
 /**
- * Hide loading overlay - FIXED VERSION
+ * Hide loading overlay
  */
 function hideLoading() {
     const overlay = document.getElementById('loadingScreen');
@@ -999,7 +1063,6 @@ function hideLoading() {
  */
 function showError(message) {
     console.error(message);
-    // Could show toast notification here
     alert(message);
 }
 
@@ -1008,7 +1071,6 @@ function showError(message) {
  */
 function showNotification(message) {
     console.log(message);
-    // Could show toast notification here
 }
 
 /**
@@ -1051,7 +1113,6 @@ function setupAutoUpdate() {
             if (newPatch !== appState.currentPatch) {
                 console.log(`New patch detected: ${newPatch}`);
                 showNotification(`New patch available: ${newPatch}`);
-                // Could auto-reload here
             }
         } catch (error) {
             console.error('Auto-update check failed:', error);
