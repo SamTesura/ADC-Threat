@@ -96,7 +96,7 @@ body {
   color: #a1a1aa;
 }
 
-.qr-adc select,
+#adcInput,
 .qr-input input {
   padding: 10px 14px;
   background: #1e293b;
@@ -106,12 +106,40 @@ body {
   font-size: 14px;
   outline: none;
   transition: all 0.2s;
+  width: 100%;
 }
 
-.qr-adc select:focus,
+#adcInput:focus,
 .qr-input input:focus {
   border-color: #667eea;
   background: #0f172a;
+}
+
+.selected-champion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background: #1e293b;
+  border: 1px solid #667eea;
+  border-radius: 8px;
+  margin-top: 8px;
+  min-height: 56px;
+}
+
+.selected-champion img {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+}
+
+.selected-champion span {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.selected-champion:empty {
+  display: none;
 }
 
 .qr-teams {
@@ -278,6 +306,11 @@ tbody tr:hover {
   overflow-y: auto;
   z-index: 1000;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+
+#adcAutocomplete.autocomplete {
+  width: 100%;
 }
 
 .autocomplete-item {
