@@ -568,25 +568,23 @@ function populateChallengerTips(cell, champion, detail, isEnemy) {
   
   let tip = '';
   
-  // Check for support-specific synergy tips
-  if (!isEnemy && SUPPORT_TEMPLATES[champion.name]) {
+  // For enemies, check ADC_TEMPLATES first
+  if (isEnemy && ADC_TEMPLATES[state.selectedADC.name]) {
+    const adcTemplate = ADC_TEMPLATES[state.selectedADC.name];
+    if (adcTemplate.tips && adcTemplate.tips[champion.name]) {
+      tip = adcTemplate.tips[champion.name];
+    }
+  }
+  
+  // For allies, check support-specific synergy tips first
+  if (!tip && !isEnemy && SUPPORT_TEMPLATES[champion.name]) {
     const synergy = SUPPORT_TEMPLATES[champion.name].synergy;
     if (synergy[state.selectedADC.name]) {
       tip = synergy[state.selectedADC.name];
     }
   }
   
-  // Generate Challenger-level tips for enemies
-  if (!tip && isEnemy) {
-    tip = generateChallengerEnemyTip(champion, detail);
-  }
-  
-  // Generate Challenger-level tips for allies
-  if (!tip && !isEnemy) {
-    tip = generateChallengerAllyTip(champion, detail);
-  }
-  
-  // Fallback
+  // Fallback to generic tips
   if (!tip) {
     tip = isEnemy 
       ? `Respect ${champion.name}'s cooldowns. Trade aggressively when key abilities are down.`
@@ -597,46 +595,6 @@ function populateChallengerTips(cell, champion, detail, isEnemy) {
   p.className = 'tip-text';
   p.textContent = tip;
   cell.appendChild(p);
-}
-
-function generateChallengerEnemyTip(champion, detail) {
-  const threats = analyzeThreatTags(detail);
-  const hasHardCC = threats.some(t => t.tag === 'Suppression' || t.tag === 'Airborne');
-  const hasSoftCC = threats.some(t => t.cleansable);
-  const hasDash = threats.some(t => t.tag === 'Dash');
-  const hasBurst = threats.some(t => t.tag === 'Burst');
-  
-  if (hasHardCC && hasDash) {
-    return `CRITICAL THREAT: ${champion.name} has non-cleansable CC + mobility. Max range positioning required. QSS mandatory.`;
-  } else if (hasHardCC) {
-    return `Hard CC Alert: ${champion.name}'s CC cannot be cleansed. Build QSS. Requires team peel or positioning.`;
-  } else if (hasSoftCC && hasDash) {
-    return `High threat: ${champion.name} has cleansable CC + mobility. Cleanse/QSS recommended. Position defensively when dash is up.`;
-  } else if (hasSoftCC) {
-    return `CC threat (Cleansable): Take Cleanse vs ${champion.name}. Position behind minions. Trade when CC is down (~12-18s window).`;
-  } else if (hasBurst) {
-    return `Burst threat: ${champion.name} has high damage. Track combo cooldowns. Play safe when abilities up, trade when down.`;
-  } else if (hasDash) {
-    return `Mobility threat: ${champion.name} can gap close. Maintain spacing. Use range advantage. Ward flanks.`;
-  }
-  
-  return `Monitor ${champion.name}'s cooldowns. Trade during ability downtime. Maintain optimal spacing.`;
-}
-
-function generateChallengerAllyTip(champion, detail) {
-  const threats = analyzeThreatTags(detail);
-  const hasCC = threats.some(t => t.cleansable || t.tag === 'Suppression' || t.tag === 'Airborne');
-  const hasDash = threats.some(t => t.tag === 'Dash');
-  
-  if (hasCC && hasDash) {
-    return `Engage potential: ${champion.name} has CC + gap close. Position for follow-up. Be ready to all-in when they engage.`;
-  } else if (hasCC) {
-    return `CC setup: When ${champion.name} lands CC, follow immediately with damage combo. Communicate engage timing.`;
-  } else if (hasDash) {
-    return `Mobile ally: ${champion.name} can engage/disengage. Stay in range to follow. Don't overextend alone.`;
-  }
-  
-  return `Coordinate with ${champion.name}. Match their aggression level. Communicate ability cooldowns for optimal trades.`;
 }
 
 // Start the app
