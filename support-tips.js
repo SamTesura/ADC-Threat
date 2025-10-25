@@ -36,7 +36,7 @@ const SUPPORT_TEMPLATES = {
       "Karthus": "Your Q (Hook) holds them in his E (Defile). Your R (The Box) slow is devastating with his Q (Lay Waste).",
       "Swain": "Your Q (Hook) or E (Flay) guarantees his E (Nevermove) root. This is a double-pull lane.",
       "Heimerdinger": "Your Q (Hook) pulls them into his turrets (Q). Your peel (E) protects his nest.",
-      "Yunara": "Thresh hooks when Yunara has stacks and ult ready; timing the hook to her R window creates consistent kill windows."
+      "Yunara": "Hook when Yunara has stacks and R ready — timing the engage to her windows yields guaranteed kills.",
     }
   },
   "Leona": {
@@ -68,7 +68,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your engage (E-Q) holds them in his E (Hexplosive Minefield) and R (Mega Inferno Bomb).",
       "Karthus": "Your E-Q-R (Full Combo) holds them in his E (Defile) and guarantees his Q (Lay Waste) hits.",
       "Swain": "Your E (Zenith Blade) guarantees his E (Nevermove). This is a terrifying all-in lane.",
-      "Heimerdinger": "Your E-Q (Engage) holds them inside his turrets (Q) and sets up his E (Grenade) stun."
+      "Heimerdinger": "Your E-Q (Engage) holds them inside his turrets (Q) and sets up his E (Grenade) stun.",
+      "Yunara": "All-in only when Yunara has stacks or when you can force isolated fights; otherwise you blow her scaling window."
     }
   },
   "Nautilus": {
@@ -100,7 +101,9 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your Q (Hook) or R (Depth Charge) holds them in his E (Hexplosive Minefield) and R (Mega Inferno Bomb).",
       "Karthus": "Your full CC chain (Q, R, E, Passive) holds them in his E (Defile) for massive damage.",
       "Swain": "Your Q (Hook) into his E (Nevermove) is a deadly double-pull combo.",
-      "Heimerdinger": "Your Q (Hook) pulls them into his turrets (Q). Your R (Depth Charge) sets up his R-E (Upgraded Grenade) stun."
+      "Heimerdinger": "Your Q (Hook) pulls them into his turrets (Q). Your R (Depth Charge) sets up his R-E (Upgraded Grenade) stun.",
+      "Yunara": "Hard-engage support—use hook/ult when Yunara announces her R window. Timing is everything."
+
     }
   },
   "Alistar": {
@@ -132,7 +135,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your W-Q (Headbutt-Pulverize) combo holds them in his E (Hexplosive Minefield).",
       "Karthus": "Your W-Q (Headbutt-Pulverize) combo holds them in his E (Defile).",
       "Swain": "Your W-Q (Headbutt-Pulverize) combo is a free E (Nevermove) root for him.",
-      "Heimerdinger": "Your W-Q (Headbutt-Pulverize) combo holds them in his turrets (Q). You are the bouncer for his nest."
+      "Heimerdinger": "Your W-Q (Headbutt-Pulverize) combo holds them in his turrets (Q). You are the bouncer for his nest.",
+      "Yunara": "Alistar W-Q combos work when Yunara can follow with stacks; but avoid blowing CC too early and wasting Yunara’s build window."
     }
   },
   "Blitzcrank": {
@@ -164,7 +168,8 @@ const SUPPORT_TEMPLATES = {
       "Ziggs": "Your Q (Rocket Grab) pulls them into his E (Hexplosive Minefield).",
       "Karthus": "Your Q (Rocket Grab) pulls them into his E (Defile). A hook is a kill.",
       "Swain": "Your Q (Rocket Grab) into his E (Nevermove) is a deadly double-pull combo.",
-      "Heimerdinger": "Your Q (Rocket Grab) pulls them into his turret (Q) nest. A free kill."
+      "Heimerdinger": "Your Q (Rocket Grab) pulls them into his turret (Q) nest. A free kill.",
+      "Yunara": "Q hooks punish Yunara’s weak early game; as Blitz, you should target her pre-spike to delay her power windows."
     }
   },
   "Rell": {
@@ -265,7 +270,7 @@ const SUPPORT_TEMPLATES = {
       "Karthus": "Your W (Polymorph) and R (Wild Growth) can keep him alive to use his R (Requiem).",
       "Swain": "Your W (Whimsy) gives him the speed to land E (Nevermove). Your R (Wild Growth) on him during his R (Demonic Ascension) makes him a raid boss.",
       "Heimerdinger": "Your W (Polymorph) and R (Wild Growth) are perfect peel for his turret (Q) nest.",
-      "Yunara": "Lulu buys Yunara time to stack and survive dives. Use polymorph/ult to deny early all-ins so Yunara reaches item spikes."
+      "Yunara": "Lulu enables Yunara to survive dives and reach item timings — polymorph and ult on engage keep her alive to output damage."
     }
   },
   "Janna": {
@@ -298,7 +303,7 @@ const SUPPORT_TEMPLATES = {
       "Karthus": "Your peel (Q, R) keeps him alive. Your R (Monsoon) can push enemies *into* his E (Defile).",
       "Swain": "Your Q (Howling Gale) can set up his E (Nevermove). Your R (Monsoon) can peel for him or split the enemy team.",
       "Heimerdinger": "You are the perfect bodyguard for his turret (Q) nest. Your Q (Howling Gale) and R (Monsoon) stop all divers.",
-      "Yunara": "Janna peel and disengage keeps Yunara safe to stack Q and wait for R. High-elo Janna players force safe, slow scaling and only fight when Yunara is ready."
+      "Yunara": "Janna should peel and delay fights until Yunara has Q+R. Keep Yunara healthy and wave frozen when necessary."
     }
   },
   "Nami": {
@@ -331,7 +336,7 @@ const SUPPORT_TEMPLATES = {
       "Karthus": "Your Q (Aqua Prison) and R (Tidal Wave) hold them in his E (Defile).",
       "Swain": "Your Q (Aqua Prison) bubble is a free E (Nevermove) root for him.",
       "Heimerdinger": "Your Q (Aqua Prison) bubble holds them in his turrets (Q) and sets up his E (Grenade) stun.",
-      "Yunara" : " Nami bubble + E slows chain into Yunara’s W to lock targets so Yunara can apply stacks and crits safely."
+      "Yunara": "Bubble + E chain gives Yunara safe stacking and solid follow-ups; great pairing for poke-to-dive transitions."
     }
   },
   "Soraka": {
