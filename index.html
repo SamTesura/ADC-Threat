@@ -26,9 +26,11 @@
     <div class="qr-input">
       <div class="qr-adc">
         <label>Your ADC:</label>
-        <select id="adcSelect">
-          <option value="">Select ADC...</option>
-        </select>
+        <div style="position: relative;">
+          <input type="text" id="adcInput" placeholder="Search ADC...">
+          <div id="adcAutocomplete"></div>
+        </div>
+        <div id="selectedADC" class="selected-champion"></div>
       </div>
       
       <div class="qr-teams">
