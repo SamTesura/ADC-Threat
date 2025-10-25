@@ -31,6 +31,7 @@ const ADC_LIST = {
         'Varus',
         'Vayne',
         'Xayah',
+        'Yunara',
         'Zeri'
     ],
     
