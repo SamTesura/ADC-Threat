@@ -519,6 +519,17 @@
   <script src="./adc-templates.js"></script>
   <script src="./support-tips.js"></script>
   <script src="./patch-updater.js"></script>
+  <script>
+  setTimeout(() => {
+    const el = document.getElementById('loading-overlay');
+    if (el) {
+        el.style.display = 'none';
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
+        console.log('✓ Loading screen hidden');
+    }
+}, 3000);
+</script>
   <script src="adc-list.js"></script>
   <script src="synergy-engine.js"></script>
   <script src="app.js"></script>
