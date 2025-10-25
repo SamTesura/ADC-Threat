@@ -972,13 +972,31 @@ function showLoading(message) {
 }
 
 /**
- * Hide loading overlay
+ * Hide loading overlay - FIXED VERSION
  */
 function hideLoading() {
     const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        overlay.style.display = 'none';
+    
+    if (!overlay) {
+        console.warn('Loading overlay not found');
+        return;
     }
+
+    // Multiple methods to ensure it hides
+    overlay.style.display = 'none';
+    overlay.style.opacity = '0';
+    overlay.style.visibility = 'hidden';
+    overlay.style.zIndex = '-9999';
+    overlay.classList.add('hidden');
+    
+    // Also try removing it from DOM
+    setTimeout(() => {
+        if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+        }
+    }, 500);
+    
+    console.log('✓ Loading screen hidden');
 }
 
 /**
