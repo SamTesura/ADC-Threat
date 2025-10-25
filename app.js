@@ -51,9 +51,7 @@ async function init() {
 }
 
 async function fetchPatch() {
-  const res = await fetch(CONFIG.PATCH_API);
-  const versions = await res.json();
-  return versions[0];
+  return '25.21';
 }
 
 async function fetchChampions(patch) {
