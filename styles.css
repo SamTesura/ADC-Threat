@@ -11,6 +11,8 @@ body {
   font-size: 14px;
   line-height: 1.4;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .qr-container {
@@ -44,6 +46,7 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 0 0 20px rgba(200, 155, 60, 0.3);
+  flex-shrink: 0;
 }
 
 .qr-meta {
@@ -62,6 +65,7 @@ body {
   border: 1px solid #1e3a5f;
   text-decoration: none;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .region-badge:hover {
@@ -85,6 +89,7 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .cd-badge {
@@ -93,6 +98,7 @@ body {
   font-size: 12px;
   font-weight: 600;
   border: 1px solid;
+  white-space: nowrap;
 }
 
 /* Hard CC - Non-Cleansable (Red/Orange) */
@@ -151,10 +157,12 @@ body {
 .warning-icon {
   font-size: 32px;
   animation: bounce 1s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 .warning-content {
   flex: 1;
+  min-width: 0;
 }
 
 .warning-title {
@@ -206,6 +214,7 @@ body {
 .qr-adc label {
   font-weight: 600;
   color: #9ca6b8;
+  font-size: 14px;
 }
 
 #adcInput {
@@ -219,6 +228,7 @@ body {
   transition: all 0.3s;
   width: 100%;
   animation: glow 2s ease-in-out infinite;
+  min-height: 42px;
 }
 
 #adcInput:focus {
@@ -252,6 +262,7 @@ body {
   outline: none;
   transition: all 0.2s;
   width: 100%;
+  min-height: 42px;
 }
 
 .qr-input input:focus {
@@ -278,6 +289,7 @@ body {
   height: 40px;
   border-radius: 8px;
   border: 2px solid #c89b3c;
+  flex-shrink: 0;
 }
 
 .selected-champion span {
@@ -295,12 +307,14 @@ body {
   height: 40px;
   border-radius: 8px;
   border: 2px solid #c89b3c;
+  flex-shrink: 0;
 }
 
 .selected-champ-name {
   font-weight: 700;
   font-size: 16px;
   color: #f0e6d2;
+  word-break: break-word;
 }
 
 .qr-teams {
@@ -332,6 +346,7 @@ body {
   border-radius: 6px;
   color: #c8cdd8;
   font-size: 13px;
+  min-height: 38px;
 }
 
 .qr-team input:disabled {
@@ -363,6 +378,8 @@ body {
   cursor: pointer;
   transition: all 0.2s;
   font-family: 'Inter', sans-serif;
+  min-height: 42px;
+  white-space: nowrap;
 }
 
 .btn-clear:hover {
@@ -381,12 +398,14 @@ body {
   background: #0d1923;
   border-radius: 12px;
   border: 1px solid #1e3a5f;
-  overflow: hidden;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 thead {
@@ -402,6 +421,7 @@ thead th {
   border-bottom: 1px solid #1e3a5f;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 tbody td {
@@ -431,6 +451,7 @@ tbody tr:hover {
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .team-enemy {
@@ -459,6 +480,7 @@ tbody tr:hover {
   border-radius: 6px;
   object-fit: cover;
   border: 1px solid #c89b3c;
+  flex-shrink: 0;
 }
 
 .ability {
@@ -467,6 +489,7 @@ tbody tr:hover {
   gap: 8px;
   margin-bottom: 6px;
   font-size: 13px;
+  flex-wrap: wrap;
 }
 
 .ability-key {
@@ -481,6 +504,7 @@ tbody tr:hover {
   font-weight: 700;
   font-size: 11px;
   color: #c89b3c;
+  flex-shrink: 0;
 }
 
 .threat-tag {
@@ -492,6 +516,7 @@ tbody tr:hover {
   margin-right: 4px;
   margin-bottom: 4px;
   border: 1px solid;
+  white-space: nowrap;
 }
 
 /* Hard CC - Non-Cleansable */
@@ -593,6 +618,8 @@ tbody tr:hover {
   font-size: 13px;
   line-height: 1.6;
   color: #c8cdd8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .cleanse-note {
@@ -604,6 +631,7 @@ tbody tr:hover {
   background: rgba(200, 155, 60, 0.15);
   color: #c89b3c;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* Autocomplete */
@@ -646,6 +674,7 @@ tbody tr:hover {
   height: 32px;
   border-radius: 6px;
   border: 1px solid #c89b3c;
+  flex-shrink: 0;
 }
 
 /* Scrollbar */
@@ -666,7 +695,24 @@ tbody tr:hover {
   background: #2d4a6f;
 }
 
-/* Responsive */
+.qr-table-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+
+.qr-table-wrap::-webkit-scrollbar-track {
+  background: #05101f;
+}
+
+.qr-table-wrap::-webkit-scrollbar-thumb {
+  background: #1e3a5f;
+  border-radius: 4px;
+}
+
+.qr-table-wrap::-webkit-scrollbar-thumb:hover {
+  background: #2d4a6f;
+}
+
+/* Responsive - Tablets and Large Mobile */
 @media (max-width: 1200px) {
   .qr-input {
     grid-template-columns: 1fr;
@@ -675,24 +721,575 @@ tbody tr:hover {
   .qr-teams {
     grid-template-columns: 1fr;
   }
+  
+  .qr-container {
+    padding: 16px;
+  }
+  
+  .qr-title h1 {
+    font-size: 22px;
+  }
 }
 
+/* Responsive - Tablets */
+@media (max-width: 992px) {
+  .qr-container {
+    padding: 14px;
+  }
+  
+  .qr-header {
+    padding: 12px 16px;
+  }
+  
+  .qr-title h1 {
+    font-size: 20px;
+  }
+  
+  .qr-legend {
+    gap: 8px;
+  }
+  
+  .cd-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+  
+  .warning-title {
+    font-size: 15px;
+  }
+  
+  .warning-text {
+    font-size: 12px;
+  }
+  
+  table {
+    font-size: 13px;
+  }
+  
+  thead th {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+  
+  tbody td {
+    padding: 12px 14px;
+  }
+  
+  .champ-img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .selected-champion img,
+  .selected-champ-img {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Responsive - Mobile Landscape and Small Tablets */
 @media (max-width: 768px) {
   .qr-container {
-    padding: 10px;
+    padding: 12px;
+  }
+  
+  .qr-header {
+    padding: 12px 14px;
   }
   
   .qr-title {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .qr-title h1 {
+    font-size: 18px;
+    width: 100%;
+  }
+  
+  .qr-meta {
+    width: 100%;
+  }
+  
+  .region-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  
+  .qr-legend {
+    gap: 6px;
+  }
+  
+  .cd-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+  
+  .adc-warning {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  
+  .warning-icon {
+    font-size: 28px;
+  }
+  
+  .warning-title {
+    font-size: 14px;
+  }
+  
+  .warning-text {
+    font-size: 11px;
+  }
+  
+  .qr-input {
+    gap: 16px;
+  }
+  
+  .qr-teams {
+    gap: 16px;
+  }
+  
+  .qr-adc label {
+    font-size: 13px;
+  }
+  
+  #adcInput {
+    font-size: 13px;
+    padding: 9px 12px;
+  }
+  
+  .qr-input input {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+  
+  .selected-champion {
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .selected-champion span,
+  .selected-champ-name {
+    font-size: 14px;
+  }
+  
+  .qr-team h3 {
+    font-size: 13px;
+  }
+  
+  .qr-team input {
+    font-size: 12px;
+  }
+  
+  .btn-clear {
+    font-size: 13px;
+    padding: 9px 16px;
   }
   
   table {
     font-size: 12px;
+    min-width: 550px;
   }
   
-  thead th,
+  thead th {
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+  
   tbody td {
     padding: 10px 12px;
+  }
+  
+  .champ-img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .ability {
+    font-size: 12px;
+  }
+  
+  .ability-key {
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    font-size: 10px;
+  }
+  
+  .threat-tag {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  
+  .tip-text {
+    font-size: 12px;
+  }
+  
+  .autocomplete-item {
+    padding: 8px 12px;
+  }
+  
+  .autocomplete-item img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Responsive - Mobile Portrait */
+@media (max-width: 576px) {
+  body {
+    font-size: 13px;
+  }
+  
+  .qr-container {
+    padding: 10px;
+  }
+  
+  .qr-header {
+    padding: 10px 12px;
+    margin-bottom: 16px;
+  }
+  
+  .qr-title {
+    gap: 10px;
+  }
+  
+  .qr-title h1 {
+    font-size: 16px;
+  }
+  
+  .qr-meta {
+    gap: 6px;
+  }
+  
+  .region-badge {
+    font-size: 9px;
+    padding: 3px 7px;
+  }
+  
+  .qr-legend {
+    gap: 5px;
+  }
+  
+  .cd-badge {
+    font-size: 9px;
+    padding: 2px 7px;
+  }
+  
+  .adc-warning {
+    padding: 10px 12px;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .warning-icon {
+    font-size: 24px;
+  }
+  
+  .warning-title {
+    font-size: 13px;
+  }
+  
+  .warning-text {
+    font-size: 10px;
+  }
+  
+  .qr-input {
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .qr-teams {
+    gap: 14px;
+  }
+  
+  .qr-adc label {
+    font-size: 12px;
+  }
+  
+  #adcInput {
+    font-size: 12px;
+    padding: 8px 10px;
+    min-height: 38px;
+  }
+  
+  .qr-input input {
+    font-size: 12px;
+    padding: 7px 10px;
+    min-height: 36px;
+  }
+  
+  .selected-champion {
+    padding: 8px;
+    gap: 8px;
+    min-height: 54px;
+  }
+  
+  .selected-champion img,
+  .selected-champ-img {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .selected-champion span,
+  .selected-champ-name {
+    font-size: 13px;
+  }
+  
+  .qr-team h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .qr-team input {
+    font-size: 11px;
+    margin-bottom: 6px;
+    padding: 7px 10px;
+  }
+  
+  .qr-actions {
+    margin-bottom: 16px;
+  }
+  
+  .btn-clear {
+    font-size: 12px;
+    padding: 8px 14px;
+    min-height: 38px;
+  }
+  
+  .qr-table-wrap {
+    border-radius: 8px;
+  }
+  
+  table {
+    font-size: 11px;
+    min-width: 500px;
+  }
+  
+  thead th {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+  
+  tbody td {
+    padding: 8px 10px;
+  }
+  
+  .empty {
+    padding: 30px 20px !important;
+    font-size: 11px;
+  }
+  
+  .team-badge {
+    font-size: 9px;
+    padding: 3px 7px;
+  }
+  
+  .champ-img {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .ability {
+    font-size: 11px;
+    gap: 6px;
+  }
+  
+  .ability-key {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 9px;
+  }
+  
+  .threat-tag {
+    font-size: 9px;
+    padding: 2px 5px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+  }
+  
+  .tip-text {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  
+  .cleanse-note {
+    font-size: 8px;
+    padding: 1px 4px;
+    margin-left: 4px;
+  }
+  
+  .autocomplete {
+    max-height: 220px;
+    border-radius: 6px;
+  }
+  
+  .autocomplete-item {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  
+  .autocomplete-item img {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Responsive - Extra Small Mobile (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  .qr-container {
+    padding: 8px;
+  }
+  
+  .qr-header {
+    padding: 8px 10px;
+  }
+  
+  .qr-title h1 {
+    font-size: 14px;
+  }
+  
+  .region-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+  
+  .cd-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+  
+  .warning-icon {
+    font-size: 20px;
+  }
+  
+  .warning-title {
+    font-size: 12px;
+  }
+  
+  .warning-text {
+    font-size: 9px;
+  }
+  
+  #adcInput,
+  .qr-input input {
+    font-size: 11px;
+  }
+  
+  .selected-champion img,
+  .selected-champ-img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .selected-champion span,
+  .selected-champ-name {
+    font-size: 12px;
+  }
+  
+  table {
+    font-size: 10px;
+    min-width: 460px;
+  }
+  
+  thead th {
+    font-size: 9px;
+    padding: 7px 8px;
+  }
+  
+  tbody td {
+    padding: 7px 8px;
+  }
+  
+  .champ-img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .ability-key {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    font-size: 8px;
+  }
+  
+  .threat-tag {
+    font-size: 8px;
+  }
+  
+  .tip-text {
+    font-size: 10px;
+  }
+}
+
+/* Landscape Orientation Optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .qr-header {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+  
+  .qr-title h1 {
+    font-size: 16px;
+  }
+  
+  .adc-warning {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+  
+  .warning-icon {
+    font-size: 20px;
+  }
+  
+  .qr-input {
+    margin-bottom: 12px;
+  }
+  
+  .qr-actions {
+    margin-bottom: 12px;
+  }
+  
+  .autocomplete {
+    max-height: 150px;
+  }
+}
+
+/* High Resolution Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .champ-img,
+  .selected-champion img,
+  .autocomplete-item img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .qr-input,
+  .qr-actions,
+  .adc-warning {
+    display: none;
+  }
+  
+  .qr-table-wrap {
+    border: 1px solid #000;
+  }
+  
+  table {
+    page-break-inside: avoid;
   }
 }
