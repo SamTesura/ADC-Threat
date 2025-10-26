@@ -17,7 +17,7 @@ const ADC_LIST = {
         'Jinx',
         'Kaisa',
         'Kalista',
-        'Kogmaw',
+        'KogMaw',
         'Lucian',
         'MissFortune',
         'Nilah',
@@ -70,7 +70,7 @@ const ADC_LIST = {
     // Get meta tier (for future implementation)
     getMetaTier(championId) {
         // S+ Tier (Patch 15.21.1)
-        const sTierPlus = ['Ashe', 'Jinx', 'Caitlyn', 'Kogmaw', 'Ziggs'];
+        const sTierPlus = ['Ashe', 'Jinx', 'Caitlyn', 'KogMaw', 'Ziggs'];
         
         // S Tier
         const sTier = ['Jhin', 'MissFortune', 'Varus', 'Ezreal', 'Nilah', 'Twitch'];
