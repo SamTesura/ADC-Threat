@@ -4,13 +4,14 @@
  * Data from EUW, KR, and China Challenger meta
  */
 
-const latest-update = "25-15";
+const latestUpdate = "25-15";
+
 const CONFIG = {
   PATCH_API: 'https://ddragon.leagueoflegends.com/api/versions.json',
   CHAMPION_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json',
   CHAMPION_DETAIL_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{championId}.json',
   CHAMPION_IMG: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png',
-  PATCH_NOTES_URL: 'https://www.leagueoflegends.com/en-us/news/game-updates/patch-{latest-update}-notes/'
+  PATCH_NOTES_URL: `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${latestUpdate}-notes/`
 };
 
 let state = {
