@@ -4,7 +4,7 @@
  * Data from EUW, KR, and China Challenger meta
  */
 
-const latestUpdate = "25-15";
+const latestUpdate = "25-21";
 
 const CONFIG = {
   PATCH_API: 'https://ddragon.leagueoflegends.com/api/versions.json',
