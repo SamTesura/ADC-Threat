@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-/* Compact CSS Variables for High Information Density */
 :root {
   --color-bg-primary: #01050d;
   --color-bg-secondary: #0d1923;
@@ -21,29 +20,29 @@
   --color-accent-blue: #5b9acd;
   --color-accent-purple: #884ea0;
   
-  --spacing-xs: 2px;
-  --spacing-sm: 4px;
-  --spacing-md: 6px;
-  --spacing-lg: 8px;
-  --spacing-xl: 10px;
-  --spacing-2xl: 12px;
+  --spacing-xs: 3px;
+  --spacing-sm: 5px;
+  --spacing-md: 8px;
+  --spacing-lg: 10px;
+  --spacing-xl: 13px;
+  --spacing-2xl: 16px;
   
-  --font-size-xs: 9px;
-  --font-size-sm: 10px;
-  --font-size-base: 11px;
-  --font-size-md: 12px;
-  --font-size-lg: 13px;
-  --font-size-xl: 14px;
-  --font-size-2xl: 16px;
-  --font-size-3xl: 18px;
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-base: 12px;
+  --font-size-md: 13px;
+  --font-size-lg: 14px;
+  --font-size-xl: 16px;
+  --font-size-2xl: 18px;
+  --font-size-3xl: 20px;
   
-  --touch-target-min: 32px;
+  --touch-target-min: 36px;
   
-  --border-radius-sm: 3px;
-  --border-radius-md: 4px;
-  --border-radius-lg: 5px;
-  --border-radius-xl: 6px;
-  --border-radius-2xl: 8px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 5px;
+  --border-radius-lg: 6px;
+  --border-radius-xl: 8px;
+  --border-radius-2xl: 10px;
   
   --transition-fast: 0.1s ease;
   --transition-base: 0.15s ease;
@@ -59,7 +58,7 @@ body {
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-size: var(--font-size-base);
-  line-height: 1.3;
+  line-height: 1.35;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -91,7 +90,7 @@ body {
 }
 
 .qr-title h1 {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-2xl);
   font-weight: 700;
   background: linear-gradient(135deg, var(--color-accent-gold) 0%, var(--color-accent-gold-light) 50%, var(--color-accent-gold) 100%);
   -webkit-background-clip: text;
@@ -108,7 +107,7 @@ body {
 }
 
 .region-badge {
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   font-weight: 600;
@@ -150,7 +149,7 @@ body {
 }
 
 .cd-badge {
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   font-weight: 600;
@@ -207,7 +206,7 @@ body {
 }
 
 .warning-icon {
-  font-size: 20px;
+  font-size: 24px;
   animation: bounce 1s ease-in-out infinite;
   flex-shrink: 0;
   line-height: 1;
@@ -250,7 +249,7 @@ body {
 
 .qr-input {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
 }
@@ -268,7 +267,7 @@ body {
 }
 
 #adcInput {
-  padding: 6px 10px;
+  padding: 8px 12px;
   background: var(--color-bg-secondary);
   border: 2px solid var(--color-accent-gold);
   border-radius: var(--border-radius-md);
@@ -299,7 +298,7 @@ body {
 }
 
 .qr-input input {
-  padding: 5px 8px;
+  padding: 6px 10px;
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--border-radius-sm);
@@ -308,7 +307,7 @@ body {
   outline: none;
   transition: all var(--transition-base);
   width: 100%;
-  min-height: 28px;
+  min-height: 32px;
 }
 
 .qr-input input:focus {
@@ -331,7 +330,7 @@ body {
   border: 1px solid var(--color-accent-gold);
   border-radius: var(--border-radius-md);
   margin-top: var(--spacing-xs);
-  min-height: 36px;
+  min-height: 40px;
   box-shadow: 0 0 12px rgba(200, 155, 60, 0.1);
 }
 
@@ -341,8 +340,8 @@ body {
 
 .selected-champion img,
 .selected-champ-img {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-accent-gold);
   flex-shrink: 0;
@@ -380,14 +379,14 @@ body {
 
 .qr-team input {
   width: 100%;
-  margin-bottom: 3px;
-  padding: 5px 8px;
+  margin-bottom: 4px;
+  padding: 6px 10px;
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--border-radius-sm);
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);
-  min-height: 28px;
+  min-height: 32px;
   transition: all var(--transition-base);
 }
 
@@ -405,7 +404,7 @@ body {
 }
 
 .btn-clear {
-  padding: 6px 12px;
+  padding: 8px 16px;
   background: rgba(207, 38, 47, 0.15);
   border: 1px solid var(--color-accent-red);
   border-radius: var(--border-radius-md);
@@ -447,7 +446,7 @@ body {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 100%;
+  table-layout: fixed;
 }
 
 thead {
@@ -458,7 +457,7 @@ thead {
 }
 
 thead th {
-  padding: 6px 8px;
+  padding: 8px 10px;
   text-align: left;
   font-weight: 600;
   font-size: var(--font-size-xs);
@@ -469,8 +468,14 @@ thead th {
   white-space: nowrap;
 }
 
+thead th:nth-child(1) { width: 8%; }
+thead th:nth-child(2) { width: 14%; }
+thead th:nth-child(3) { width: 28%; }
+thead th:nth-child(4) { width: 20%; }
+thead th:nth-child(5) { width: 30%; }
+
 tbody td {
-  padding: 6px 8px;
+  padding: 8px 10px;
   border-bottom: 1px solid var(--color-border-primary);
   vertical-align: top;
   font-size: var(--font-size-sm);
@@ -486,7 +491,7 @@ tbody tr:hover {
 
 .empty {
   text-align: center;
-  padding: 20px !important;
+  padding: 24px !important;
   color: var(--color-text-tertiary);
   font-style: italic;
   font-size: var(--font-size-sm);
@@ -495,7 +500,7 @@ tbody tr:hover {
 .team-badge {
   display: inline-flex;
   align-items: center;
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-xs);
   font-weight: 600;
@@ -532,8 +537,8 @@ tbody tr:hover {
 }
 
 .champ-img {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--border-radius-sm);
   object-fit: cover;
   border: 1px solid var(--color-accent-gold);
@@ -543,8 +548,8 @@ tbody tr:hover {
 .ability {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 3px;
+  gap: 5px;
+  margin-bottom: 4px;
   font-size: var(--font-size-xs);
   flex-wrap: wrap;
 }
@@ -553,13 +558,13 @@ tbody tr:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   background: var(--color-bg-tertiary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--border-radius-sm);
   font-weight: 700;
-  font-size: 8px;
+  font-size: 9px;
   color: var(--color-accent-gold);
   flex-shrink: 0;
 }
@@ -567,12 +572,12 @@ tbody tr:hover {
 .threat-tag {
   display: inline-flex;
   align-items: center;
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: var(--border-radius-sm);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 600;
-  margin-right: 2px;
-  margin-bottom: 2px;
+  margin-right: 3px;
+  margin-bottom: 3px;
   border: 1px solid;
   white-space: nowrap;
 }
@@ -638,18 +643,22 @@ tbody tr:hover {
 .tip-text,
 .understanding-text {
   font-size: var(--font-size-xs);
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--color-text-primary);
   word-wrap: break-word;
   overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .cleanse-note {
   display: inline-flex;
   align-items: center;
   margin-left: 3px;
-  font-size: 7px;
-  padding: 1px 3px;
+  font-size: 8px;
+  padding: 2px 4px;
   border-radius: 2px;
   background: rgba(200, 155, 60, 0.15);
   color: var(--color-accent-gold);
@@ -663,7 +672,7 @@ tbody tr:hover {
   border: 1px solid var(--color-border-primary);
   border-radius: var(--border-radius-md);
   margin-top: 2px;
-  max-height: 200px;
+  max-height: 220px;
   overflow-y: auto;
   z-index: var(--z-dropdown);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
@@ -679,7 +688,7 @@ tbody tr:hover {
 }
 
 .autocomplete-item {
-  padding: 6px 10px;
+  padding: 8px 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -696,8 +705,8 @@ tbody tr:hover {
 }
 
 .autocomplete-item img {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--border-radius-sm);
   border: 1px solid var(--color-accent-gold);
   flex-shrink: 0;
@@ -706,8 +715,8 @@ tbody tr:hover {
 
 .autocomplete::-webkit-scrollbar,
 .qr-table-wrap::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 .autocomplete::-webkit-scrollbar-track,
@@ -718,7 +727,7 @@ tbody tr:hover {
 .autocomplete::-webkit-scrollbar-thumb,
 .qr-table-wrap::-webkit-scrollbar-thumb {
   background: var(--color-border-primary);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .autocomplete::-webkit-scrollbar-thumb:hover,
@@ -734,8 +743,14 @@ tbody tr:hover {
 
 @media (max-width: 1600px) {
   .qr-input {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 260px 1fr;
   }
+  
+  thead th:nth-child(1) { width: 9%; }
+  thead th:nth-child(2) { width: 15%; }
+  thead th:nth-child(3) { width: 29%; }
+  thead th:nth-child(4) { width: 19%; }
+  thead th:nth-child(5) { width: 28%; }
 }
 
 @media (max-width: 1200px) {
@@ -746,6 +761,16 @@ tbody tr:hover {
   .qr-teams {
     grid-template-columns: 1fr;
   }
+  
+  table {
+    table-layout: auto;
+  }
+  
+  thead th:nth-child(1) { width: auto; }
+  thead th:nth-child(2) { width: auto; }
+  thead th:nth-child(3) { width: auto; }
+  thead th:nth-child(4) { width: auto; }
+  thead th:nth-child(5) { width: auto; }
 }
 
 @media (max-width: 768px) {
@@ -759,31 +784,36 @@ tbody tr:hover {
   }
   
   .qr-title h1 {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-lg);
   }
   
   table {
-    min-width: 500px;
+    min-width: 600px;
   }
   
   .qr-table-wrap {
     max-height: calc(100vh - 320px);
   }
+  
+  .tip-text,
+  .understanding-text {
+    -webkit-line-clamp: 2;
+  }
 }
 
 @media (max-width: 480px) {
   .qr-title h1 {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-md);
   }
   
   .region-badge,
   .cd-badge {
-    font-size: 8px;
-    padding: 2px 5px;
+    font-size: 9px;
+    padding: 2px 6px;
   }
   
   table {
-    min-width: 450px;
+    min-width: 500px;
   }
 }
 
@@ -825,6 +855,12 @@ tbody tr:hover {
   
   table {
     page-break-inside: avoid;
+  }
+  
+  .tip-text,
+  .understanding-text {
+    -webkit-line-clamp: unset;
+    overflow: visible;
   }
 }
 
