@@ -1,7 +1,8 @@
 /**
- * ADC Threat - Challenger Reference
- * Challenger-level analysis with CC type-based coloring
- * Data from EUW, KR, and China Challenger meta
+ * ADC Threat - Enhanced Threat Analysis v3.0
+ * Patch-independent threat analysis system
+ * Data sourced from wikilol (wiki.leagueoflegends.com)
+ * Focus: Cooldowns and Champion Understanding
  */
 
 const latestUpdate = "25-21";
@@ -11,7 +12,8 @@ const CONFIG = {
   CHAMPION_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json',
   CHAMPION_DETAIL_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{championId}.json',
   CHAMPION_IMG: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png',
-  PATCH_NOTES_URL: `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${latestUpdate}-notes/`
+  PATCH_NOTES_URL: `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${latestUpdate}-notes/`,
+  WIKILOL_CHAMPION_URL: 'https://wiki.leagueoflegends.com/en-us/{championName}'
 };
 
 let state = {
@@ -22,18 +24,45 @@ let state = {
   allies: []
 };
 
-// CC Classification (based on League of Legends mechanics)
+// CC Classification based on wikilol
+// Reference: https://wiki.leagueoflegends.com/en-us/Types_of_Crowd_Control
+// Reference: https://wiki.leagueoflegends.com/en-us/Cleanse
 const CC_TYPES = {
-  HARD_NON_CLEANSABLE: ['suppression', 'airborne', 'knock', 'pull'],
-  SOFT_CLEANSABLE: ['stun', 'root', 'snare', 'slow', 'charm', 'fear', 'taunt', 'silence', 'blind', 'disarm']
+  // Hard CC - NON-Cleansable (Cleanse cannot remove these)
+  // Airborne: Disabling effect can be removed but forced movement cannot  // Nearsight: Cannot be cleansed at all
+  HARD_NON_CLEANSABLE: {
+    types: ['airborne', 'knock', 'pull', 'nearsight'],
+    description: 'Airborne: Disabling can be removed but not forced movement. Nearsight: Cannot be cleansed.'
+  },
+  // Soft CC - Cleansable (Can be removed by Cleanse/QSS)
+  // Includes suspension (Nami's special stun), all common stuns, roots, slows, etc.
+  SOFT_CLEANSABLE: {
+    types: ['stun', 'suspension', 'root', 'snare', 'slow', 'charm', 'fear', 'taunt', 'silence', 
+            'blind', 'disarm', 'cripple', 'sleep', 'drowsy'],
+    description: 'Can be removed by Cleanse or QSS'
+  },
+  // Suppression - Special case (Only QSS can remove, not Cleanse)
+  SUPPRESSION: {
+    types: ['suppression', 'suppress'],
+    description: 'Cannot be removed by Cleanse. Only QSS can remove.'
+  }
 };
 
-// Challenger-level tips database
-const CHALLENGER_TIPS = {
-  general: {
-    enemy: "Respect ability cooldowns. Trade when key spells are down. Position behind minions vs hooks.",
-    ally: "Sync abilities with your ally. Watch their cooldowns and follow their engage/disengage."
-  }
+// Threat labels for enemy champions (ADC perspective)
+const THREAT_LABELS = {
+  // Mobility threats
+  DASH: { label: 'Mobility', severity: 'high', icon: '🏃' },
+  BLINK: { label: 'Blink', severity: 'high', icon: '⚡' },
+  STEALTH: { label: 'Stealth', severity: 'high', icon: '👻' },
+  
+  // Damage threats
+  BURST: { label: 'Burst', severity: 'high', icon: '💥' },
+  DPS: { label: 'DPS', severity: 'medium', icon: '🔥' },
+  POKE: { label: 'Poke', severity: 'medium', icon: '🎯' },
+  
+  // Utility threats
+  SHIELD: { label: 'Shield', severity: 'low', icon: '🛡️' },
+  HEAL: { label: 'Sustain', severity: 'low', icon: '💚' }
 };
 
 // Initialize
@@ -166,6 +195,17 @@ function selectADC(champion) {
   const selectedDiv = document.getElementById('selectedADC');
   selectedDiv.innerHTML = '';
   
+  const championLink = document.createElement('a');
+  championLink.href = CONFIG.WIKILOL_CHAMPION_URL.replace('{championName}', champion.name.replace(/\s+/g, '_'));
+  championLink.target = '_blank';
+  championLink.rel = 'noopener noreferrer';
+  championLink.title = `View ${champion.name} on wikilol`;
+  championLink.style.display = 'inline-flex';
+  championLink.style.alignItems = 'center';
+  championLink.style.gap = '8px';
+  championLink.style.textDecoration = 'none';
+  championLink.style.color = 'inherit';
+  
   const img = document.createElement('img');
   img.src = CONFIG.CHAMPION_IMG
     .replace('{version}', state.patch)
@@ -176,8 +216,9 @@ function selectADC(champion) {
   name.textContent = champion.name;
   name.className = 'selected-champ-name';
   
-  selectedDiv.appendChild(img);
-  selectedDiv.appendChild(name);
+  championLink.appendChild(img);
+  championLink.appendChild(name);
+  selectedDiv.appendChild(championLink);
   
   updateUIState();
   updateTable();
@@ -347,7 +388,7 @@ async function updateTable() {
   ];
   
   if (!state.selectedADC || allChamps.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">Select your ADC and add champions to see Challenger-level analysis</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Select your ADC and add champions to see analysis</td></tr>';
     return;
   }
   
@@ -374,18 +415,24 @@ async function createRow(champion, isEnemy) {
   teamCell.appendChild(teamBadge);
   row.appendChild(teamCell);
   
-  // Champion
+  // Champion (with wikilol link)
   const champCell = document.createElement('td');
-  const champDiv = document.createElement('div');
-  champDiv.className = 'champ-name';
+  const champLink = document.createElement('a');
+  champLink.href = CONFIG.WIKILOL_CHAMPION_URL.replace('{championName}', champion.name.replace(/\s+/g, '_'));
+  champLink.target = '_blank';
+  champLink.rel = 'noopener noreferrer';
+  champLink.className = 'champ-name';
+  champLink.title = `View ${champion.name} on wikilol`;
+  
   const img = document.createElement('img');
   img.src = CONFIG.CHAMPION_IMG
     .replace('{version}', state.patch)
     .replace('{championId}', champion.id);
   img.className = 'champ-img';
-  champDiv.appendChild(img);
-  champDiv.appendChild(document.createTextNode(champion.name));
-  champCell.appendChild(champDiv);
+  
+  champLink.appendChild(img);
+  champLink.appendChild(document.createTextNode(champion.name));
+  champCell.appendChild(champLink);
   row.appendChild(champCell);
   
   // Abilities (loading)
@@ -398,77 +445,228 @@ async function createRow(champion, isEnemy) {
   threatCell.textContent = 'Loading...';
   row.appendChild(threatCell);
   
-  // Tips (loading)
-  const tipCell = document.createElement('td');
-  tipCell.textContent = 'Loading...';
-  row.appendChild(tipCell);
+  // Understanding (loading)
+  const understandingCell = document.createElement('td');
+  understandingCell.textContent = 'Loading...';
+  row.appendChild(understandingCell);
   
   // Load detailed data asynchronously
   fetchChampionDetail(champion.id).then(detail => {
     populateAbilities(abilityCell, detail);
-    populateThreats(threatCell, detail);
-    populateChallengerTips(tipCell, champion, detail, isEnemy);
+    populateThreats(threatCell, detail, isEnemy);
+    populateUnderstanding(understandingCell, champion, detail, isEnemy);
   });
   
   return row;
 }
 
+/**
+ * Classify CC type based on wikilol standards
+ * Reference: https://wiki.leagueoflegends.com/en-us/Types_of_Crowd_Control
+ * Reference: https://wiki.leagueoflegends.com/en-us/Cleanse
+ */
 function classifyCC(spell) {
   const desc = spell.description?.toLowerCase() || '';
+  const name = spell.name?.toLowerCase() || '';
   
-  // Check for hard CC (non-cleansable)
+  // Check for Suppression (special case - only QSS can remove)
   if (desc.includes('suppress') || desc.includes('suppression')) {
-    return { type: 'hard', ccType: 'suppression', cleansable: false };
-  }
-  if (desc.includes('knock') || desc.includes('airborne') || desc.includes('suspend')) {
-    return { type: 'hard', ccType: 'airborne', cleansable: false };
+    return { 
+      type: 'suppression', 
+      ccType: 'Suppression', 
+      cleansable: false,
+      qssOnly: true,
+      color: 'hard'
+    };
   }
   
-  // Check for soft CC (cleansable)
+  // Check for Hard CC (non-cleansable by Cleanse)
+  // Airborne: Disabling effect can be removed but not forced movement
+  if (desc.includes('knock') || desc.includes('airborne') || name.includes('knock')) {
+    return { 
+      type: 'hard', 
+      ccType: 'Airborne', 
+      cleansable: false,
+      color: 'hard',
+      note: 'Partial - disabling can be removed, not movement'
+    };
+  }
+  
+  if (desc.includes('pull') || desc.includes('drag')) {
+    return { 
+      type: 'hard', 
+      ccType: 'Pull', 
+      cleansable: false,
+      color: 'hard',
+      note: 'Partial - disabling can be removed, not movement'
+    };
+  }
+  
+  if (desc.includes('nearsight') || desc.includes('blind zone')) {
+    return { 
+      type: 'hard', 
+      ccType: 'Nearsight', 
+      cleansable: false,
+      color: 'hard'
+    };
+  }
+  
+  // Check for Soft CC (cleansable by Cleanse/QSS)
   if (desc.includes('stun')) {
-    return { type: 'soft', ccType: 'stun', cleansable: true };
-  }
-  if (desc.includes('root') || desc.includes('immobilize')) {
-    return { type: 'soft', ccType: 'root', cleansable: true };
-  }
-  if (desc.includes('slow')) {
-    return { type: 'soft', ccType: 'slow', cleansable: true };
-  }
-  if (desc.includes('charm')) {
-    return { type: 'soft', ccType: 'charm', cleansable: true };
-  }
-  if (desc.includes('fear')) {
-    return { type: 'soft', ccType: 'fear', cleansable: true };
-  }
-  if (desc.includes('taunt')) {
-    return { type: 'soft', ccType: 'taunt', cleansable: true };
-  }
-  if (desc.includes('silence')) {
-    return { type: 'soft', ccType: 'silence', cleansable: true };
+    return { 
+      type: 'soft', 
+      ccType: 'Stun', 
+      cleansable: true,
+      color: 'soft'
+    };
   }
   
-  // Check for high threats
-  if (desc.includes('dash') || desc.includes('blink') || desc.includes('leap')) {
-    return { type: 'high', ccType: 'dash', cleansable: false };
+  if (desc.includes('root') || desc.includes('immobilize') || desc.includes('snare')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Root', 
+      cleansable: true,
+      color: 'soft'
+    };
   }
+  
+  if (desc.includes('slow')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Slow', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('charm')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Charm', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('fear') || desc.includes('flee')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Fear', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('taunt')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Taunt', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('silence')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Silence', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('blind')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Blind', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('disarm')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Disarm', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('cripple') || (desc.includes('attack speed') && desc.includes('reduc'))) {
+    return { 
+      type: 'soft', 
+      ccType: 'Cripple', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  if (desc.includes('sleep') || desc.includes('drowsy')) {
+    return { 
+      type: 'soft', 
+      ccType: 'Sleep', 
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+  
+  // Check for threats (non-CC)
+  if (desc.includes('dash') || desc.includes('blink') || desc.includes('leap') || 
+      name.includes('dash') || name.includes('leap')) {
+    return { 
+      type: 'high', 
+      ccType: 'Mobility', 
+      cleansable: false,
+      color: 'high'
+    };
+  }
+  
   if (desc.includes('burst') || (desc.includes('damage') && desc.includes('bonus'))) {
-    return { type: 'high', ccType: 'burst', cleansable: false };
+    return { 
+      type: 'high', 
+      ccType: 'Burst', 
+      cleansable: false,
+      color: 'high'
+    };
   }
-  if (desc.includes('stealth') || desc.includes('invisible')) {
-    return { type: 'high', ccType: 'stealth', cleansable: false };
+  
+  if (desc.includes('stealth') || desc.includes('invisible') || desc.includes('camouflage')) {
+    return { 
+      type: 'high', 
+      ccType: 'Stealth', 
+      cleansable: false,
+      color: 'high'
+    };
   }
   
   // Check for medium threats
   if (desc.includes('shield')) {
-    return { type: 'medium', ccType: 'shield', cleansable: false };
+    return { 
+      type: 'medium', 
+      ccType: 'Shield', 
+      cleansable: false,
+      color: 'medium'
+    };
   }
+  
   if (desc.includes('poke')) {
-    return { type: 'medium', ccType: 'poke', cleansable: false };
+    return { 
+      type: 'medium', 
+      ccType: 'Poke', 
+      cleansable: false,
+      color: 'medium'
+    };
   }
   
   // Check for low threats
   if (desc.includes('heal') || desc.includes('regenerat')) {
-    return { type: 'low', ccType: 'sustain', cleansable: false };
+    return { 
+      type: 'low', 
+      ccType: 'Sustain', 
+      cleansable: false,
+      color: 'low'
+    };
   }
   
   return null;
@@ -500,67 +698,156 @@ function populateAbilities(cell, detail) {
       let cdClass = 'cd-medium';
       
       if (classification) {
-        cdClass = `cd-${classification.type}`;
+        cdClass = `cd-${classification.color}`;
       }
       
       let badgeText = `${cdText}s`;
-      if (classification && classification.cleansable) {
-        badgeText += ' ✓';
+      let badgeTitle = '';
+      
+      // Add cleansability indicator based on wikilol standards
+      if (classification) {
+        if (classification.qssOnly) {
+          badgeText += ' 🔒';
+          badgeTitle = 'QSS only - Cannot be removed by Cleanse';
+        } else if (classification.cleansable) {
+          badgeText += ' ✓';
+          badgeTitle = 'Cleansable - Can be removed by Cleanse/QSS';
+        } else if (classification.ccType === 'Airborne' || classification.ccType === 'Pull') {
+          badgeText += ' ✗';
+          badgeTitle = 'NOT Fully Cleansable - Forced movement cannot be removed';
+        } else if (classification.ccType === 'Nearsight') {
+          badgeText += ' ✗';
+          badgeTitle = 'NOT Cleansable - Cannot be removed by Cleanse or QSS';
+        }
       }
       
-      name.innerHTML = `${spell.name} <span class="cd-badge ${cdClass}">${badgeText}</span>`;
+      const badge = document.createElement('span');
+      badge.className = `cd-badge ${cdClass}`;
+      badge.textContent = badgeText;
+      if (badgeTitle) {
+        badge.title = badgeTitle;
+      }
+      
+      name.innerHTML = spell.name + ' ';
+      name.appendChild(badge);
     } else {
       name.textContent = spell.name;
     }
     
     div.appendChild(name);
-    
     cell.appendChild(div);
   });
 }
 
-function populateThreats(cell, detail) {
+function populateThreats(cell, detail, isEnemy) {
   cell.innerHTML = '';
   
-  const tags = analyzeThreatTags(detail);
-  tags.forEach(tag => {
+  if (!isEnemy) {
+    // For allies, show their role/capabilities
+    const tags = detail.tags || [];
+    tags.forEach(tag => {
+      const span = document.createElement('span');
+      span.className = `threat-tag tag-${tag.toLowerCase()}`;
+      span.textContent = tag;
+      cell.appendChild(span);
+    });
+    return;
+  }
+  
+  // For enemies, analyze threats with cleansability info
+  const threats = analyzeThreats(detail);
+  threats.forEach(threat => {
     const span = document.createElement('span');
-    const tagLower = tag.tag.toLowerCase();
-    span.className = `threat-tag tag-${tagLower}`;
-    span.textContent = tag.tag;
+    span.className = `threat-tag threat-${threat.severity}`;
+    span.textContent = `${threat.icon} ${threat.label}`;
     
-    if (tag.cleansable) {
+    if (threat.cleansable !== undefined) {
       const note = document.createElement('span');
       note.className = 'cleanse-note';
-      note.textContent = 'Cleansable';
-      span.appendChild(document.createTextNode(' '));
-      span.appendChild(note);
+      
+      if (threat.qssOnly) {
+        note.textContent = '🔒 QSS only';
+        note.title = 'Only QSS can remove this - Cleanse will not work';
+      } else if (threat.cleansable) {
+        note.textContent = '✓ Cleansable';
+        note.title = 'Can be removed by Cleanse or QSS';
+      } else if (threat.label === 'Airborne' || threat.label === 'Pull') {
+        note.textContent = '✗ Partial';
+        note.title = 'Disabling can be removed but not forced movement';
+      } else if (threat.label === 'Nearsight') {
+        note.textContent = '✗ Not Cleansable';
+        note.title = 'Cannot be removed by Cleanse or QSS';
+      }
+      
+      if (note.textContent) {
+        span.appendChild(document.createTextNode(' '));
+        span.appendChild(note);
+      }
     }
     
     cell.appendChild(span);
   });
 }
 
-function analyzeThreatTags(detail) {
-  const tags = [];
+function analyzeThreats(detail) {
+  const threats = [];
   const spells = detail.spells || [];
   const seenTypes = new Set();
   
   spells.forEach(spell => {
     const classification = classifyCC(spell);
     if (classification && !seenTypes.has(classification.ccType)) {
-      tags.push({
-        tag: classification.ccType.charAt(0).toUpperCase() + classification.ccType.slice(1),
-        cleansable: classification.cleansable
-      });
+      const threat = {
+        label: classification.ccType,
+        severity: classification.type === 'hard' ? 'high' : 
+                 classification.type === 'suppression' ? 'high' :
+                 classification.type === 'soft' ? 'medium' : 
+                 classification.type,
+        icon: getThreatIcon(classification.ccType),
+        cleansable: classification.cleansable,
+        qssOnly: classification.qssOnly || false
+      };
+      threats.push(threat);
       seenTypes.add(classification.ccType);
     }
   });
   
-  return tags.slice(0, 5);
+  return threats.slice(0, 6);
 }
 
-function populateChallengerTips(cell, champion, detail, isEnemy) {
+function getThreatIcon(ccType) {
+  const icons = {
+    'Suppression': '🔒',
+    'Airborne': '🌪️',
+    'Pull': '🪝',
+    'Nearsight': '🌫️',
+    'Stun': '⚡',
+    'Root': '🌿',
+    'Slow': '🐌',
+    'Charm': '💕',
+    'Fear': '😱',
+    'Taunt': '😡',
+    'Silence': '🤐',
+    'Blind': '🙈',
+    'Disarm': '🚫',
+    'Cripple': '🦴',
+    'Sleep': '😴',
+    'Mobility': '🏃',
+    'Burst': '💥',
+    'Stealth': '👻',
+    'Shield': '🛡️',
+    'Poke': '🎯',
+    'Sustain': '💚'
+  };
+  return icons[ccType] || '⚠️';
+}
+
+/**
+ * Populate understanding column
+ * For enemies: Threat patterns and what to watch for
+ * For allies: How the champion works and synergy potential
+ */
+function populateUnderstanding(cell, champion, detail, isEnemy) {
   cell.innerHTML = '';
   
   if (!state.selectedADC) {
@@ -568,35 +855,172 @@ function populateChallengerTips(cell, champion, detail, isEnemy) {
     return;
   }
   
-  let tip = '';
-  
-  // For enemies, check ADC_TEMPLATES first
-  if (isEnemy && ADC_TEMPLATES[state.selectedADC.name]) {
-    const adcTemplate = ADC_TEMPLATES[state.selectedADC.name];
-    if (adcTemplate.tips && adcTemplate.tips[champion.name]) {
-      tip = adcTemplate.tips[champion.name];
-    }
-  }
-  
-  // For allies, check support-specific synergy tips first
-  if (!tip && !isEnemy && SUPPORT_TEMPLATES[champion.name]) {
-    const synergy = SUPPORT_TEMPLATES[champion.name].synergy;
-    if (synergy[state.selectedADC.name]) {
-      tip = synergy[state.selectedADC.name];
-    }
-  }
-  
-  // Fallback to generic tips
-  if (!tip) {
-    tip = isEnemy 
-      ? `Respect ${champion.name}'s cooldowns. Trade aggressively when key abilities are down.`
-      : `Sync your engage/disengage with ${champion.name}. Watch for their ability windows.`;
-  }
-  
   const p = document.createElement('p');
-  p.className = 'tip-text';
-  p.textContent = tip;
+  p.className = 'understanding-text';
+  
+  if (isEnemy) {
+    p.textContent = generateEnemyUnderstanding(champion, detail);
+  } else {
+    p.textContent = generateAllyUnderstanding(champion, detail);
+  }
+  
   cell.appendChild(p);
+}
+
+/**
+ * Generate enemy understanding based on threat patterns
+ */
+function generateEnemyUnderstanding(champion, detail) {
+  const spells = detail.spells || [];
+  const ccSpells = spells.filter(s => {
+    const classification = classifyCC(s);
+    return classification && 
+           (classification.type === 'hard' || 
+            classification.type === 'soft' || 
+            classification.type === 'suppression');
+  });
+  
+  const mobilitySpells = spells.filter(s => {
+    const desc = s.description?.toLowerCase() || '';
+    return desc.includes('dash') || desc.includes('blink') || desc.includes('leap');
+  });
+  
+  const burstSpells = spells.filter(s => {
+    const desc = s.description?.toLowerCase() || '';
+    return desc.includes('burst') || (desc.includes('damage') && desc.includes('bonus'));
+  });
+  
+  let understanding = `${champion.name} threat analysis: `;
+  
+  if (ccSpells.length > 0) {
+    const ccTypes = ccSpells.map(s => {
+      const c = classifyCC(s);
+      return c ? c.ccType : '';
+    }).filter(Boolean).join(', ');
+    understanding += `Watch for CC (${ccTypes}). `;
+  }
+  
+  if (mobilitySpells.length > 0) {
+    understanding += `High mobility - respect gap closers and position carefully. `;
+  }
+  
+  if (burstSpells.length > 0) {
+    understanding += `Burst damage threat - maintain safe distance. `;
+  }
+  
+  understanding += `Track cooldowns (shown in Key Abilities) to identify safe trading windows. `;
+  understanding += `Visit wikilol for full ability details and matchup strategies.`;
+  
+  return understanding;
+}
+
+/**
+ * Generate ally understanding with detailed champion mechanics
+ * Helps player understand how to work with this champion
+ */
+function generateAllyUnderstanding(champion, detail) {
+  const tags = detail.tags || [];
+  const passive = detail.passive?.description || '';
+  const spells = detail.spells || [];
+  
+  // Analyze champion mechanics
+  const hasCC = spells.some(s => {
+    const classification = classifyCC(s);
+    return classification && 
+           (classification.type === 'hard' || 
+            classification.type === 'soft' || 
+            classification.type === 'suppression');
+  });
+  
+  const hasMobility = spells.some(s => {
+    const desc = s.description?.toLowerCase() || '';
+    return desc.includes('dash') || desc.includes('blink') || desc.includes('leap');
+  });
+  
+  const hasHeal = spells.some(s => {
+    const desc = s.description?.toLowerCase() || '';
+    return desc.includes('heal') || desc.includes('restore') && desc.includes('health');
+  });
+  
+  const hasShield = spells.some(s => {
+    const desc = s.description?.toLowerCase() || '';
+    return desc.includes('shield');
+  });
+  
+  const hasPoke = spells.some(s => {
+    const desc = s.description?.toLowerCase() || '';
+    return desc.includes('poke') || (desc.includes('damage') && desc.includes('range'));
+  });
+  
+  let understanding = '';
+  
+  // Role-based understanding
+  if (tags.includes('Support')) {
+    understanding += `${champion.name} (Support): `;
+    if (hasCC) {
+      understanding += `Provides crowd control for peel and engage. `;
+    }
+    if (hasHeal || hasShield) {
+      understanding += `Can protect you with heals/shields. `;
+    }
+    if (hasPoke) {
+      understanding += `Can poke enemies in lane. `;
+    }
+    understanding += `Coordinate all-ins when their CC is available. Play around their vision control and roam timings.`;
+  } else if (tags.includes('Tank')) {
+    understanding += `${champion.name} (Tank): `;
+    understanding += `Front-line champion who absorbs damage and creates space. `;
+    if (hasCC) {
+      understanding += `Has engage/peel tools - follow up on their crowd control. `;
+    }
+    if (hasMobility) {
+      understanding += `Mobile engager - be ready to support their dives. `;
+    }
+    understanding += `They initiate fights, you clean up. Position behind them in teamfights.`;
+  } else if (tags.includes('Mage')) {
+    understanding += `${champion.name} (Mage): `;
+    understanding += `Provides burst damage and area control. `;
+    if (hasCC) {
+      understanding += `Has crowd control for picks and peel. `;
+    }
+    if (hasPoke) {
+      understanding += `Can soften enemies before fights. `;
+    }
+    understanding += `Let them land their abilities first, then follow up. Respect their mana and cooldown windows.`;
+  } else if (tags.includes('Fighter')) {
+    understanding += `${champion.name} (Fighter): `;
+    understanding += `Thrives in extended fights and can duel enemies. `;
+    if (hasCC) {
+      understanding += `Can lock down targets for you. `;
+    }
+    if (hasMobility) {
+      understanding += `Mobile fighter - can chase or peel effectively. `;
+    }
+    understanding += `They draw attention in fights - use this to position safely and deal damage. Best in prolonged skirmishes.`;
+  } else if (tags.includes('Assassin')) {
+    understanding += `${champion.name} (Assassin): `;
+    understanding += `Specializes in quickly eliminating priority targets. `;
+    if (hasMobility) {
+      understanding += `Highly mobile - can dive backline. `;
+    }
+    understanding += `Let them engage first to draw cooldowns, then follow up. They create chaos - capitalize on it. Watch for their roams.`;
+  } else {
+    understanding += `${champion.name}: `;
+    if (hasCC) {
+      understanding += `Has crowd control tools. `;
+    }
+    if (hasMobility) {
+      understanding += `Mobile champion. `;
+    }
+    if (hasHeal || hasShield) {
+      understanding += `Can provide sustain/protection. `;
+    }
+    understanding += `Coordinate your cooldowns with theirs for maximum impact.`;
+  }
+  
+  understanding += ` Check wikilol for detailed ability information and synergy patterns.`;
+  
+  return understanding;
 }
 
 // Start the app
