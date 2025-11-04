@@ -65,6 +65,11 @@ const THREAT_LABELS = {
   HEAL: { label: 'Sustain', severity: 'low', icon: '💚' }
 };
 
+// Normalize text for search matching (removes special characters and spaces)
+function normalizeForSearch(text) {
+  return text.toLowerCase().replace(/['\s\-\.]/g, '');
+}
+
 // Initialize
 async function init() {
   try {
@@ -123,18 +128,27 @@ function setupADCInput() {
 
 function handleADCInput(input) {
   const query = input.value.toLowerCase().trim();
+  const normalizedQuery = normalizeForSearch(query);
   
   const adcIds = ADC_LIST.getAllADCs();
   const matches = adcIds
     .map(id => state.champions[id])
-    .filter(c => c && (!query || c.name.toLowerCase().includes(query)))
+    .filter(c => {
+      if (!c) return false;
+      if (!query) return true;
+      const normalizedName = normalizeForSearch(c.name);
+      return normalizedName.includes(normalizedQuery) || c.name.toLowerCase().includes(query);
+    })
     .sort((a, b) => {
       if (!query) return a.name.localeCompare(b.name);
       
       const aName = a.name.toLowerCase();
       const bName = b.name.toLowerCase();
-      const aStarts = aName.startsWith(query);
-      const bStarts = bName.startsWith(query);
+      const aNormalized = normalizeForSearch(a.name);
+      const bNormalized = normalizeForSearch(b.name);
+      
+      const aStarts = aNormalized.startsWith(normalizedQuery) || aName.startsWith(query);
+      const bStarts = bNormalized.startsWith(normalizedQuery) || bName.startsWith(query);
       
       if (aStarts && !bStarts) return -1;
       if (!aStarts && bStarts) return 1;
@@ -278,18 +292,26 @@ function createInput(team, index) {
 function handleInput(input) {
   const query = input.value.toLowerCase().trim();
   
-  if (query.length < 2) {
+  if (query.length < 1) {
     clearAutocomplete();
     return;
   }
   
+  const normalizedQuery = normalizeForSearch(query);
+  
   const matches = Object.values(state.champions)
-    .filter(c => c.name.toLowerCase().includes(query))
+    .filter(c => {
+      const normalizedName = normalizeForSearch(c.name);
+      return normalizedName.includes(normalizedQuery) || c.name.toLowerCase().includes(query);
+    })
     .sort((a, b) => {
       const aName = a.name.toLowerCase();
       const bName = b.name.toLowerCase();
-      const aStarts = aName.startsWith(query);
-      const bStarts = bName.startsWith(query);
+      const aNormalized = normalizeForSearch(a.name);
+      const bNormalized = normalizeForSearch(b.name);
+      
+      const aStarts = aNormalized.startsWith(normalizedQuery) || aName.startsWith(query);
+      const bStarts = bNormalized.startsWith(normalizedQuery) || bName.startsWith(query);
       
       if (aStarts && !bStarts) return -1;
       if (!aStarts && bStarts) return 1;
