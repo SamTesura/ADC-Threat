@@ -649,10 +649,6 @@ tbody tr:hover {
   color: var(--color-text-primary);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .cleanse-note {
@@ -796,11 +792,6 @@ tbody tr:hover {
   .qr-table-wrap {
     max-height: calc(100vh - 320px);
   }
-  
-  .tip-text,
-  .understanding-text {
-    -webkit-line-clamp: 2;
-  }
 }
 
 @media (max-width: 480px) {
@@ -861,7 +852,6 @@ tbody tr:hover {
   
   .tip-text,
   .understanding-text {
-    -webkit-line-clamp: unset;
     overflow: visible;
   }
 }
