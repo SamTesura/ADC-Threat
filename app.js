@@ -5,7 +5,7 @@
  * Focus: Cooldowns and Champion Understanding
  */
 
-const latestUpdate = "25-21";
+const latestUpdate = "25-22";
 
 const CONFIG = {
   PATCH_API: 'https://ddragon.leagueoflegends.com/api/versions.json',
