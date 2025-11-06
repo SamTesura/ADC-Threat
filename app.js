@@ -803,9 +803,24 @@ function populateAbilities(cell, detail, champion) {
       hasSummaryData = true;
     }
 
-    // Use threat tags if we have summary data (even if empty), otherwise fall back to spell description
-    const classification = hasSummaryData ?
-      classifyThreatTags(threatTags) : classifyCC(spell);
+    // Classify using both sources:
+    // 1. Use summary data for CC threats (respecting empty arrays)
+    // 2. Use spell description for non-CC threats (shield, heal, burst, poke, stealth)
+    let classification = null;
+    if (hasSummaryData) {
+      // Use manual curation for CC threats
+      classification = classifyThreatTags(threatTags);
+    }
+
+    // If no CC threat found, check for non-CC threats from spell description
+    if (!classification) {
+      const descClassification = classifyCC(spell);
+      // Only use non-CC threats (shield, heal, burst, poke, stealth, mobility)
+      if (descClassification &&
+          ['Shield', 'Sustain', 'Burst', 'Poke', 'Stealth', 'Mobility'].includes(descClassification.ccType)) {
+        classification = descClassification;
+      }
+    }
     const cooldowns = spell.cooldown || [];
     
     if (cooldowns.length > 0) {
@@ -913,16 +928,26 @@ function analyzeThreats(detail, champion) {
   const summaryData = state.championsSummary[champion.name] || state.championsSummary[champion.id];
 
   spells.forEach((spell, i) => {
-    let classification;
+    let classification = null;
 
-    // Use threat tags from champions-summary.json if available
+    // Use threat tags from champions-summary.json if available for CC threats
     if (summaryData && summaryData.abilities && summaryData.abilities[i]) {
       const threatTags = summaryData.abilities[i].threat || [];
-      // Use threat tags even if empty (respect the manual curation)
+      // Use threat tags even if empty (respect the manual curation for CC)
       classification = classifyThreatTags(threatTags);
-    } else {
-      // Fallback to old classification method only if no summary data exists
-      classification = classifyCC(spell);
+    }
+
+    // If no CC threat found, check for non-CC threats from spell description
+    if (!classification) {
+      const descClassification = classifyCC(spell);
+      // Only use non-CC threats (shield, heal, burst, poke, stealth, mobility)
+      if (descClassification &&
+          ['Shield', 'Sustain', 'Burst', 'Poke', 'Stealth', 'Mobility'].includes(descClassification.ccType)) {
+        classification = descClassification;
+      } else if (!summaryData || !summaryData.abilities || !summaryData.abilities[i]) {
+        // Only use CC from description if no summary data exists at all
+        classification = descClassification;
+      }
     }
 
     if (classification && !seenTypes.has(classification.ccType)) {
