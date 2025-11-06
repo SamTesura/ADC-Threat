@@ -36,7 +36,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -124,7 +126,7 @@
           12
         ],
         "threat": [
-          "SOFT_CC"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -169,7 +171,9 @@
           1.5,
           1.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -213,7 +217,10 @@
           60,
           60
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -270,7 +277,9 @@
           12,
           8
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -313,7 +322,9 @@
           10,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -327,7 +338,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -499,7 +512,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -527,7 +542,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -570,7 +587,7 @@
           2
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       }
@@ -644,7 +661,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -672,7 +691,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -714,7 +735,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -757,7 +780,9 @@
           4,
           4
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -785,7 +810,9 @@
           60,
           60
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -813,7 +840,9 @@
           3,
           3
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -841,7 +870,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -855,7 +886,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -884,7 +917,9 @@
           7,
           6.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -912,7 +947,9 @@
           11,
           10
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -999,7 +1036,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1028,7 +1067,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1070,7 +1111,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1114,7 +1157,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1142,7 +1187,9 @@
           1,
           1
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1171,7 +1218,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1199,7 +1248,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1214,7 +1265,7 @@
           0
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       }
@@ -1244,7 +1295,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1315,7 +1368,9 @@
           6,
           5.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1329,7 +1384,9 @@
           8,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -1343,7 +1400,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -1357,7 +1416,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1386,9 +1447,7 @@
           9,
           8
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -1416,7 +1475,10 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1430,7 +1492,9 @@
           70,
           70
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1473,7 +1537,7 @@
           0.5
         ],
         "threat": [
-          "Poke/Zone"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -1488,7 +1552,10 @@
           8,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1545,7 +1612,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1560,7 +1629,8 @@
           12
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -1575,7 +1645,9 @@
           0,
           70
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1617,7 +1689,9 @@
           16,
           14
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1645,7 +1719,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -1674,7 +1750,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1688,7 +1766,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1759,7 +1839,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -1787,9 +1869,7 @@
           2,
           2
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -1832,7 +1912,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -1846,7 +1928,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -1860,9 +1944,7 @@
           6,
           6
         ],
-        "threat": [
-          "BURST"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -1905,7 +1987,9 @@
           9,
           7.5
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -1920,7 +2004,7 @@
           10
         ],
         "threat": [
-          "GAP_CLOSE"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -1935,7 +2019,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -1977,9 +2063,7 @@
           12,
           12
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -1993,7 +2077,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2036,7 +2122,9 @@
           4,
           4
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -2107,7 +2195,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -2121,7 +2211,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2135,7 +2227,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -2206,7 +2300,10 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2263,7 +2360,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2277,7 +2376,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -2364,9 +2465,7 @@
           10,
           10
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -2396,7 +2495,7 @@
           12.5
         ],
         "threat": [
-          "SOFT_CC"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -2425,7 +2524,9 @@
           6,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -2439,7 +2540,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -2484,7 +2587,9 @@
           16,
           14
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2498,7 +2603,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -2541,7 +2648,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -2569,7 +2678,9 @@
           8,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -2583,7 +2694,10 @@
           70,
           40
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC",
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -2627,7 +2741,7 @@
           14
         ],
         "threat": [
-          "SHIELD_PEEL"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -2642,7 +2756,10 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2656,7 +2773,10 @@
           140,
           140
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -2727,7 +2847,7 @@
           120
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       }
@@ -2757,7 +2877,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -2771,7 +2893,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -2829,7 +2953,7 @@
           10
         ],
         "threat": [
-          "HARD_CC"
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -2844,7 +2968,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2874,7 +3000,9 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -2903,7 +3031,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -2931,7 +3061,10 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -2945,7 +3078,9 @@
           70,
           70
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -2987,7 +3122,9 @@
           18,
           18
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3001,7 +3138,9 @@
           12,
           11
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -3071,7 +3210,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -3085,7 +3226,9 @@
           8,
           7.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -3143,7 +3286,8 @@
           15
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -3158,7 +3302,10 @@
           100,
           0
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -3187,9 +3334,7 @@
           1,
           1
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -3218,7 +3363,7 @@
           11
         ],
         "threat": [
-          "Poke/Zone"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -3262,7 +3407,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3276,7 +3423,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -3290,7 +3439,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3361,7 +3512,9 @@
           12,
           11
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3375,9 +3528,7 @@
           70,
           70
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -3436,7 +3587,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3450,7 +3603,9 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -3479,7 +3634,9 @@
           10,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3493,9 +3650,7 @@
           0.5,
           0.5
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -3509,7 +3664,9 @@
           7,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -3523,7 +3680,9 @@
           100,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -3552,7 +3711,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3566,7 +3727,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3581,7 +3744,7 @@
           12
         ],
         "threat": [
-          "Poke/Zone"
+          "SHIELD_PEEL"
         ],
         "notes": ""
       },
@@ -3596,7 +3759,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -3639,7 +3804,10 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL",
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3667,7 +3835,9 @@
           5,
           0
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -3725,7 +3895,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3782,10 +3954,7 @@
           10,
           10
         ],
-        "threat": [
-          "GAP_CLOSE",
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -3799,7 +3968,9 @@
           12,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3856,7 +4027,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -3870,7 +4043,9 @@
           2,
           2
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3884,7 +4059,9 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -3926,7 +4103,9 @@
           4,
           3
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -3940,7 +4119,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -4011,9 +4192,7 @@
           10,
           11
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -4027,7 +4206,9 @@
           60,
           60
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -4097,7 +4278,9 @@
           80,
           60
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -4126,7 +4309,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4140,7 +4325,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -4154,7 +4341,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -4211,7 +4400,7 @@
           15
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -4269,7 +4458,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4297,7 +4488,9 @@
           17,
           16
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4311,7 +4504,9 @@
           2,
           2
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -4368,7 +4563,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -4411,7 +4608,9 @@
           8,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4496,7 +4695,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4567,7 +4768,7 @@
           6
         ],
         "threat": [
-          "GAP_CLOSE"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -4582,9 +4783,7 @@
           6,
           6
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -4598,7 +4797,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -4626,9 +4827,7 @@
           4,
           4
         ],
-        "threat": [
-          "SOFT_CC"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -4642,7 +4841,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4700,7 +4901,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -4714,7 +4917,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4728,7 +4933,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4771,7 +4978,7 @@
           6
         ],
         "threat": [
-          "Poke/Zone"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -4800,7 +5007,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -4814,7 +5023,9 @@
           110,
           110
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -4857,9 +5068,7 @@
           17,
           17
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -4873,7 +5082,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -4930,7 +5141,9 @@
           10,
           12
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -4944,7 +5157,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -4958,7 +5173,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5001,7 +5218,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -5015,7 +5234,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -5058,7 +5279,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -5072,7 +5295,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -5102,7 +5327,9 @@
           60,
           60
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5132,7 +5359,7 @@
           5
         ],
         "threat": [
-          "SHIELD_PEEL"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -5161,7 +5388,10 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -5175,7 +5405,9 @@
           90,
           150
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5232,7 +5464,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -5246,7 +5480,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5274,7 +5510,9 @@
           4,
           3
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -5288,7 +5526,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -5302,7 +5542,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -5316,7 +5558,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5373,7 +5617,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -5430,7 +5676,9 @@
           18,
           18
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -5444,7 +5692,9 @@
           8,
           7.5
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -5458,7 +5708,9 @@
           40,
           20
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5487,7 +5739,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -5517,7 +5771,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -5560,7 +5816,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -5588,7 +5846,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -5603,7 +5863,8 @@
           80
         ],
         "threat": [
-          "SHIELD_PEEL"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       }
@@ -5632,7 +5893,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -5674,7 +5937,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5703,7 +5968,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -5718,7 +5985,8 @@
           10
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -5734,7 +6002,7 @@
           14
         ],
         "threat": [
-          "HARD_CC"
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -5749,7 +6017,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -5778,7 +6048,9 @@
           18,
           17.5
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -5863,7 +6135,9 @@
           23,
           23
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -5922,7 +6196,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6021,7 +6297,9 @@
           14,
           13
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -6064,9 +6342,7 @@
           6,
           6
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -6094,7 +6370,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -6108,7 +6386,9 @@
           90,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -6151,7 +6431,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -6165,7 +6447,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6208,7 +6492,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6252,7 +6538,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -6295,7 +6583,9 @@
           18,
           18
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -6323,7 +6613,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -6352,7 +6644,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6380,7 +6674,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -6394,7 +6690,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -6437,7 +6735,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -6494,7 +6794,10 @@
           10,
           9
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6508,7 +6811,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -6522,7 +6827,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -6537,7 +6844,7 @@
           80
         ],
         "threat": [
-          "GAP_CLOSE"
+          "HARD_CC"
         ],
         "notes": ""
       }
@@ -6567,9 +6874,7 @@
           7,
           7
         ],
-        "threat": [
-          "BURST"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -6597,7 +6902,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6611,7 +6918,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -6640,9 +6949,7 @@
           6,
           6
         ],
-        "threat": [
-          "HARD_CC"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -6670,9 +6977,7 @@
           12,
           12
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -6743,7 +7048,9 @@
           0.5,
           0.5
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -6757,7 +7064,9 @@
           160,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -6800,7 +7109,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -6814,7 +7125,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6828,7 +7141,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -6871,7 +7186,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -6886,7 +7203,7 @@
           10
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -6901,7 +7218,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -6930,7 +7249,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -7015,7 +7336,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -7029,7 +7352,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -7043,7 +7368,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7071,7 +7398,9 @@
           7,
           6.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -7100,7 +7429,8 @@
           12
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -7115,7 +7445,10 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC",
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7159,8 +7492,8 @@
           9
         ],
         "threat": [
-          "SHIELD_PEEL",
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -7189,7 +7522,9 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -7218,7 +7553,9 @@
           4,
           3
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -7247,7 +7584,8 @@
           10
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -7262,7 +7600,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7291,7 +7631,9 @@
           8,
           7.5
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7319,7 +7661,10 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7333,7 +7678,9 @@
           40,
           25
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -7361,7 +7708,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -7375,7 +7724,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -7389,7 +7740,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -7403,7 +7756,9 @@
           120,
           120
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7463,7 +7818,8 @@
           8
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -7520,7 +7876,10 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7534,7 +7893,10 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -7548,7 +7910,9 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7605,7 +7969,7 @@
           12
         ],
         "threat": [
-          "SOFT_CC"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -7620,7 +7984,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7663,7 +8029,9 @@
           4,
           4
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7677,7 +8045,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -7722,7 +8092,9 @@
           9,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7736,7 +8108,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7750,7 +8124,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7765,7 +8141,7 @@
           80
         ],
         "threat": [
-          "Poke/Zone"
+          "HARD_CC"
         ],
         "notes": ""
       }
@@ -7795,7 +8171,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7823,7 +8201,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -7837,7 +8217,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -7866,9 +8248,7 @@
           7,
           7
         ],
-        "threat": [
-          "BURST"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -7882,7 +8262,9 @@
           8,
           0
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -7896,7 +8278,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -7967,7 +8351,9 @@
           0.25,
           0.25
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8010,7 +8396,9 @@
           13,
           13
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -8025,7 +8413,7 @@
           7
         ],
         "threat": [
-          "BURST"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -8040,7 +8428,10 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -8113,7 +8504,9 @@
           0.5,
           0.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8127,7 +8520,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -8169,7 +8564,9 @@
           9,
           8.5
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8298,7 +8695,10 @@
           13,
           12
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8312,7 +8712,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8326,7 +8728,9 @@
           1.5,
           1.5
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8340,7 +8744,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -8383,7 +8789,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8411,7 +8819,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       }
     ]
@@ -8454,7 +8864,9 @@
           22,
           22
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -8468,7 +8880,10 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC",
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8482,7 +8897,9 @@
           120,
           120
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -8525,7 +8942,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -8539,7 +8958,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8553,7 +8974,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -8581,7 +9004,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -8595,7 +9020,9 @@
           15,
           15
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8609,7 +9036,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8680,7 +9109,8 @@
           10
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -8695,7 +9125,9 @@
           160,
           160
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       }
     ]
@@ -8766,7 +9198,10 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -8809,7 +9244,9 @@
           13,
           13
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8823,7 +9260,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8866,7 +9305,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -8880,7 +9321,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -8894,7 +9337,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -8909,7 +9354,8 @@
           10
         ],
         "threat": [
-          "SHIELD_PEEL"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       }
@@ -9025,7 +9471,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -9039,7 +9487,9 @@
           18,
           17
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9053,7 +9503,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -9110,7 +9562,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -9124,7 +9578,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -9167,7 +9623,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -9195,7 +9653,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -9224,7 +9684,9 @@
           4,
           3
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9252,7 +9714,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9309,7 +9773,9 @@
           18,
           18
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9323,7 +9789,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9337,7 +9805,9 @@
           120,
           120
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -9366,7 +9836,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9394,7 +9866,10 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9450,7 +9925,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9464,7 +9941,9 @@
           15,
           15
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9507,7 +9986,9 @@
           5,
           4.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9535,7 +10016,9 @@
           3,
           3
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -9549,7 +10032,9 @@
           0,
           0
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -9608,7 +10093,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9622,9 +10109,7 @@
           0,
           140
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -9652,7 +10137,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -9666,7 +10153,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -9751,7 +10240,9 @@
           12,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9839,7 +10330,7 @@
           0.25
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       }
@@ -9869,7 +10360,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9883,7 +10376,9 @@
           17,
           16
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -9897,7 +10392,9 @@
           10,
           9.25
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -9911,7 +10408,9 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       }
     ]
@@ -9955,7 +10454,8 @@
           14
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -9970,9 +10470,7 @@
           14,
           14
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -9986,7 +10484,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -10015,7 +10515,9 @@
           3.5,
           3.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10100,7 +10602,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10114,7 +10618,9 @@
           8,
           7
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -10171,7 +10677,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10242,7 +10750,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10313,7 +10823,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -10327,7 +10839,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -10341,9 +10855,7 @@
           6,
           6
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -10372,9 +10884,7 @@
           8,
           7.5
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -10402,7 +10912,10 @@
           14,
           13.5
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -10417,7 +10930,7 @@
           70
         ],
         "threat": [
-          "SOFT_CC"
+          "HARD_CC"
         ],
         "notes": ""
       }
@@ -10475,7 +10988,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10489,7 +11004,9 @@
           60,
           60
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -10518,7 +11035,9 @@
           2,
           2
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -10546,7 +11065,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -10616,7 +11137,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -10630,9 +11153,7 @@
           60,
           60
         ],
-        "threat": [
-          "BURST"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -10661,7 +11182,9 @@
           7,
           7
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -10689,7 +11212,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10745,7 +11270,9 @@
           12,
           11
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -10759,7 +11286,9 @@
           13,
           13
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -10774,7 +11303,8 @@
           100
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       }
@@ -10805,7 +11335,8 @@
           6
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -10848,7 +11379,10 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -10891,7 +11425,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -10919,7 +11455,10 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -10947,7 +11486,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -10962,7 +11503,8 @@
           13
         ],
         "threat": [
-          "Poke/Zone"
+          "HARD_CC",
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -10992,7 +11534,7 @@
           0
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       }
@@ -11036,9 +11578,7 @@
           16,
           16
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -11052,7 +11592,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11095,7 +11637,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11123,7 +11667,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11137,7 +11683,10 @@
           110,
           110
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11166,7 +11715,9 @@
           6,
           6
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -11194,7 +11745,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11208,7 +11761,10 @@
           70,
           70
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11264,7 +11820,9 @@
           8,
           7
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11321,7 +11879,9 @@
           10,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11335,7 +11895,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11378,7 +11940,9 @@
           5,
           5
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11392,7 +11956,9 @@
           8,
           7
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11422,7 +11988,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11451,7 +12019,9 @@
           4,
           4
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11465,9 +12035,7 @@
           17,
           15
         ],
-        "threat": [
-          "Poke/Zone"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -11481,7 +12049,9 @@
           0.1,
           0.1
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -11495,7 +12065,10 @@
           30,
           30
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11524,7 +12097,9 @@
           4,
           4
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11538,7 +12113,9 @@
           14,
           14
         ],
-        "threat": [],
+        "threat": [
+          "SHIELD_PEEL"
+        ],
         "notes": ""
       },
       {
@@ -11566,7 +12143,10 @@
           80,
           80
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11609,7 +12189,9 @@
           12,
           12
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11623,7 +12205,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11693,7 +12277,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11736,19 +12322,21 @@
           6.5,
           6.5
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
         "key": "W",
         "name": "You and Me!",
         "cd": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
         ],
         "threat": [],
         "notes": ""
@@ -11778,7 +12366,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11807,7 +12397,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11835,7 +12427,10 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE",
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -11849,7 +12444,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
@@ -11891,7 +12488,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       },
       {
@@ -11905,7 +12504,9 @@
           3,
           3
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -11919,7 +12520,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "GAP_CLOSE"
+        ],
         "notes": ""
       }
     ]
@@ -11947,9 +12550,7 @@
           0,
           0
         ],
-        "threat": [
-          "BURST"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -11964,7 +12565,7 @@
           8
         ],
         "threat": [
-          "Poke/Zone"
+          "SOFT_CC"
         ],
         "notes": ""
       },
@@ -12038,7 +12639,7 @@
           12
         ],
         "threat": [
-          "GAP_CLOSE"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -12053,7 +12654,9 @@
           16,
           16
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -12096,7 +12699,9 @@
           8,
           8
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -12124,7 +12729,9 @@
           15,
           15
         ],
-        "threat": [],
+        "threat": [
+          "SOFT_CC"
+        ],
         "notes": ""
       },
       {
@@ -12138,9 +12745,7 @@
           0,
           10
         ],
-        "threat": [
-          "GAP_CLOSE"
-        ],
+        "threat": [],
         "notes": ""
       }
     ]
@@ -12197,7 +12802,7 @@
           11
         ],
         "threat": [
-          "SOFT_CC"
+          "HARD_CC"
         ],
         "notes": ""
       },
@@ -12271,7 +12876,9 @@
           11,
           11
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       },
       {
@@ -12285,7 +12892,9 @@
           90,
           90
         ],
-        "threat": [],
+        "threat": [
+          "HARD_CC"
+        ],
         "notes": ""
       }
     ]
