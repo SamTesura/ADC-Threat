@@ -797,12 +797,14 @@ function populateAbilities(cell, detail, champion) {
 
     // Get threat tags from champions-summary.json if available
     let threatTags = [];
+    let hasSummaryData = false;
     if (summaryData && summaryData.abilities && summaryData.abilities[i]) {
       threatTags = summaryData.abilities[i].threat || [];
+      hasSummaryData = true;
     }
 
-    // Classify the spell's CC type and threat (fallback to old method if no data)
-    const classification = threatTags.length > 0 ?
+    // Use threat tags if we have summary data (even if empty), otherwise fall back to spell description
+    const classification = hasSummaryData ?
       classifyThreatTags(threatTags) : classifyCC(spell);
     const cooldowns = spell.cooldown || [];
     
@@ -916,9 +918,10 @@ function analyzeThreats(detail, champion) {
     // Use threat tags from champions-summary.json if available
     if (summaryData && summaryData.abilities && summaryData.abilities[i]) {
       const threatTags = summaryData.abilities[i].threat || [];
-      classification = threatTags.length > 0 ? classifyThreatTags(threatTags) : classifyCC(spell);
+      // Use threat tags even if empty (respect the manual curation)
+      classification = classifyThreatTags(threatTags);
     } else {
-      // Fallback to old classification method
+      // Fallback to old classification method only if no summary data exists
       classification = classifyCC(spell);
     }
 
