@@ -19,6 +19,7 @@ const CONFIG = {
 let state = {
   patch: null,
   champions: {},
+  championsSummary: {}, // Threat data from champions-summary.json
   selectedADC: null,
   enemies: [],
   allies: []
@@ -75,6 +76,7 @@ async function init() {
   try {
     state.patch = await fetchPatch();
     state.champions = await fetchChampions(state.patch);
+    state.championsSummary = await fetchChampionsSummary();
     setupPatchNotesLink();
     setupADCInput();
     createInputs();
@@ -97,6 +99,24 @@ async function fetchChampions(patch) {
   const res = await fetch(url);
   const data = await res.json();
   return data.data;
+}
+
+async function fetchChampionsSummary() {
+  try {
+    const res = await fetch('./champions-summary.json');
+    const data = await res.json();
+    // Create a map from champion name to champion data
+    const map = {};
+    data.forEach(champ => {
+      map[champ.name] = champ;
+      // Also map by slug for easier lookup
+      map[champ.slug] = champ;
+    });
+    return map;
+  } catch (error) {
+    console.error('Failed to load champions-summary.json:', error);
+    return {};
+  }
 }
 
 async function fetchChampionDetail(championId) {
@@ -474,12 +494,76 @@ async function createRow(champion, isEnemy) {
   
   // Load detailed data asynchronously
   fetchChampionDetail(champion.id).then(detail => {
-    populateAbilities(abilityCell, detail);
-    populateThreats(threatCell, detail, isEnemy);
+    populateAbilities(abilityCell, detail, champion);
+    populateThreats(threatCell, detail, isEnemy, champion);
     populateUnderstanding(understandingCell, champion, detail, isEnemy);
   });
   
   return row;
+}
+
+/**
+ * Convert threat tags from champions-summary.json to classification format
+ */
+function classifyThreatTags(threatTags) {
+  if (!threatTags || threatTags.length === 0) return null;
+
+  // Priority: HARD_CC > SOFT_CC > GAP_CLOSE > others
+  if (threatTags.includes('HARD_CC')) {
+    return {
+      type: 'hard',
+      ccType: 'Hard CC',
+      cleansable: true, // Most hard CC is cleansable (except suppression)
+      color: 'hard'
+    };
+  }
+
+  if (threatTags.includes('SOFT_CC')) {
+    return {
+      type: 'soft',
+      ccType: 'Soft CC',
+      cleansable: true,
+      color: 'soft'
+    };
+  }
+
+  if (threatTags.includes('GAP_CLOSE')) {
+    return {
+      type: 'high',
+      ccType: 'Mobility',
+      cleansable: false,
+      color: 'high'
+    };
+  }
+
+  if (threatTags.includes('BURST')) {
+    return {
+      type: 'high',
+      ccType: 'Burst',
+      cleansable: false,
+      color: 'high'
+    };
+  }
+
+  if (threatTags.includes('SHIELD_PEEL')) {
+    return {
+      type: 'medium',
+      ccType: 'Shield',
+      cleansable: false,
+      color: 'medium'
+    };
+  }
+
+  if (threatTags.includes('Poke/Zone')) {
+    return {
+      type: 'medium',
+      ccType: 'Poke',
+      cleansable: false,
+      color: 'medium'
+    };
+  }
+
+  return null;
 }
 
 /**
@@ -694,25 +778,35 @@ function classifyCC(spell) {
   return null;
 }
 
-function populateAbilities(cell, detail) {
+function populateAbilities(cell, detail, champion) {
   cell.innerHTML = '';
-  
+
   if (!detail.spells) return;
-  
+
+  // Get threat data from champions-summary.json
+  const summaryData = state.championsSummary[champion.name] || state.championsSummary[champion.id];
+
   const keys = ['Q', 'W', 'E', 'R'];
   detail.spells.forEach((spell, i) => {
     const div = document.createElement('div');
     div.className = 'ability';
-    
+
     const key = document.createElement('span');
     key.className = 'ability-key';
     key.textContent = keys[i];
     div.appendChild(key);
-    
+
     const name = document.createElement('span');
-    
-    // Classify the spell's CC type and threat
-    const classification = classifyCC(spell);
+
+    // Get threat tags from champions-summary.json if available
+    let threatTags = [];
+    if (summaryData && summaryData.abilities && summaryData.abilities[i]) {
+      threatTags = summaryData.abilities[i].threat || [];
+    }
+
+    // Classify the spell's CC type and threat (fallback to old method if no data)
+    const classification = threatTags.length > 0 ?
+      classifyThreatTags(threatTags) : classifyCC(spell);
     const cooldowns = spell.cooldown || [];
     
     if (cooldowns.length > 0) {
@@ -761,9 +855,9 @@ function populateAbilities(cell, detail) {
   });
 }
 
-function populateThreats(cell, detail, isEnemy) {
+function populateThreats(cell, detail, isEnemy, champion) {
   cell.innerHTML = '';
-  
+
   if (!isEnemy) {
     // For allies, show their role/capabilities
     const tags = detail.tags || [];
@@ -775,9 +869,9 @@ function populateThreats(cell, detail, isEnemy) {
     });
     return;
   }
-  
+
   // For enemies, analyze threats with cleansability info
-  const threats = analyzeThreats(detail);
+  const threats = analyzeThreats(detail, champion);
   threats.forEach(threat => {
     const span = document.createElement('span');
     span.className = `threat-tag threat-${threat.severity}`;
@@ -811,19 +905,32 @@ function populateThreats(cell, detail, isEnemy) {
   });
 }
 
-function analyzeThreats(detail) {
+function analyzeThreats(detail, champion) {
   const threats = [];
   const spells = detail.spells || [];
   const seenTypes = new Set();
-  
-  spells.forEach(spell => {
-    const classification = classifyCC(spell);
+
+  // Get threat data from champions-summary.json
+  const summaryData = state.championsSummary[champion.name] || state.championsSummary[champion.id];
+
+  spells.forEach((spell, i) => {
+    let classification;
+
+    // Use threat tags from champions-summary.json if available
+    if (summaryData && summaryData.abilities && summaryData.abilities[i]) {
+      const threatTags = summaryData.abilities[i].threat || [];
+      classification = threatTags.length > 0 ? classifyThreatTags(threatTags) : classifyCC(spell);
+    } else {
+      // Fallback to old classification method
+      classification = classifyCC(spell);
+    }
+
     if (classification && !seenTypes.has(classification.ccType)) {
       const threat = {
         label: classification.ccType,
-        severity: classification.type === 'hard' ? 'high' : 
+        severity: classification.type === 'hard' ? 'high' :
                  classification.type === 'suppression' ? 'high' :
-                 classification.type === 'soft' ? 'medium' : 
+                 classification.type === 'soft' ? 'medium' :
                  classification.type,
         icon: getThreatIcon(classification.ccType),
         cleansable: classification.cleansable,
@@ -833,7 +940,7 @@ function analyzeThreats(detail) {
       seenTypes.add(classification.ccType);
     }
   });
-  
+
   return threats.slice(0, 6);
 }
 
