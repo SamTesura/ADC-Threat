@@ -504,63 +504,60 @@ async function createRow(champion, isEnemy) {
 
 /**
  * Convert threat tags from champions-summary.json to classification format
+ * Now uses SPECIFIC CC TYPES from wikilol
  */
 function classifyThreatTags(threatTags) {
   if (!threatTags || threatTags.length === 0) return null;
 
-  // Priority: HARD_CC > SOFT_CC > GAP_CLOSE > others
-  if (threatTags.includes('HARD_CC')) {
-    return {
-      type: 'hard',
-      ccType: 'Hard CC',
-      cleansable: true, // Most hard CC is cleansable (except suppression)
-      color: 'hard'
-    };
-  }
+  // Define cleansability for each CC type (from wikilol)
+  const ccClassifications = {
+    // Airborne - NOT cleansable (forced movement)
+    'KNOCKUP': { type: 'hard', ccType: 'Knockup', cleansable: false, qssOnly: false, color: 'hard' },
+    'KNOCKBACK': { type: 'hard', ccType: 'Knockback', cleansable: false, qssOnly: false, color: 'hard' },
+    'PULL': { type: 'hard', ccType: 'Pull', cleansable: false, qssOnly: false, color: 'hard' },
 
-  if (threatTags.includes('SOFT_CC')) {
-    return {
-      type: 'soft',
-      ccType: 'Soft CC',
-      cleansable: true,
-      color: 'soft'
-    };
-  }
+    // Suppression - NOT cleansable by Cleanse (QSS only)
+    'SUPPRESSION': { type: 'suppression', ccType: 'Suppression', cleansable: false, qssOnly: true, color: 'hard' },
 
-  if (threatTags.includes('GAP_CLOSE')) {
-    return {
-      type: 'high',
-      ccType: 'Mobility',
-      cleansable: false,
-      color: 'high'
-    };
-  }
+    // Nearsight - NOT cleansable
+    'NEARSIGHT': { type: 'hard', ccType: 'Nearsight', cleansable: false, qssOnly: false, color: 'hard' },
 
-  if (threatTags.includes('BURST')) {
-    return {
-      type: 'high',
-      ccType: 'Burst',
-      cleansable: false,
-      color: 'high'
-    };
-  }
+    // Disabling CC - Cleansable
+    'STUN': { type: 'hard', ccType: 'Stun', cleansable: true, color: 'hard' },
+    'ROOT': { type: 'hard', ccType: 'Root', cleansable: true, color: 'hard' },
+    'SNARE': { type: 'hard', ccType: 'Root', cleansable: true, color: 'hard' },
+    'SLEEP': { type: 'hard', ccType: 'Sleep', cleansable: true, color: 'hard' },
+    'CHARM': { type: 'hard', ccType: 'Charm', cleansable: true, color: 'hard' },
+    'FEAR': { type: 'hard', ccType: 'Fear', cleansable: true, color: 'hard' },
+    'TAUNT': { type: 'hard', ccType: 'Taunt', cleansable: true, color: 'hard' },
+    'POLYMORPH': { type: 'hard', ccType: 'Polymorph', cleansable: true, color: 'hard' },
 
-  if (threatTags.includes('SHIELD_PEEL')) {
-    return {
-      type: 'medium',
-      ccType: 'Shield',
-      cleansable: false,
-      color: 'medium'
-    };
-  }
+    // Impairing CC - Cleansable
+    'SLOW': { type: 'soft', ccType: 'Slow', cleansable: true, color: 'soft' },
+    'SILENCE': { type: 'soft', ccType: 'Silence', cleansable: true, color: 'soft' },
+    'BLIND': { type: 'soft', ccType: 'Blind', cleansable: true, color: 'soft' },
+    'DISARM': { type: 'soft', ccType: 'Disarm', cleansable: true, color: 'soft' },
+    'GROUNDED': { type: 'soft', ccType: 'Grounded', cleansable: true, color: 'soft' },
+    'CRIPPLE': { type: 'soft', ccType: 'Cripple', cleansable: true, color: 'soft' },
 
-  if (threatTags.includes('Poke/Zone')) {
-    return {
-      type: 'medium',
-      ccType: 'Poke',
-      cleansable: false,
-      color: 'medium'
-    };
+    // Non-CC threats
+    'GAP_CLOSE': { type: 'high', ccType: 'Mobility', cleansable: false, color: 'high' },
+    'SHIELD_PEEL': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' }
+  };
+
+  // Find highest priority threat (prioritize hard CC over soft CC over mobility)
+  const priorityOrder = [
+    'SUPPRESSION', 'NEARSIGHT',
+    'KNOCKUP', 'KNOCKBACK', 'PULL',
+    'STUN', 'ROOT', 'SNARE', 'CHARM', 'FEAR', 'TAUNT', 'SLEEP', 'POLYMORPH',
+    'SILENCE', 'BLIND', 'DISARM', 'GROUNDED', 'CRIPPLE', 'SLOW',
+    'GAP_CLOSE', 'SHIELD_PEEL'
+  ];
+
+  for (const ccType of priorityOrder) {
+    if (threatTags.includes(ccType)) {
+      return ccClassifications[ccType];
+    }
   }
 
   return null;
@@ -946,25 +943,34 @@ function analyzeThreats(detail, champion) {
 
 function getThreatIcon(ccType) {
   const icons = {
-    'Suppression': '🔒',
-    'Airborne': '🌪️',
+    // Airborne
+    'Knockup': '🌪️',
+    'Knockback': '💨',
     'Pull': '🪝',
+    'Suppression': '🔒',
     'Nearsight': '🌫️',
+    // Disabling
     'Stun': '⚡',
     'Root': '🌿',
-    'Slow': '🐌',
+    'Sleep': '😴',
     'Charm': '💕',
     'Fear': '😱',
     'Taunt': '😡',
+    'Polymorph': '🐑',
+    // Impairing
+    'Slow': '🐌',
     'Silence': '🤐',
     'Blind': '🙈',
     'Disarm': '🚫',
+    'Grounded': '⚓',
     'Cripple': '🦴',
-    'Sleep': '😴',
+    // Non-CC
     'Mobility': '🏃',
+    'Shield': '🛡️',
+    // Legacy (for backwards compatibility)
+    'Airborne': '🌪️',
     'Burst': '💥',
     'Stealth': '👻',
-    'Shield': '🛡️',
     'Poke': '🎯',
     'Sustain': '💚'
   };
