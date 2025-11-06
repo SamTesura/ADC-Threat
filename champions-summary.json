@@ -426,7 +426,9 @@
           9,
           9
         ],
-        "threat": [],
+        "threat": [
+          "SLOW"
+        ],
         "notes": ""
       },
       {
@@ -440,7 +442,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "SUPPRESSION"
+        ],
         "notes": ""
       }
     ]
@@ -918,9 +922,7 @@
           7,
           6.5
         ],
-        "threat": [
-          "SLOW"
-        ],
+        "threat": [],
         "notes": ""
       },
       {
@@ -964,7 +966,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "SLOW"
+        ],
         "notes": ""
       }
     ]
@@ -6155,7 +6159,7 @@
           10
         ],
         "threat": [
-          "SLOW"
+          "ROOT"
         ],
         "notes": ""
       },
@@ -9556,7 +9560,9 @@
           10,
           10
         ],
-        "threat": [],
+        "threat": [
+          "SLOW"
+        ],
         "notes": ""
       },
       {
@@ -12379,7 +12385,9 @@
           100,
           100
         ],
-        "threat": [],
+        "threat": [
+          "SLOW"
+        ],
         "notes": ""
       }
     ]
