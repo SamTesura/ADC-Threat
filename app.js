@@ -582,6 +582,7 @@ function classifyThreatTags(threatTags) {
     'DODGE': { type: 'high', ccType: 'Dodge', cleansable: false, color: 'high' },
     'PROJECTILE_BLOCK': { type: 'high', ccType: 'Projectile Block', cleansable: false, color: 'high' },
     'UNBREAKABLE_WALL': { type: 'high', ccType: 'Unbreakable Wall', cleansable: false, color: 'high' },
+    'BURST': { type: 'high', ccType: 'Burst', cleansable: false, color: 'high' },
 
     // Non-CC threats - Medium priority
     'SHIELD_PEEL': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' },
