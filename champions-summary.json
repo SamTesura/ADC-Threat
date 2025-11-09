@@ -581,7 +581,9 @@
             17,
             17
           ],
-          "threat": [],
+          "threat": [
+            "UNBREAKABLE_WALL"
+          ],
           "notes": ""
         },
         {
@@ -1068,7 +1070,8 @@
             40
           ],
           "threat": [
-            "KNOCKBACK"
+            "KNOCKBACK",
+            "UNBREAKABLE_WALL"
           ],
           "notes": ""
         }
@@ -1434,7 +1437,8 @@
             8
           ],
           "threat": [
-            "SHIELD_PEEL"
+            "SHIELD_PEEL",
+            "PROJECTILE_BLOCK"
           ],
           "notes": ""
         },
@@ -2733,7 +2737,8 @@
             8
           ],
           "threat": [
-            "GAP_CLOSE"
+            "GAP_CLOSE",
+            "DODGE"
           ],
           "notes": ""
         },
@@ -3347,7 +3352,8 @@
           "threat": [
             "GAP_CLOSE",
             "DASH",
-            "KNOCKBACK"
+            "KNOCKBACK",
+            "GHOST"
           ],
           "notes": "Grants ghosting (ignores unit collision) and MS boost"
         },
@@ -3901,7 +3907,8 @@
           ],
           "threat": [
             "GAP_CLOSE",
-            "KNOCKBACK"
+            "KNOCKBACK",
+            "UNBREAKABLE_WALL"
           ],
           "notes": "Creates impassable terrain arena that traps enemies for 3.5s"
         }
@@ -3961,7 +3968,8 @@
             9
           ],
           "threat": [
-            "STUN"
+            "STUN",
+            "DODGE"
           ],
           "notes": ""
         },
@@ -6130,7 +6138,8 @@
             17.5
           ],
           "threat": [
-            "GAP_CLOSE"
+            "GAP_CLOSE",
+            "DODGE"
           ],
           "notes": ""
         },
@@ -7613,7 +7622,9 @@
             18,
             18
           ],
-          "threat": [],
+          "threat": [
+            "PROJECTILE_BLOCK"
+          ],
           "notes": ""
         },
         {
@@ -8761,7 +8772,9 @@
             22,
             20
           ],
-          "threat": [],
+          "threat": [
+            "PROJECTILE_BLOCK"
+          ],
           "notes": ""
         },
         {
@@ -11733,7 +11746,9 @@
             16,
             16
           ],
-          "threat": [],
+          "threat": [
+            "DODGE"
+          ],
           "notes": ""
         },
         {
@@ -11995,7 +12010,9 @@
             100,
             100
           ],
-          "threat": [],
+          "threat": [
+            "DODGE"
+          ],
           "notes": ""
         }
       ]
@@ -12194,7 +12211,9 @@
             17,
             15
           ],
-          "threat": [],
+          "threat": [
+            "PROJECTILE_BLOCK"
+          ],
           "notes": ""
         },
         {
@@ -12349,7 +12368,8 @@
             12
           ],
           "threat": [
-            "ROOT"
+            "ROOT",
+            "BREAKABLE_WALL"
           ],
           "notes": ""
         },
