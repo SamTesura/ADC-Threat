@@ -816,7 +816,7 @@ function classifyCC(spell) {
   }
   
   // Check for low threats
-  if (desc.includes('heal') || desc.includes('regenerat')) {
+  if (desc.includes('heal') || !(desc.includes('maximum health') || desc.includes('regenerat')) {
     return { 
       type: 'low', 
       ccType: 'Sustain', 
