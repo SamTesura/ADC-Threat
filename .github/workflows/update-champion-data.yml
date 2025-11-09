@@ -1,0 +1,62 @@
+name: Auto-Update Champion Data
+
+on:
+  schedule:
+    # Run daily at 12:00 UTC (check for new patches)
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      force_update:
+        description: 'Force update even if patch version is the same'
+        required: false
+        default: 'false'
+
+jobs:
+  update-champion-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install axios
+
+      - name: Run update script
+        id: update
+        run: node scripts/update-champion-data.js
+        env:
+          FORCE_UPDATE: ${{ github.event.inputs.force_update || 'false' }}
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add champions-summary.json app.js
+          git commit -m "Auto-update champion data for patch $(grep -oP 'const latestUpdate = "\K[^"]+' app.js)"
+          git push
+
+      - name: Create summary
+        if: always()
+        run: |
+          if [ "${{ steps.git-check.outputs.changes }}" == "true" ]; then
+            echo "✅ Champion data updated successfully" >> $GITHUB_STEP_SUMMARY
+            echo "Updated to patch: $(grep -oP 'const latestUpdate = "\K[^"]+' app.js)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No updates needed - data is current" >> $GITHUB_STEP_SUMMARY
+          fi

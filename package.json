@@ -1,0 +1,26 @@
+{
+  "name": "adc-threat-analyzer",
+  "version": "3.0.0",
+  "description": "League of Legends ADC Threat Analysis Tool with auto-updating champion data",
+  "scripts": {
+    "update-data": "node scripts/update-champion-data.js",
+    "test-update": "FORCE_UPDATE=true node scripts/update-champion-data.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SamTesura/samtesura.github.io.git"
+  },
+  "author": "SamTesura",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "league-of-legends",
+    "adc",
+    "threat-analysis",
+    "ddragon",
+    "riot-api"
+  ]
+}
