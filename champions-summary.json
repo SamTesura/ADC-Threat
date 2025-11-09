@@ -6646,7 +6646,8 @@
           ],
           "threat": [
             "STUN",
-            "SLOW"
+            "SLOW",
+            "REVEAL"
           ],
           "notes": ""
         }
