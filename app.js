@@ -778,7 +778,7 @@ function classifyCC(spell) {
     };
   }
   
-  if (desc.includes('burst') || (desc.includes('damage') && desc.includes('bonus')) || desc.includes('maximum health') ) {
+  if (desc.includes('burst') || (desc.includes('damage') && desc.includes('bonus')) || desc.includes('maximum health') || desc.includes('missing health') {
     return { 
       type: 'high', 
       ccType: 'Burst', 
