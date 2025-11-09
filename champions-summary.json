@@ -12368,7 +12368,6 @@
             12
           ],
           "threat": [
-            "ROOT",
             "BREAKABLE_WALL"
           ],
           "notes": ""
