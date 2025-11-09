@@ -586,6 +586,7 @@ function classifyThreatTags(threatTags) {
     'SHIELD_PEEL': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' },
     'SHIELD': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' },
     'BREAKABLE_WALL': { type: 'medium', ccType: 'Breakable Wall', cleansable: false, color: 'medium' },
+    'REVEAL': { type: 'medium', ccType: 'Reveal', cleansable: false, color: 'medium' },
 
     // Non-CC threats - Low priority
     'SUSTAIN': { type: 'low', ccType: 'Sustain', cleansable: false, color: 'low' },
@@ -599,7 +600,7 @@ function classifyThreatTags(threatTags) {
     'STUN', 'ROOT', 'SNARE', 'CHARM', 'FEAR', 'TAUNT', 'SLEEP', 'POLYMORPH',
     'SILENCE', 'BLIND', 'DISARM', 'GROUNDED', 'CRIPPLE', 'SLOW',
     'DODGE', 'PROJECTILE_BLOCK', 'UNBREAKABLE_WALL', 'STEALTH', 'GAP_CLOSE', 'DASH',
-    'BREAKABLE_WALL', 'SHIELD_PEEL', 'SHIELD',
+    'BREAKABLE_WALL', 'REVEAL', 'SHIELD_PEEL', 'SHIELD',
     'SUSTAIN', 'GHOST'
   ];
 
@@ -1008,6 +1009,7 @@ function getThreatIcon(ccType) {
     // Non-CC - Medium Threat
     'Shield': '🛡️',
     'Breakable Wall': '🧱',
+    'Reveal': '👁️',
     // Non-CC - Low Threat
     'Sustain': '💚',
     'Ghost': '👤',

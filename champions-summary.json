@@ -819,8 +819,10 @@
             5,
             5
           ],
-          "threat": [],
-          "notes": ""
+          "threat": [
+            "REVEAL"
+          ],
+          "notes": "Reveals area and enemies (including stealthed)"
         },
         {
           "key": "R",
@@ -1572,9 +1574,10 @@
             10
           ],
           "threat": [
-            "ROOT"
+            "ROOT",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals trapped enemies (including stealthed)"
         },
         {
           "key": "E",
@@ -3192,9 +3195,10 @@
             11
           ],
           "threat": [
-            "GAP_CLOSE"
+            "GAP_CLOSE",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Grants true sight briefly"
         },
         {
           "key": "R",
@@ -4105,9 +4109,10 @@
             2
           ],
           "threat": [
-            "SLOW"
+            "SLOW",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Traps reveal enemies when triggered (including stealthed)"
         },
         {
           "key": "R",
@@ -4181,9 +4186,10 @@
             10
           ],
           "threat": [
-            "ROOT"
+            "ROOT",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Traps reveal enemies when triggered (including stealthed)"
         },
         {
           "key": "R",
@@ -4239,8 +4245,10 @@
             14,
             14
           ],
-          "threat": [],
-          "notes": "Reveals enemies hit"
+          "threat": [
+            "REVEAL"
+          ],
+          "notes": "Reveals enemies hit (including stealthed)"
         },
         {
           "key": "E",
@@ -4311,8 +4319,10 @@
             30,
             30
           ],
-          "threat": [],
-          "notes": ""
+          "threat": [
+            "REVEAL"
+          ],
+          "notes": "Reveals area (including stealthed)"
         },
         {
           "key": "E",
@@ -4371,9 +4381,10 @@
             5
           ],
           "threat": [
-            "SLOW"
+            "SLOW",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals enemies hit"
         },
         {
           "key": "W",
@@ -5344,9 +5355,10 @@
             6
           ],
           "threat": [
-            "GAP_CLOSE"
+            "GAP_CLOSE",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals enemies on hit (including stealthed)"
         },
         {
           "key": "W",
@@ -5376,9 +5388,10 @@
             8
           ],
           "threat": [
-            "SLOW"
+            "SLOW",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals enemies in area (including stealthed)"
         },
         {
           "key": "R",
@@ -5759,9 +5772,10 @@
             7.5
           ],
           "threat": [
-            "SHIELD"
+            "SHIELD",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals enemy target (including stealthed)"
         },
         {
           "key": "R",
@@ -5838,9 +5852,10 @@
             8
           ],
           "threat": [
-            "SLOW"
+            "SLOW",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals area (including stealthed)"
         },
         {
           "key": "R",
@@ -7042,9 +7057,10 @@
             9
           ],
           "threat": [
-            "GAP_CLOSE"
+            "GAP_CLOSE",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Bushwhack traps reveal enemies (including stealthed)"
         },
         {
           "key": "E",
@@ -7898,8 +7914,10 @@
             30,
             30
           ],
-          "threat": [],
-          "notes": ""
+          "threat": [
+            "REVEAL"
+          ],
+          "notes": "Reveals area and enemies (including stealthed)"
         },
         {
           "key": "E",
@@ -8471,8 +8489,10 @@
             80,
             80
           ],
-          "threat": [],
-          "notes": ""
+          "threat": [
+            "REVEAL"
+          ],
+          "notes": "Reveals nearest enemy champion"
         }
       ]
     },
@@ -10834,8 +10854,10 @@
             110,
             110
           ],
-          "threat": [],
-          "notes": ""
+          "threat": [
+            "REVEAL"
+          ],
+          "notes": "Reveals all enemy champions globally"
         }
       ]
     },
@@ -11117,9 +11139,10 @@
             10
           ],
           "threat": [
-            "SLOW"
+            "SLOW",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals area (including stealthed)"
         },
         {
           "key": "R",
@@ -12839,9 +12862,10 @@
             8
           ],
           "threat": [
-            "STUN"
+            "STUN",
+            "REVEAL"
           ],
-          "notes": ""
+          "notes": "Reveals attached target (including stealthed)"
         },
         {
           "key": "W",
