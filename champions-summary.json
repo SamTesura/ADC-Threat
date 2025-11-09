@@ -227,7 +227,6 @@
         ],
         "threat": [
           "GAP_CLOSE",
-          "STUN",
           "DASH"
         ],
         "notes": ""
@@ -1526,7 +1525,6 @@
           80
         ],
         "threat": [
-          "CHARM",
           "FEAR",
           "DASH"
         ],
@@ -3342,6 +3340,7 @@
         ],
         "threat": [
           "GAP_CLOSE",
+          "DASH",
           "KNOCKBACK"
         ],
         "notes": ""
@@ -12457,7 +12456,8 @@
           6.5
         ],
         "threat": [
-          "SLOW"
+          "SLOW",
+          "SUSTAIN"
         ],
         "notes": ""
       },
