@@ -574,18 +574,33 @@ function classifyThreatTags(threatTags) {
     'GROUNDED': { type: 'soft', ccType: 'Grounded', cleansable: true, color: 'soft' },
     'CRIPPLE': { type: 'soft', ccType: 'Cripple', cleansable: true, color: 'soft' },
 
-    // Non-CC threats
+    // Non-CC threats - High priority
     'GAP_CLOSE': { type: 'high', ccType: 'Mobility', cleansable: false, color: 'high' },
-    'SHIELD_PEEL': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' }
+    'DASH': { type: 'high', ccType: 'Dash', cleansable: false, color: 'high' },
+    'STEALTH': { type: 'high', ccType: 'Stealth', cleansable: false, color: 'high' },
+    'DODGE': { type: 'high', ccType: 'Dodge', cleansable: false, color: 'high' },
+    'PROJECTILE_BLOCK': { type: 'high', ccType: 'Projectile Block', cleansable: false, color: 'high' },
+    'UNBREAKABLE_WALL': { type: 'high', ccType: 'Unbreakable Wall', cleansable: false, color: 'high' },
+
+    // Non-CC threats - Medium priority
+    'SHIELD_PEEL': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' },
+    'SHIELD': { type: 'medium', ccType: 'Shield', cleansable: false, color: 'medium' },
+    'BREAKABLE_WALL': { type: 'medium', ccType: 'Breakable Wall', cleansable: false, color: 'medium' },
+
+    // Non-CC threats - Low priority
+    'SUSTAIN': { type: 'low', ccType: 'Sustain', cleansable: false, color: 'low' },
+    'GHOST': { type: 'low', ccType: 'Ghost', cleansable: false, color: 'low' }
   };
 
-  // Find highest priority threat (prioritize hard CC over soft CC over mobility)
+  // Find highest priority threat (prioritize hard CC over soft CC over non-CC threats)
   const priorityOrder = [
     'SUPPRESSION', 'NEARSIGHT',
     'KNOCKUP', 'KNOCKBACK', 'PULL',
     'STUN', 'ROOT', 'SNARE', 'CHARM', 'FEAR', 'TAUNT', 'SLEEP', 'POLYMORPH',
     'SILENCE', 'BLIND', 'DISARM', 'GROUNDED', 'CRIPPLE', 'SLOW',
-    'GAP_CLOSE', 'SHIELD_PEEL'
+    'DODGE', 'PROJECTILE_BLOCK', 'UNBREAKABLE_WALL', 'STEALTH', 'GAP_CLOSE', 'DASH',
+    'BREAKABLE_WALL', 'SHIELD_PEEL', 'SHIELD',
+    'SUSTAIN', 'GHOST'
   ];
 
   for (const ccType of priorityOrder) {
@@ -983,15 +998,23 @@ function getThreatIcon(ccType) {
     'Disarm': '🚫',
     'Grounded': '⚓',
     'Cripple': '🦴',
-    // Non-CC
+    // Non-CC - High Threat
     'Mobility': '🏃',
+    'Dash': '💨',
+    'Stealth': '👻',
+    'Dodge': '🌀',
+    'Projectile Block': '🧱',
+    'Unbreakable Wall': '🗿',
+    // Non-CC - Medium Threat
     'Shield': '🛡️',
+    'Breakable Wall': '🧱',
+    // Non-CC - Low Threat
+    'Sustain': '💚',
+    'Ghost': '👤',
     // Legacy (for backwards compatibility)
     'Airborne': '🌪️',
     'Burst': '💥',
-    'Stealth': '👻',
-    'Poke': '🎯',
-    'Sustain': '💚'
+    'Poke': '🎯'
   };
   return icons[ccType] || '⚠️';
 }
