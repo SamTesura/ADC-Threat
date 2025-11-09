@@ -11254,7 +11254,10 @@
             70,
             70
           ],
-          "threat": [],
+          "threat": [
+            "BURST",
+            "STEALTH"
+          ],
           "notes": ""
         }
       ]
