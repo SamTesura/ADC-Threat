@@ -505,43 +505,44 @@ async function createRow(champion, isEnemy) {
 
 /**
  * Classify an ability based on summary data and spell description
- * Returns classification object or null if no threats found
+ * Returns array of classification objects or empty array if no threats found
  */
 function classifyAbility(spell, summaryData, abilityIndex, allowFallbackCC = false) {
-  let classification = null;
+  let classifications = [];
   let hasAbilitySummary = false;
 
   // Get threat tags from champions-summary.json if available
   if (summaryData?.abilities?.[abilityIndex]) {
     const threatTags = summaryData.abilities[abilityIndex].threat || [];
     hasAbilitySummary = true;
-    // Use manual curation for CC threats
-    classification = classifyThreatTags(threatTags);
+    // Use manual curation for CC threats (returns array of all tags)
+    classifications = classifyThreatTags(threatTags);
   }
 
   // If no CC threat found, check for non-CC threats from spell description
-  if (!classification) {
+  if (classifications.length === 0) {
     const descClassification = classifyCC(spell);
     const nonCCThreats = ['Shield', 'Sustain', 'Burst', 'Poke', 'Stealth', 'Mobility'];
 
     if (descClassification && nonCCThreats.includes(descClassification.ccType)) {
       // Always use non-CC threats from description
-      classification = descClassification;
+      classifications = [descClassification];
     } else if (allowFallbackCC && !hasAbilitySummary) {
       // Only use CC from description if explicitly allowed and no summary data exists
-      classification = descClassification;
+      classifications = [descClassification];
     }
   }
 
-  return classification;
+  return classifications;
 }
 
 /**
  * Convert threat tags from champions-summary.json to classification format
  * Now uses SPECIFIC CC TYPES from wikilol
+ * Returns ARRAY of all matching classifications
  */
 function classifyThreatTags(threatTags) {
-  if (!threatTags || threatTags.length === 0) return null;
+  if (!threatTags || threatTags.length === 0) return [];
 
   // Define cleansability for each CC type (from wikilol)
   const ccClassifications = {
@@ -593,7 +594,7 @@ function classifyThreatTags(threatTags) {
     'GHOST': { type: 'low', ccType: 'Ghost', cleansable: false, color: 'low' }
   };
 
-  // Find highest priority threat (prioritize hard CC over soft CC over non-CC threats)
+  // Find all matching threats (in priority order)
   const priorityOrder = [
     'SUPPRESSION', 'NEARSIGHT',
     'KNOCKUP', 'KNOCKBACK', 'PULL',
@@ -604,13 +605,14 @@ function classifyThreatTags(threatTags) {
     'SUSTAIN', 'GHOST'
   ];
 
+  const matchedClassifications = [];
   for (const ccType of priorityOrder) {
     if (threatTags.includes(ccType)) {
-      return ccClassifications[ccType];
+      matchedClassifications.push(ccClassifications[ccType]);
     }
   }
 
-  return null;
+  return matchedClassifications;
 }
 
 /**
@@ -845,51 +847,104 @@ function populateAbilities(cell, detail, champion) {
 
     const name = document.createElement('span');
 
-    // Classify ability using shared helper
-    const classification = classifyAbility(spell, summaryData, i, false);
+    // Classify ability using shared helper (now returns array)
+    const classifications = classifyAbility(spell, summaryData, i, false);
     const cooldowns = spell.cooldown || [];
-    
+
     if (cooldowns.length > 0) {
       const cdText = cooldowns.join('/');
       let cdClass = 'cd-medium';
-      
-      if (classification) {
-        cdClass = `cd-${classification.color}`;
+
+      // Use the first (highest priority) classification for cooldown badge color
+      if (classifications.length > 0) {
+        cdClass = `cd-${classifications[0].color}`;
       }
-      
+
       let badgeText = `${cdText}s`;
       let badgeTitle = '';
-      
-      // Add cleansability indicator based on wikilol standards
-      if (classification) {
-        if (classification.qssOnly) {
+
+      // Add cleansability indicator based on wikilol standards (using first classification)
+      if (classifications.length > 0) {
+        const firstClass = classifications[0];
+        if (firstClass.qssOnly) {
           badgeText += ' 🔒';
           badgeTitle = 'QSS only - Cannot be removed by Cleanse';
-        } else if (classification.cleansable) {
+        } else if (firstClass.cleansable) {
           badgeText += ' ✓';
           badgeTitle = 'Cleansable - Can be removed by Cleanse/QSS';
-        } else if (classification.ccType === 'Airborne' || classification.ccType === 'Pull') {
+        } else if (firstClass.ccType === 'Airborne' || firstClass.ccType === 'Pull') {
           badgeText += ' ✗';
           badgeTitle = 'NOT Fully Cleansable - Forced movement cannot be removed';
-        } else if (classification.ccType === 'Nearsight') {
+        } else if (firstClass.ccType === 'Nearsight') {
           badgeText += ' ✗';
           badgeTitle = 'NOT Cleansable - Cannot be removed by Cleanse or QSS';
         }
       }
-      
+
       const badge = document.createElement('span');
       badge.className = `cd-badge ${cdClass}`;
       badge.textContent = badgeText;
       if (badgeTitle) {
         badge.title = badgeTitle;
       }
-      
+
       name.innerHTML = spell.name + ' ';
       name.appendChild(badge);
+
+      // Display all threat type badges
+      if (classifications.length > 0) {
+        classifications.forEach(classification => {
+          const threatBadge = document.createElement('span');
+          threatBadge.className = `threat-type-badge threat-${classification.color}`;
+          threatBadge.textContent = classification.ccType;
+
+          // Add cleansability tooltip
+          let tooltip = classification.ccType;
+          if (classification.qssOnly) {
+            tooltip += ' (QSS only)';
+          } else if (classification.cleansable) {
+            tooltip += ' (Cleansable)';
+          } else if (classification.ccType === 'Airborne' || classification.ccType === 'Pull') {
+            tooltip += ' (Partial)';
+          } else if (classification.ccType === 'Nearsight') {
+            tooltip += ' (Not Cleansable)';
+          }
+          threatBadge.title = tooltip;
+
+          name.appendChild(document.createTextNode(' '));
+          name.appendChild(threatBadge);
+        });
+      }
     } else {
       name.textContent = spell.name;
+
+      // Display threat type badges even without cooldown
+      if (classifications.length > 0) {
+        name.innerHTML = spell.name + ' ';
+        classifications.forEach(classification => {
+          const threatBadge = document.createElement('span');
+          threatBadge.className = `threat-type-badge threat-${classification.color}`;
+          threatBadge.textContent = classification.ccType;
+
+          // Add cleansability tooltip
+          let tooltip = classification.ccType;
+          if (classification.qssOnly) {
+            tooltip += ' (QSS only)';
+          } else if (classification.cleansable) {
+            tooltip += ' (Cleansable)';
+          } else if (classification.ccType === 'Airborne' || classification.ccType === 'Pull') {
+            tooltip += ' (Partial)';
+          } else if (classification.ccType === 'Nearsight') {
+            tooltip += ' (Not Cleansable)';
+          }
+          threatBadge.title = tooltip;
+
+          name.appendChild(threatBadge);
+          name.appendChild(document.createTextNode(' '));
+        });
+      }
     }
-    
+
     div.appendChild(name);
     cell.appendChild(div);
   });
@@ -955,25 +1010,28 @@ function analyzeThreats(detail, champion) {
 
   spells.forEach((spell, i) => {
     // Classify ability using shared helper (allow fallback CC if no summary data)
-    const classification = classifyAbility(spell, summaryData, i, true);
+    const classifications = classifyAbility(spell, summaryData, i, true);
 
-    if (classification && !seenTypes.has(classification.ccType)) {
-      const threat = {
-        label: classification.ccType,
-        severity: classification.type === 'hard' ? 'high' :
-                 classification.type === 'suppression' ? 'high' :
-                 classification.type === 'soft' ? 'medium' :
-                 classification.type,
-        icon: getThreatIcon(classification.ccType),
-        cleansable: classification.cleansable,
-        qssOnly: classification.qssOnly || false
-      };
-      threats.push(threat);
-      seenTypes.add(classification.ccType);
-    }
+    // Process all classifications for this ability
+    classifications.forEach(classification => {
+      if (classification && !seenTypes.has(classification.ccType)) {
+        const threat = {
+          label: classification.ccType,
+          severity: classification.type === 'hard' ? 'high' :
+                   classification.type === 'suppression' ? 'high' :
+                   classification.type === 'soft' ? 'medium' :
+                   classification.type,
+          icon: getThreatIcon(classification.ccType),
+          cleansable: classification.cleansable,
+          qssOnly: classification.qssOnly || false
+        };
+        threats.push(threat);
+        seenTypes.add(classification.ccType);
+      }
+    });
   });
 
-  return threats.slice(0, 6);
+  return threats.slice(0, 10); // Increased from 6 to 10 to show more tags
 }
 
 function getThreatIcon(ccType) {
