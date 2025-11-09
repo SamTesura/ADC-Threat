@@ -2065,7 +2065,7 @@
           "GAP_CLOSE",
           "PULL"
         ],
-        "notes": ""
+        "notes": "Reveals enemies during pull (including stealthed)"
       }
     ]
   },
@@ -3343,7 +3343,7 @@
           "DASH",
           "KNOCKBACK"
         ],
-        "notes": ""
+        "notes": "Grants ghosting (ignores unit collision) and MS boost"
       },
       {
         "key": "R",
@@ -3894,9 +3894,10 @@
           90
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "KNOCKBACK"
         ],
-        "notes": ""
+        "notes": "Creates impassable terrain arena that traps enemies for 3.5s"
       }
     ]
   },
@@ -4223,7 +4224,7 @@
           6
         ],
         "threat": [],
-        "notes": ""
+        "notes": "Burst damage ability - prioritizes isolated targets"
       },
       {
         "key": "W",
@@ -4237,7 +4238,7 @@
           14
         ],
         "threat": [],
-        "notes": ""
+        "notes": "Reveals enemies hit"
       },
       {
         "key": "E",
@@ -5129,7 +5130,7 @@
           17
         ],
         "threat": [],
-        "notes": ""
+        "notes": "Bonus magic damage and increased attack range (active buff)"
       },
       {
         "key": "E",
@@ -12441,7 +12442,7 @@
     "portrait": "Yuumi",
     "passive": {
       "name": "Feline Friendship",
-      "desc": ""
+      "desc": "Periodically, next basic attack heals Yuumi and attached ally"
     },
     "abilities": [
       {
@@ -12459,7 +12460,7 @@
           "SLOW",
           "SUSTAIN"
         ],
-        "notes": ""
+        "notes": "Empowered by Best Friend - heals on hit"
       },
       {
         "key": "W",
