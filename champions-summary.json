@@ -2023,7 +2023,7 @@
             6,
             6
           ],
-          "threat": [],
+          "threat": [REVEAL],
           "notes": ""
         },
         {
@@ -5180,7 +5180,7 @@
             1,
             1
           ],
-          "threat": [],
+          "threat": [REVEAL],
           "notes": ""
         }
       ]
