@@ -5155,7 +5155,9 @@
             17,
             17
           ],
-          "threat": [],
+          "threat": [
+            "BURST"
+          ],
           "notes": "Bonus magic damage and increased attack range (active buff)"
         },
         {
