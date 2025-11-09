@@ -579,8 +579,10 @@
           17,
           17
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "UNBREAKABLE_WALL"
+        ],
+        "notes": "Anivia summons an impassable ice wall that blocks movement and pathing."
       },
       {
         "key": "E",
@@ -1064,9 +1066,10 @@
           40
         ],
         "threat": [
-          "KNOCKBACK"
+          "KNOCKBACK",
+          "UNBREAKABLE_WALL"
         ],
-        "notes": ""
+        "notes": "Azir summons a wall of soldiers that knocks back enemies and creates an impassable barrier."
       }
     ]
   },
@@ -1430,9 +1433,10 @@
           8
         ],
         "threat": [
-          "SHIELD_PEEL"
+          "SHIELD_PEEL",
+          "PROJECTILE_BLOCK"
         ],
-        "notes": ""
+        "notes": "Blocks first projectile, reduces damage from subsequent ones"
       },
       {
         "key": "R",
@@ -2288,8 +2292,10 @@
           70,
           70
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "DODGE"
+        ],
+        "notes": "Ekko becomes untargetable as he rewinds time to his previous position."
       }
     ]
   },
@@ -2347,9 +2353,10 @@
         ],
         "threat": [
           "GAP_CLOSE",
-          "STUN"
+          "STUN",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Spider form: Elise becomes untargetable as she ascends into the air."
       },
       {
         "key": "R",
@@ -2728,9 +2735,10 @@
           8
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Fizz becomes untargetable and invulnerable as he hops onto his trident."
       },
       {
         "key": "R",
@@ -3341,7 +3349,8 @@
         "threat": [
           "GAP_CLOSE",
           "DASH",
-          "KNOCKBACK"
+          "KNOCKBACK",
+          "GHOST"
         ],
         "notes": "Grants ghosting (ignores unit collision) and MS boost"
       },
@@ -3895,7 +3904,8 @@
         ],
         "threat": [
           "GAP_CLOSE",
-          "KNOCKBACK"
+          "KNOCKBACK",
+          "UNBREAKABLE_WALL"
         ],
         "notes": "Creates impassable terrain arena that traps enemies for 3.5s"
       }
@@ -3955,9 +3965,10 @@
           9
         ],
         "threat": [
-          "STUN"
+          "STUN",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Jax dodges all incoming basic attacks for the duration."
       },
       {
         "key": "R",
@@ -4772,8 +4783,10 @@
           13,
           11
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "DODGE"
+        ],
+        "notes": "Kayn becomes untargetable while moving through walls."
       },
       {
         "key": "R",
@@ -6050,9 +6063,10 @@
         ],
         "threat": [
           "GAP_CLOSE",
-          "ROOT"
+          "ROOT",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Maokai becomes untargetable as he dashes to his target."
       },
       {
         "key": "E",
@@ -6113,9 +6127,10 @@
           17.5
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Master Yi becomes untargetable while striking nearby enemies."
       },
       {
         "key": "W",
@@ -7595,8 +7610,10 @@
           18,
           18
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "PROJECTILE_BLOCK"
+        ],
+        "notes": "Pantheon braces his shield, becoming immune to damage from the front and blocking projectiles."
       },
       {
         "key": "R",
@@ -8739,8 +8756,10 @@
           22,
           20
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "PROJECTILE_BLOCK"
+        ],
+        "notes": "Samira slashes around herself, destroying enemy missiles and damaging enemies."
       },
       {
         "key": "E",
@@ -9110,9 +9129,11 @@
           11
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "STEALTH",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Shaco becomes invisible and untargetable as he blinks to a new location."
       },
       {
         "key": "W",
@@ -10228,8 +10249,10 @@
           30,
           30
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "UNBREAKABLE_WALL"
+        ],
+        "notes": "Taliyah creates a massive wall of stone that blocks movement and vision."
       }
     ]
   },
@@ -10667,9 +10690,10 @@
           15
         ],
         "threat": [
-          "SLOW"
+          "SLOW",
+          "UNBREAKABLE_WALL"
         ],
-        "notes": ""
+        "notes": "Trundle creates a pillar of ice that blocks movement and slows nearby enemies."
       },
       {
         "key": "R",
@@ -11708,8 +11732,10 @@
           16,
           16
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "DODGE"
+        ],
+        "notes": "Vladimir becomes untargetable and invulnerable as he melts into a pool of blood."
       },
       {
         "key": "E",
@@ -11970,8 +11996,10 @@
           100,
           100
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "DODGE"
+        ],
+        "notes": "Xayah becomes untargetable and invulnerable as she leaps into the air."
       }
     ]
   },
@@ -12169,8 +12197,10 @@
           17,
           15
         ],
-        "threat": [],
-        "notes": ""
+        "threat": [
+          "PROJECTILE_BLOCK"
+        ],
+        "notes": "Blocks all enemy projectiles"
       },
       {
         "key": "E",
@@ -12324,9 +12354,10 @@
           12
         ],
         "threat": [
-          "ROOT"
+          "ROOT",
+          "BREAKABLE_WALL"
         ],
-        "notes": ""
+        "notes": "Yorick summons a destructible wall of Mist Walkers that traps enemies inside."
       },
       {
         "key": "E",
@@ -12658,9 +12689,10 @@
           100
         ],
         "threat": [
-          "GAP_CLOSE"
+          "GAP_CLOSE",
+          "DODGE"
         ],
-        "notes": ""
+        "notes": "Zed becomes untargetable as he dashes to his target and marks them for death."
       }
     ]
   },
