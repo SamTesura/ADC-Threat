@@ -602,6 +602,49 @@ tbody tr:hover {
   border-color: var(--color-accent-blue);
 }
 
+.threat-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: var(--border-radius-sm);
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 3px;
+  border: 1px solid;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.threat-type-badge.threat-hard {
+  background: rgba(207, 38, 47, 0.15);
+  color: var(--color-accent-red);
+  border-color: var(--color-accent-red);
+}
+
+.threat-type-badge.threat-soft {
+  background: rgba(200, 155, 60, 0.15);
+  color: var(--color-accent-gold);
+  border-color: var(--color-accent-gold);
+}
+
+.threat-type-badge.threat-high {
+  background: rgba(136, 78, 160, 0.15);
+  color: var(--color-accent-purple);
+  border-color: var(--color-accent-purple);
+}
+
+.threat-type-badge.threat-medium {
+  background: rgba(91, 154, 205, 0.15);
+  color: var(--color-accent-blue);
+  border-color: var(--color-accent-blue);
+}
+
+.threat-type-badge.threat-low {
+  background: rgba(10, 175, 109, 0.15);
+  color: var(--color-accent-green);
+  border-color: var(--color-accent-green);
+}
+
 .tag-suppression,
 .tag-airborne {
   background: rgba(207, 38, 47, 0.2);
