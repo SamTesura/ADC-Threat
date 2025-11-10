@@ -5,6 +5,8 @@
  * Focus: Cooldowns and Champion Understanding
  */
 
+// Reference patch version - updated automatically by GitHub Actions
+// The actual patch used in the app is fetched dynamically from Riot's API
 const latestUpdate = "25-22";
 
 const CONFIG = {
@@ -12,7 +14,6 @@ const CONFIG = {
   CHAMPION_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion.json',
   CHAMPION_DETAIL_API: 'https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/champion/{championId}.json',
   CHAMPION_IMG: 'https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championId}.png',
-  PATCH_NOTES_URL: `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${latestUpdate}-notes/`,
   WIKILOL_CHAMPION_URL: 'https://wiki.leagueoflegends.com/en-us/{championName}'
 };
 
@@ -133,7 +134,9 @@ function setupPatchNotesLink() {
   const link = document.getElementById('patchNotesLink');
   if (link && state.patch) {
     const patchVersion = state.patch.split('.').slice(0, 2).join('-');
-    link.href = CONFIG.PATCH_NOTES_URL.replace('{version}', patchVersion);
+    const patchNotesUrl = `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${patchVersion}-notes/`;
+    link.href = patchNotesUrl;
+    link.textContent = `📋 Patch ${patchVersion} Notes`;
   }
 }
 
