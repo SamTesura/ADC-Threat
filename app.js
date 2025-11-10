@@ -7,7 +7,6 @@
 
 // Reference patch version - updated automatically by GitHub Actions
 // The actual patch used in the app is fetched dynamically from Riot's API
-const latestUpdate = "25-22";
 
 const CONFIG = {
   PATCH_API: 'https://ddragon.leagueoflegends.com/api/versions.json',
