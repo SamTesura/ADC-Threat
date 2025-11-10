@@ -1,5 +1,5 @@
 /**
- * ADC List - Meta ADCs Only (Updated for Patch 15.21.1)
+ * ADC List - Meta ADCs Only (Updated for Patch 25.22)
  * Only includes champions actually played as ADC in current meta
  * Separated by role: Marksman and Mage
  */
@@ -69,7 +69,7 @@ const ADC_LIST = {
     
     // Get meta tier (for future implementation)
     getMetaTier(championId) {
-        // S+ Tier (Patch 15.21.1)
+        // S+ Tier (Patch 25.22)
         const sTierPlus = ['Ashe', 'Jinx', 'Caitlyn', 'KogMaw', 'Ziggs'];
         
         // S Tier
