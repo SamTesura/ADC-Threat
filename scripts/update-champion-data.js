@@ -72,7 +72,10 @@ async function main() {
 
   // Step 4: Load existing champions-summary.json
   const summaryPath = path.join(__dirname, '..', 'champions-summary.json');
-  const currentSummary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+  const currentSummaryData = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+
+  // Support both old format (array) and new format (object with champions property)
+  const currentSummary = currentSummaryData.champions || currentSummaryData;
 
   // Create a map of existing champions by name for easy lookup
   const existingChampionsMap = new Map();
@@ -145,8 +148,12 @@ async function main() {
   // Step 6: Sort champions alphabetically
   updatedSummary.sort((a, b) => a.name.localeCompare(b.name));
 
-  // Step 7: Write updated champions-summary.json
-  fs.writeFileSync(summaryPath, JSON.stringify(updatedSummary, null, 2), 'utf8');
+  // Step 7: Write updated champions-summary.json with proper structure
+  const outputData = {
+    patchVersion: shortPatchVersion,
+    champions: updatedSummary
+  };
+  fs.writeFileSync(summaryPath, JSON.stringify(outputData, null, 2), 'utf8');
   console.log(`✅ Updated champions-summary.json`);
 
   // Step 8: Update app.js with new patch version
