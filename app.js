@@ -132,7 +132,17 @@ async function fetchChampionDetail(championId) {
 function setupPatchNotesLink() {
   const link = document.getElementById('patchNotesLink');
   if (link && state.patch) {
-    const patchVersion = state.patch.split('.').slice(0, 2).join('-');
+    const parts = state.patch.split('.');
+    let majorVersion = parseInt(parts[0]);
+    const minorVersion = parts[1];
+
+    // Riot switched to year-based numbering in 2025
+    // API returns 15.x but patch notes use 25.x (15 + 10 = 25 for year 2025)
+    if (majorVersion >= 15) {
+      majorVersion += 10;
+    }
+
+    const patchVersion = `${majorVersion}-${minorVersion}`;
     const patchNotesUrl = `https://www.leagueoflegends.com/en-us/news/game-updates/patch-${patchVersion}-notes/`;
     link.href = patchNotesUrl;
     link.textContent = `📋 Patch ${patchVersion} Notes`;

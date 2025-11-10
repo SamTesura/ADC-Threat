@@ -46,7 +46,18 @@ async function main() {
   const versions = await fetchData(CONFIG.VERSIONS_API);
   const latestPatch = versions[0]; // First version is the latest
   const patchVersion = latestPatch.replace(/\./g, '-'); // Convert 14.22.1 to 14-22-1
-  const shortPatchVersion = latestPatch.split('.').slice(0, 2).join('-'); // 14.22.1 -> 14-22
+
+  // Riot switched to year-based numbering in 2025
+  // API returns 15.x but patch notes use 25.x (15 + 10 = 25 for year 2025)
+  const parts = latestPatch.split('.');
+  let majorVersion = parseInt(parts[0]);
+  const minorVersion = parts[1];
+
+  if (majorVersion >= 15) {
+    majorVersion += 10;
+  }
+
+  const shortPatchVersion = `${majorVersion}-${minorVersion}`; // Convert 15.22.1 -> 25-22
 
   console.log(`✅ Latest patch: ${latestPatch} (formatted: ${shortPatchVersion})`);
 
