@@ -1,5 +1,5 @@
 {
-  "patchVersion": "25-22",
+  "patchVersion": "25-23",
   "champions": [
     {
       "name": "Aatrox",
@@ -2750,12 +2750,12 @@
           "key": "R",
           "name": "Chum the Waters",
           "cd": [
+            120,
             100,
-            85,
-            70,
-            70,
-            70,
-            70
+            80,
+            80,
+            80,
+            80
           ],
           "threat": [
             "KNOCKUP"
@@ -4358,12 +4358,12 @@
           "key": "R",
           "name": "Killer Instinct",
           "cd": [
-            120,
-            90,
-            60,
-            60,
-            60,
-            60
+            130,
+            100,
+            70,
+            70,
+            70,
+            70
           ],
           "threat": [
             "GAP_CLOSE"
@@ -9528,11 +9528,11 @@
           "name": "Shattered Earth / Upheaval",
           "cd": [
             8,
-            7,
-            6,
-            5,
-            4,
-            4
+            6.75,
+            5.5,
+            4.25,
+            3,
+            3
           ],
           "threat": [],
           "notes": ""
@@ -12565,6 +12565,77 @@
             "SLOW"
           ],
           "notes": ""
+        }
+      ]
+    },
+    {
+      "name": "Zaahen",
+      "slug": "Zaahen",
+      "tags": [
+        "Fighter",
+        "Assassin"
+      ],
+      "portrait": "Zaahen",
+      "passive": {
+        "name": "Cultivation of War",
+        "desc": ""
+      },
+      "abilities": [
+        {
+          "key": "Q",
+          "name": "The Darkin Glaive",
+          "cd": [
+            9,
+            8,
+            7,
+            6,
+            5,
+            5
+          ],
+          "threat": [],
+          "notes": "⚠️ New champion - threat tags need manual review"
+        },
+        {
+          "key": "W",
+          "name": "Dreaded Return",
+          "cd": [
+            16,
+            15,
+            14,
+            13,
+            12,
+            12
+          ],
+          "threat": [],
+          "notes": "⚠️ New champion - threat tags need manual review"
+        },
+        {
+          "key": "E",
+          "name": "Aureate Rush",
+          "cd": [
+            10,
+            9.5,
+            9,
+            8.5,
+            8,
+            8
+          ],
+          "threat": [],
+          "notes": "⚠️ New champion - threat tags need manual review"
+        },
+        {
+          "key": "R",
+          "name": "Grim Deliverance",
+          "cd": [
+            110,
+            95,
+            80,
+            80,
+            80,
+            80
+          ],
+          "threat": [],
+          "notes": "⚠️ New champion - threat tags need manual review"
         }
       ]
     },
