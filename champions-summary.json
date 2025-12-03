@@ -1,5 +1,5 @@
 {
-  "patchVersion": "25-23",
+  "patchVersion": "25-24",
   "champions": [
     {
       "name": "Aatrox",
@@ -8761,12 +8761,12 @@
           "key": "Q",
           "name": "Arctic Assault",
           "cd": [
-            19,
-            17.5,
-            16,
-            14.5,
-            13,
-            13
+            18,
+            16.5,
+            15,
+            13.5,
+            12,
+            12
           ],
           "threat": [
             "GAP_CLOSE",
@@ -8810,8 +8810,8 @@
           "key": "R",
           "name": "Glacial Prison",
           "cd": [
-            130,
-            110,
+            120,
+            105,
             90,
             90,
             90,
