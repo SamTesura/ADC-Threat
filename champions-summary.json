@@ -12592,8 +12592,11 @@
             5,
             5
           ],
-          "threat": [],
-          "notes": "⚠️ New champion - threat tags need manual review"
+          "threat": [
+            "KNOCKUP",
+            "SUSTAIN"
+          ],
+          "notes": ""
         },
         {
           "key": "W",
@@ -12606,8 +12609,10 @@
             12,
             12
           ],
-          "threat": [],
-          "notes": "⚠️ New champion - threat tags need manual review"
+          "threat": [
+            "PULL"
+          ],
+          "notes": ""
         },
         {
           "key": "E",
@@ -12620,8 +12625,11 @@
             8,
             8
           ],
-          "threat": [],
-          "notes": "⚠️ New champion - threat tags need manual review"
+          "threat": [
+            "DASH",
+            "GAP_CLOSE"
+          ],
+          "notes": ""
         },
         {
           "key": "R",
@@ -12634,8 +12642,10 @@
             80,
             80
           ],
-          "threat": [],
-          "notes": "⚠️ New champion - threat tags need manual review"
+          "threat": [
+            "SUSTAIN"
+          ],
+          "notes": ""
         }
       ]
     },
